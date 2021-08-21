@@ -2,6 +2,7 @@
   <div id="app">
     <div class="article"> 
       <Author 
+          :id="article.creator.uid"
           :name="article.creator.nickname" 
           :avatar="article.creator.avatar" 
           :intro="article.creator.intro"
@@ -110,6 +111,10 @@ body {
 .content a {
   text-decoration: none;
   color: #8DCE44FF;
+}
+
+::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
 }
 
 </style>

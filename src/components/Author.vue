@@ -7,22 +7,42 @@
         <h4>{{ name }}</h4>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
     </div>
-    <a :class="followedClass">{{ relationship == 0? "关注" : "已关注" }}</a>
+    <a :class="followedClass" v-on:click="follow">{{ currentRelationship == 0? "关注" : "已关注" }}</a>
 </div>
 </template>
 <script>
+
+import axios from 'axios'
+
 export default {
   name: 'Author',
   props: {
+    id: Number,
     name: String,
     avatar: String,
     intro: String,
     relationship: Number,
   },
+  data() {
+      return {
+          currentRelationship: this.relationship,
+      }
+  },
   computed: {
     followedClass()  {
-        return this.relationship == 0? "to-follow" : "followed";
+        return this.currentRelationship == 0? "to-follow" : "followed";
     }
+  },
+  methods: {
+      follow: async function () {
+          try {
+            await axios.post(`/api/user/${this.id}/follow`);
+            let relationship = this.currentRelationship;
+            this.currentRelationship = relationship == 0 ? 1 : 0;
+          } catch(e) {
+            console.error(e);
+          }
+      }
   }
 }
 </script>
@@ -58,6 +78,7 @@ a {
     padding: 3px 5px;
     border-radius: 12px;
     text-align: center;
+    -webkit-tap-highlight-color:rgba(0,0,0,0); 
 }
 
 a.followed {
