@@ -73,11 +73,13 @@ h4 {
     margin: 0;
 }
 a {
-    width: 46px;
+    box-sizing: border-box;
+    width: 48px;
     font-size: 12px;
     padding: 3px 5px;
     border-radius: 12px;
     text-align: center;
+    border: 1px solid #8DCF44;
     -webkit-tap-highlight-color:rgba(0,0,0,0); 
 }
 
@@ -87,7 +89,6 @@ a.followed {
 }
 
 a.to-follow {
-    border: 1px solid #8DCF44;
     color: #8DCF44;
 }
 </style>
