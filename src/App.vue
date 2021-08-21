@@ -4,7 +4,8 @@
       <Author 
           :name="article.creator.nickname" 
           :avatar="article.creator.avatar" 
-          :intro="article.creator.intro" />
+          :intro="article.creator.intro"
+          :relationship="article.creator.relationship" />
       <article>
         <h3>{{ article.title }}</h3>
         <div class="abbr-box time-box">
@@ -20,15 +21,15 @@
       </article>
     </div>
     <section class="answer-actions">
-      <div><div style="">邀请回答</div></div>
-      <div>我要回答</div>
+      <div class="action-item"><img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span></div>
+      <div class="action-item"><img class="btn-prefix" src="/images/btn_answer.png" /><span>我要回答</span></div>
       <div>视频回答</div>
     </section>
     <section class="actions">
       <div class="action-item" style="margin-right: 32px">
-        <img src="/images/btn_love_tick.png" /><span>{{ article.likes }}</span>
+        <img class="btn-prefix" src="/images/btn_love_tick.png" /><span>{{ article.likes }}</span>
       </div>
-      <div class="action-item"><img src="/images/btn_share.png" /><span>分享</span></div>
+      <div class="action-item"><img class="btn-prefix" src="/images/btn_share.png" /><span>分享</span></div>
       <div class="space" />
       <div>{{ article.replies }} 个回答</div>
     </section>
@@ -70,6 +71,7 @@ export default {
         title: "",
         avatar: "",
         intro: "",
+        relationship: 0,
       },
       replyList: []
     }
@@ -96,7 +98,20 @@ export default {
 <style>
 body {
   margin: 0;
+  -webkit-touch-callout: none;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #F6F6F6;
 }
+
+.content img {
+  width: 100%;
+}
+
+.content a {
+  text-decoration: none;
+  color: #8DCE44FF;
+}
+
 </style>
 
 <style scoped>
@@ -138,10 +153,9 @@ h3 {
 .action-item {
   display: flex;
   align-items: center;
-  
 }
 
-.action-item > img {
+.btn-prefix {
   width: 18px;
   margin-right: 5px;
 }
@@ -190,7 +204,6 @@ h3 {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background: #F6F6F6;
 }
 
 .abbr-box {

@@ -56,6 +56,7 @@ export default {
 }
 
 .avatar img {
+    object-fit: cover; /* Do not scale the image */
     width: 40px;
     height: 40px;
     background-color: gray;
@@ -63,7 +64,7 @@ export default {
 }
 
 article {
-    padding: 0px 28px;
+    padding: 0px 18px;
 }
 
 h4 {
