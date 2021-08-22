@@ -22,14 +22,17 @@
       </article>
     </div>
     <section class="answer-actions">
-      <div class="action-item"><img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span></div>
+      <div class="action-item">
+        <img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span>
+      </div>
       <div class="action-item"><img class="btn-prefix" src="/images/btn_answer.png" /><span>我要回答</span></div>
       <div>视频回答</div>
     </section>
     <section class="actions">
-      <div class="action-item" style="margin-right: 32px">
-        <img class="btn-prefix" src="/images/btn_love_tick.png" /><span>{{ article.likes }}</span>
-      </div>
+      <a class="action-item" style="margin-right: 32px" v-on:click="like">
+        <img class="btn-prefix" :src="likeIcon" />
+        <span>{{ article.likes }}</span>
+      </a>
       <div class="action-item"><img class="btn-prefix" src="/images/btn_share.png" /><span>分享</span></div>
       <div class="space" />
       <div>{{ article.replies }} 个回答</div>
@@ -40,9 +43,14 @@
     <div v-if="article.replyList.length > 0">
       <Answer class="answer-item" 
         v-for="reply in article.replyList" 
+        :articleId="article.id"
+        :id="reply.id"
         :key="reply.id"
         :content="reply.content"
         :avatar="reply.replier.avatar"
+        :replies="reply.replies"
+        :likes="reply.likes"
+        :isLike="reply.isLike"
         :nickname="reply.replier.nickname" />
     </div>
   </div>
@@ -61,11 +69,13 @@ export default {
   },
   data: () => ({
     article: {
+      id: -1,
       title: "加载中...",
       content: "加载中...",
       categories: [],
       likes: 0,
       replies: 0,
+      isLike: false,
       creator: {
         name: "加载中...",
         nickname: "加载中...",
@@ -77,6 +87,11 @@ export default {
       replyList: []
     }
   }),
+  computed: {
+    likeIcon() {
+      return this.article.isLike ? "/images/btn_love_highlighted.png" : "/images/btn_love_tick.png"
+    }
+  },
   created() {
     const { id } = this.$router.currentRoute.query;
     axios.get(`/api/detail/${id}`)
@@ -92,6 +107,18 @@ export default {
               )
             );
         })
+  },
+  methods: {
+    like () {
+        const { id } = this.$router.currentRoute.query;
+        const isLike = this.article.isLike
+        axios.post(`/api/article/${id}/like`)
+        .then(() => {
+          this.article.isLike = !isLike;
+          const count = isLike? -1 : 1;
+          this.article.likes += count;
+        });
+    }
   }
 }
 </script>
@@ -109,12 +136,16 @@ body {
 }
 
 .content a {
-  text-decoration: none;
   color: #8DCE44FF;
 }
 
 ::-webkit-scrollbar {
   display: none; /* Chrome Safari */
+}
+
+a {
+  text-decoration: none;
+  -webkit-tap-highlight-color:rgba(255,255,255,0.6); 
 }
 
 </style>
@@ -151,11 +182,12 @@ h3 {
   display: flex;
   background: white;
   margin-top: 10px;
-  padding: 7px 28px;
+  padding: 0 28px;
   align-items: center;
 }
 
 .action-item {
+  padding: 7px 4px;
   display: flex;
   align-items: center;
 }

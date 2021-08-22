@@ -9,26 +9,54 @@
             <abbr>5分钟前 · 回答了问题</abbr>
         </div>
     </div>
-    <article v-html="content">
-    </article>
+    <article class="content" v-html="content" />
     <section class="actions">
-        <div class="action-item" style="margin-right: 32px">
-        <img src="/images/btn_love_tick.png" /><span>10k</span>
-      </div>
+      <a class="action-item" style="margin-right: 32px" v-on:click="like">
+        <img :src="likeIcon" /><span>{{ currentLikes }}</span>
+      </a>
       <div class="action-item"><img src="/images/btn_share.png" /><span>分享</span></div>
       <div class="space" />
-      <div>1000 个评论</div>
+      <div>{{ replies }} 个评论</div>
     </section>
 </div>
 </template>
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Answer',
   props: {
+    articleId: Number,
+    id: Number,
     nickname: String,
     intro: String,
     avatar: String,
     content: String,
+    replies: Number,
+    likes: Number,
+    isLike: Boolean
+  },
+  data () {
+    return {
+      currentIsLike: this.isLike,
+      currentLikes: this.likes
+    }
+  },
+  computed: {
+    likeIcon() {
+      return this.currentIsLike ? "/images/btn_love_highlighted.png" : "/images/btn_love_tick.png"
+    }
+  },
+  methods: {
+    like() {
+        const isLike = this.currentIsLike
+        axios.post(`/api/article/${this.articleId}/answer/${this.id}/like`)
+        .then(() => {
+          this.currentIsLike = !isLike;
+          const count = isLike? -1 : 1;
+          this.currentLikes += count;
+        });
+    }
   }
 }
 </script>

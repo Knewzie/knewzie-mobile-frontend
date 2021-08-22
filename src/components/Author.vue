@@ -80,7 +80,6 @@ a {
     border-radius: 12px;
     text-align: center;
     border: 1px solid #8DCF44;
-    -webkit-tap-highlight-color:rgba(0,0,0,0); 
 }
 
 a.followed {
