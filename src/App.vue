@@ -134,6 +134,9 @@ body {
 .content img {
   width: 100%;
 }
+.content video {
+  width: 100%;
+}
 
 .content a {
   color: #8DCE44FF;

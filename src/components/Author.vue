@@ -28,9 +28,14 @@ export default {
           currentRelationship: this.relationship,
       }
   },
+  watch: {
+      relationship(newV) {
+          this.currentRelationship = newV;
+      }
+  },
   computed: {
     followedClass()  {
-        return this.currentRelationship == 0? "to-follow" : "followed";
+        return this.currentRelationship == 0 ? "to-follow" : "followed";
     }
   },
   methods: {

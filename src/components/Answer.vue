@@ -34,7 +34,8 @@ export default {
     content: String,
     replies: Number,
     likes: Number,
-    isLike: Boolean
+    isLike: Boolean,
+    replyList: Array,
   },
   data () {
     return {
