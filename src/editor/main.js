@@ -33,3 +33,13 @@ new Quill(
     "#editor", 
     options,
 )
+
+document.addEventListener("load", () => {
+  const { Page } = window;
+  if (!Page) { return; }
+  Page.postMessage(
+    JSON.stringify(
+      {"event": "pageMounted"}  
+    )
+  );
+})
