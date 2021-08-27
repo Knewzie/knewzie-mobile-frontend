@@ -25,11 +25,16 @@
       <div class="action-item">
         <img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span>
       </div>
-      <div class="action-item"><img class="btn-prefix" src="/images/btn_answer.png" /><span>我要回答</span></div>
+      <a class="action-item"
+         v-on:click="answer">
+        <img class="btn-prefix" src="/images/btn_answer.png" /><span>我要回答</span>
+      </a>
       <div>视频回答</div>
     </section>
     <section class="actions">
-      <a class="action-item" style="margin-right: 32px" v-on:click="like">
+      <a class="action-item" 
+         style="margin-right: 32px" 
+         v-on:click="like">
         <img class="btn-prefix" :src="likeIcon" />
         <span>{{ article.likes }}</span>
       </a>
@@ -118,6 +123,15 @@ export default {
           const count = isLike? -1 : 1;
           this.article.likes += count;
         });
+    },
+    answer() {
+      const { Page } = window;
+      if (!Page) { return; }
+      Page.postMessage(
+        JSON.stringify(
+          {"event": "doAnswer"}  
+        )
+      ); 
     }
   }
 }
