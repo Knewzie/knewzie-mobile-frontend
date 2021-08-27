@@ -14,6 +14,14 @@ var toolbarOptions = {
         }
       },
       "image": function() {
+        const { Page } = window;
+        if (Page) {
+          Page.postMessage(
+            JSON.stringify(
+              {"event": "pickImage"}  
+            )
+          );
+        }
       }
     }
   }
@@ -24,7 +32,7 @@ var options = {
     modules: {
         toolbar: toolbarOptions
     },
-    placeholder: 'Compose an epic...',
+    placeholder: '请输入内容',
     readOnly: false,
     theme: 'snow'
 };
@@ -34,12 +42,20 @@ new Quill(
     options,
 )
 
-document.addEventListener("load", () => {
+window.addEventListener("load", () => {
   const { Page } = window;
-  if (!Page) { return; }
-  Page.postMessage(
-    JSON.stringify(
-      {"event": "pageMounted"}  
-    )
-  );
+  if (Page) {
+    Page.postMessage(
+      JSON.stringify(
+        {"event": "pageMounted"}  
+      )
+    );
+  }
+
+  document.querySelector('.ql-editor').addEventListener('click', () => {
+    setTimeout(() => {
+      console.dir(`重置 scroll ${document.scrollingElement.scrollTop}`)
+      document.scrollingElement.scrollTop = 0;
+    }, 400);
+  });
 })
