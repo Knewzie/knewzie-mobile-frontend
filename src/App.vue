@@ -10,7 +10,7 @@
       <article>
         <h3>{{ article.title }}</h3>
         <div class="abbr-box time-box">
-          <time>2分钟前</time>
+          <time>{{ duration }}</time>
         </div>
         <div class="abbr-box tags"  v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
@@ -22,14 +22,13 @@
       </article>
     </div>
     <section class="answer-actions">
-      <div class="action-item">
+      <a class="action-item">
         <img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span>
-      </div>
+      </a>
       <a class="action-item"
          v-on:click="answer">
         <img class="btn-prefix" src="/images/btn_answer.png" /><span>我要回答</span>
       </a>
-      <div>视频回答</div>
     </section>
     <section class="actions">
       <a class="action-item" 
@@ -38,7 +37,11 @@
         <img class="btn-prefix" :src="likeIcon" />
         <span>{{ article.likes }}</span>
       </a>
-      <div class="action-item"><img class="btn-prefix" src="/images/btn_share.png" /><span>分享</span></div>
+      <a class="action-item"
+         v-on:click="share">
+        <img class="btn-prefix" src="/images/btn_share.png" />
+        <span>分享</span>
+      </a>
       <div class="space" />
       <div>{{ article.replies }} 个回答</div>
     </section>
@@ -64,7 +67,7 @@
 <script>
 import Author from './components/Author.vue'
 import Answer from './components/Answer.vue'
-// import url from 'url'
+import moment from 'moment'
 import axios from 'axios'
 
 export default {
@@ -94,35 +97,63 @@ export default {
   }),
   computed: {
     likeIcon() {
-      return this.article.isLike ? "/images/btn_love_highlighted.png" : "/images/btn_love_tick.png"
+      return "/images/btn_love_highlighted.png";
+    },
+    duration() {
+      if (!this.article.createdAt) {
+        return "加载中..."
+      } 
+
+      let now = moment();  
+      let createdAt = moment(this.article.createdAt * 1000);
+      let diff = moment.duration(now.diff(createdAt));
+      if (diff.asDays() > 10) {
+        return createdAt.format('YYYY-MM-DD')
+      } else if (diff.asHours() >= 24) {
+        return `${parseInt(diff.asDays())} 天前`
+      } else if (diff.asMinutes() >= 60) {
+        return `${parseInt(diff.asHours())} 小时前`
+      } else if (diff.asSeconds() >= 60) {
+        return `${parseInt(diff.asMinutes())} 分钟前`
+      } else if (diff.asSeconds() > 0) {
+        return `${parseInt(diff.asSeconds())} 秒前`
+      } else {
+        return "刚刚";
+      }
     }
   },
   created() {
     const { id } = this.$router.currentRoute.query;
+    const { Page } = window;
     axios.get(`/api/detail/${id}`)
         .then((response) => {
           const { data } = response.data
           this.article = data;
+          Page && Page.postMessage(
+            JSON.stringify(
+              {"event": "topicLoaded", data}
+            )
+          )
         }).finally(() => {
-            const { Page } = window;
-            if (!Page) { return; }
-            Page.postMessage(
-              JSON.stringify(
-                {"event": "pageMounted"}  
-              )
-            );
+          Page && Page.postMessage(
+            JSON.stringify(
+              {"event": "pageMounted"}  
+            )
+          );
         })
   },
   methods: {
     like () {
-        const { id } = this.$router.currentRoute.query;
-        const isLike = this.article.isLike
-        axios.post(`/api/article/${id}/like`)
-        .then(() => {
-          this.article.isLike = !isLike;
-          const count = isLike? -1 : 1;
-          this.article.likes += count;
-        });
+      
+
+    },
+    share() {
+      const { Page } = window; 
+       Page && Page.postMessage(
+        JSON.stringify(
+          {"event": "doShare", data: this.article}  
+        ) 
+      )
     },
     answer() {
       const { Page } = window;
@@ -149,6 +180,10 @@ body {
   width: 100%;
 }
 .content video {
+  width: 100%;
+}
+
+.content .ql-video {
   width: 100%;
 }
 
@@ -206,6 +241,7 @@ h3 {
 .action-item {
   padding: 7px 4px;
   display: flex;
+  justify-content: center;
   align-items: center;
 }
 
