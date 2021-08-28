@@ -84,6 +84,7 @@ a {
     padding: 3px 5px;
     border-radius: 12px;
     text-align: center;
+    margin-left: 5px;
     border: 1px solid #8DCF44;
 }
 

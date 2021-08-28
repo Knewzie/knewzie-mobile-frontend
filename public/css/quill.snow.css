@@ -941,11 +941,11 @@
   color: #06c;
 }
 
-body {
+html, body {
   margin: 0;
+  height: 100%;
 }
 
 #editor {
-  height: 250px; 
-
+  height: 100%; 
 }
