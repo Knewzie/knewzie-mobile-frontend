@@ -45,6 +45,11 @@
       <div class="space" />
       <div>{{ article.replies }} 个回答</div>
     </section>
+
+    <div v-if="type == 0">
+      <AgreePerson name="name" avatar="https://www.baidu.com" />
+    </div>
+    <div v-else>
     <section class="sort" v-if="article.replyList.length > 0">
       按热度
     </section>
@@ -59,7 +64,8 @@
         :replies="reply.replies"
         :likes="reply.likes"
         :isLike="reply.isLike"
-        :nickname="reply.replier.nickname" />
+        :nickname="reply.replier.nickname" /> 
+    </div>
     </div>
   </div>
 </template>
@@ -67,13 +73,15 @@
 <script>
 import Author from './components/Author.vue'
 import Answer from './components/Answer.vue'
+import AgreePerson from './components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
-    Author, Answer
+    // eslint-disable-next-line
+    Author, Answer, AgreePerson
   },
   data: () => ({
     article: {
@@ -93,7 +101,9 @@ export default {
         relationship: 0,
       },
       replyList: []
-    }
+    },
+    type: 1,
+    likers: []
   }),
   computed: {
     likeIcon() {
@@ -144,8 +154,28 @@ export default {
   },
   methods: {
     like () {
-      
+      const { Page } = window;
+      const { id } = this.$router.currentRoute.query;
 
+      Page && Page.postMessage(
+        JSON.stringify({
+          "event": "showProgress"
+        })
+      )
+
+      axios.get(`/api/detail/${id}/likedUser`)
+        .then((response) => {
+          const { data } = response.data
+          const { list } = data;
+          this.likes = list;
+          this.type = 0;
+        }).finally(() => {
+          Page && Page.postMessage(
+            JSON.stringify({
+              "event": "dismissProgress"
+            })
+          )
+        })
     },
     share() {
       const { Page } = window; 
