@@ -5,18 +5,45 @@
     </div>
     <div class="info">
         <div><h4>{{ name }}</h4><span>赞同了这个问题</span></div>
-        <abbr>15 分钟前</abbr>
+        <abbr>{{ duration }}</abbr>
     </div>
 </div>
 </template>
 <script>
+import moment from 'moment'
+
 export default {
   name: 'AgreePerson',
   props: {
     id: Number,
     name: String,
     avatar: String,
+    createdAt: Number
   },
+  computed: {
+      duration() {
+        if (!this.createdAt) {
+            return "加载中..."
+        } 
+
+        let now = moment();  
+        let createdAt = moment(this.article.createdAt * 1000);
+        let diff = moment.duration(now.diff(createdAt));
+        if (diff.asDays() > 10) {
+            return createdAt.format('YYYY-MM-DD')
+        } else if (diff.asHours() >= 24) {
+            return `${parseInt(diff.asDays())} 天前`
+        } else if (diff.asMinutes() >= 60) {
+            return `${parseInt(diff.asHours())} 小时前`
+        } else if (diff.asSeconds() >= 60) {
+            return `${parseInt(diff.asMinutes())} 分钟前`
+        } else if (diff.asSeconds() > 0) {
+            return `${parseInt(diff.asSeconds())} 秒前`
+        } else {
+            return "刚刚";
+        }
+      }
+  }
 }
 </script>
 <style scoped>

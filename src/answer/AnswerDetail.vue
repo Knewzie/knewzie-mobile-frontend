@@ -2,65 +2,20 @@
   <div id="app">
     <div class="article"> 
       <Author 
-          :id="article.creator.uid"
-          :name="article.creator.nickname" 
-          :avatar="article.creator.avatar" 
-          :intro="article.creator.intro"
-          :relationship="article.creator.relationship" />
+          :id="article.replier.uid"
+          :name="article.replier.nickname" 
+          :avatar="article.replier.avatar" 
+          :intro="article.replier.intro"
+          :relationship="article.replier.relationship" />
       <article>
-        <h3>{{ article.title }}</h3>
         <div class="abbr-box time-box">
           <time>{{ duration }}</time>
-        </div>
-        <div class="abbr-box tags"  v-if="article.categories.length > 0">
-          <span v-for="category in article.categories" :key="category.id">
-            {{ category.name }}
-          </span>
         </div>
         <div class="content" v-html="article.content">
         </div>
       </article>
     </div>
-    <section class="answer-actions">
-      <a class="action-item">
-        <img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span>
-      </a>
-      <a class="action-item"
-         v-on:click="answer">
-        <img class="btn-prefix" src="/images/btn_answer.png" /><span>我要回答</span>
-      </a>
-    </section>
-    <section class="actions">
-      <a class="action-item" 
-         v-bind:class="{ active: type == 0 }"
-         style="margin-right: 32px" 
-         v-on:click="like">
-        <img class="btn-prefix" :src="likeIcon" />
-        <span>{{ article.likes }}</span>
-      </a>
-      <a class="action-item"
-         v-on:click="share">
-        <img class="btn-prefix" src="/images/btn_share.png" />
-        <span>分享</span>
-      </a>
-      <div class="space" />
-      <a class="action-item"
-        v-on:click="switchToAnswer"
-        v-bind:class="{ active: type == 1 }"
-        >{{ article.replies }} 个回答</a>
-    </section>
 
-    <div v-if="type == 0">
-      <AgreePerson 
-        v-for="user in likers"
-        :key="user.id"
-        :avatar="user.avatar"
-        :name="user.nickname" />
-    </div>
-    <div v-else>
-    <section class="sort" v-if="article.replyList.length > 0">
-      按热度
-    </section>
     <div v-if="article.replyList.length > 0">
       <Answer class="answer-item" 
         v-for="reply in article.replyList" 
@@ -74,33 +29,30 @@
         :isLike="reply.isLike"
         :nickname="reply.replier.nickname" /> 
     </div>
-    </div>
   </div>
 </template>
 
 <script>
-import Author from './components/Author.vue'
-import Answer from './components/Answer.vue'
-import AgreePerson from './components/AgreePerson.vue'
+import Author from '../components/Author.vue'
+import Answer from '../components/Answer.vue'
 import moment from 'moment'
 import axios from 'axios'
 
 export default {
-  name: 'App',
+  name: 'AnswerDetail',
   components: {
     // eslint-disable-next-line
-    Author, Answer, AgreePerson
+    Author, Answer
   },
   data: () => ({
     article: {
       id: -1,
-      title: "加载中...",
       content: "加载中...",
       categories: [],
       likes: 0,
       replies: 0,
       isLike: false,
-      creator: {
+      replier: {
         name: "加载中...",
         nickname: "加载中...",
         title: "",
@@ -141,15 +93,15 @@ export default {
     }
   },
   created() {
-    const { id } = this.$router.currentRoute.query;
+    const { topicId, replyId } = this.$router.currentRoute.query;
     const { Page } = window;
-    axios.get(`/api/detail/${id}`)
+    axios.get(`/api/topic/${topicId}/reply/${replyId}`)
         .then((response) => {
           const { data } = response.data
           this.article = data;
           Page && Page.postMessage(
             JSON.stringify(
-              {"event": "topicLoaded", data}
+              {"event": "loaded", data}
             )
           )
         }).finally(() => {
@@ -161,50 +113,7 @@ export default {
         })
   },
   methods: {
-    switchToAnswer() {
-      this.type = 1;
-    },
-    like () {
-      const { Page } = window;
-      const { id } = this.$router.currentRoute.query;
-
-      Page && Page.postMessage(
-        JSON.stringify({
-          "event": "showProgress"
-        })
-      )
-
-      axios.get(`/api/detail/${id}/likedUser`)
-        .then((response) => {
-          const { data } = response.data
-          const { list } = data;
-          this.likers = list;
-          this.type = 0;
-        }).finally(() => {
-          Page && Page.postMessage(
-            JSON.stringify({
-              "event": "dismissProgress"
-            })
-          )
-        })
-    },
-    share() {
-      const { Page } = window; 
-       Page && Page.postMessage(
-        JSON.stringify(
-          {"event": "doShare", data: this.article}  
-        ) 
-      )
-    },
-    answer() {
-      const { Page } = window;
-      if (!Page) { return; }
-      Page.postMessage(
-        JSON.stringify(
-          {"event": "doAnswer"}  
-        )
-      ); 
-    }
+   
   }
 }
 </script>
@@ -222,14 +131,6 @@ body {
 }
 .content video {
   width: 100%;
-}
-
-.actions .action-item {
-  border-bottom: 2px solid transparent;
-}
-
-.active {
-  border-bottom: 2px solid #8DCE44FF;
 }
 
 .content .ql-video {
