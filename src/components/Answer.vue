@@ -1,5 +1,5 @@
 <template>
-<div class="body">
+<div class="body" v-on:click="goToDetail">
     <div class="avatar-box">
         <div class="avatar">
             <img :src="avatar"/>
@@ -36,6 +36,7 @@ export default {
     likes: Number,
     isLike: Boolean,
     replyList: Array,
+    createdAt: Number,
   },
   data () {
     return {
@@ -49,9 +50,21 @@ export default {
     }
   },
   methods: {
+    goToDetail() {
+      const { Page } = window;
+      Page && Page.postMessage(
+        JSON.stringify({
+          "event": "showAnswerDetail", 
+          "data": {
+            "topicId": this.articleId,
+            "replyId": this.id
+          }
+        })
+      )
+    },
     like() {
         const isLike = this.currentIsLike
-        axios.post(`/api/article/${this.articleId}/answer/${this.id}/like`)
+        axios.post(`/api/topic/${this.articleId}/answer/${this.id}/like`)
         .then(() => {
           this.currentIsLike = !isLike;
           const count = isLike? -1 : 1;
