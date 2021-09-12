@@ -55,7 +55,8 @@
         v-for="user in likers"
         :key="user.id"
         :avatar="user.avatar"
-        :name="user.nickname" />
+        :name="user.nickname"
+        :likedAt="user.likedAt" />
     </div>
     <div v-else>
     <section class="sort" v-if="article.replyList.length > 0">
@@ -71,6 +72,7 @@
         :avatar="reply.replier.avatar"
         :replies="reply.replies"
         :likes="reply.likes"
+        :repliedAt="reply.repliedAt"
         :isLike="reply.isLike"
         :nickname="reply.replier.nickname" /> 
     </div>
@@ -228,7 +230,7 @@ body {
   border-bottom: 2px solid transparent;
 }
 
-.active {
+.actions .action-item.active {
   border-bottom: 2px solid #8DCE44FF;
 }
 
