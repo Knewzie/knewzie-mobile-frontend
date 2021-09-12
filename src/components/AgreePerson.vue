@@ -18,16 +18,16 @@ export default {
     id: Number,
     name: String,
     avatar: String,
-    createdAt: Number
+    likedAt: Number
   },
   computed: {
       duration() {
-        if (!this.createdAt) {
+        if (!this.likedAt) {
             return "加载中..."
         } 
 
         let now = moment();  
-        let createdAt = moment(this.article.createdAt * 1000);
+        let createdAt = moment(this.likedAt * 1000);
         let diff = moment.duration(now.diff(createdAt));
         if (diff.asDays() > 10) {
             return createdAt.format('YYYY-MM-DD')

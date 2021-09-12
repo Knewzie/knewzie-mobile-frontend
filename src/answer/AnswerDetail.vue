@@ -16,18 +16,48 @@
       </article>
     </div>
 
-    <div v-if="article.replyList.length > 0">
-      <Answer class="answer-item" 
-        v-for="reply in article.replyList" 
-        :articleId="article.id"
-        :id="reply.id"
-        :key="reply.id"
-        :content="reply.content"
-        :avatar="reply.replier.avatar"
-        :replies="reply.replies"
-        :likes="reply.likes"
-        :isLike="reply.isLike"
-        :nickname="reply.replier.nickname" /> 
+    <section class="actions">
+      <a class="action-item" 
+         v-bind:class="{ active: type == 0 }"
+         style="margin-right: 32px" 
+         v-on:click="like">
+        <img class="btn-prefix" src="/images/btn_love_highlighted.png" />
+        <span>{{ article.likes }}</span>
+      </a>
+      <a class="action-item"
+         v-on:click="share">
+        <img class="btn-prefix" src="/images/btn_share.png" />
+        <span>分享</span>
+      </a>
+      <div class="space" />
+      <a class="action-item"
+        v-on:click="switchToAnswer"
+        v-bind:class="{ active: type == 1 }"
+        >{{ article.replies }} 评论</a>
+    </section>
+
+    <div v-if="type == 0">
+      <AgreePerson 
+        v-for="user in likers"
+        :key="user.id"
+        :avatar="user.avatar"
+        :name="user.nickname"
+        :likedAt="user.likedAt" />
+    </div>
+    <div v-else>
+      <div v-if="article.replyList.length > 0">
+        <Answer class="answer-item" 
+          v-for="reply in article.replyList" 
+          :articleId="article.id"
+          :id="reply.id"
+          :key="reply.id"
+          :content="reply.content"
+          :avatar="reply.replier.avatar"
+          :replies="reply.replies"
+          :likes="reply.likes"
+          :isLike="reply.isLike"
+          :nickname="reply.replier.nickname" /> 
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +65,7 @@
 <script>
 import Author from '../components/Author.vue'
 import Answer from '../components/Answer.vue'
+import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -42,7 +73,7 @@ export default {
   name: 'AnswerDetail',
   components: {
     // eslint-disable-next-line
-    Author, Answer
+    Author, Answer, AgreePerson
   },
   data: () => ({
     article: {
@@ -52,6 +83,7 @@ export default {
       likes: 0,
       replies: 0,
       isLike: false,
+      repliedAt: 0,
       replier: {
         name: "加载中...",
         nickname: "加载中...",
@@ -66,16 +98,13 @@ export default {
     likers: []
   }),
   computed: {
-    likeIcon() {
-      return "/images/btn_love_highlighted.png";
-    },
     duration() {
-      if (!this.article.createdAt) {
+      if (!this.article.repliedAt) {
         return "加载中..."
       } 
 
       let now = moment();  
-      let createdAt = moment(this.article.createdAt * 1000);
+      let createdAt = moment(this.article.repliedAt * 1000);
       let diff = moment.duration(now.diff(createdAt));
       if (diff.asDays() > 10) {
         return createdAt.format('YYYY-MM-DD')
@@ -113,7 +142,36 @@ export default {
         })
   },
   methods: {
-   
+    like() {
+      const { Page } = window;
+      const { topicId, replyId } = this.$router.currentRoute.query;
+
+      Page && Page.postMessage(
+        JSON.stringify({
+          "event": "showProgress"
+        })
+      )
+
+      axios.get(`/api/topic/${topicId}/reply/${replyId}/likedUser`)
+        .then((response) => {
+          const { data } = response.data
+          const { list } = data;
+          this.likers = list;
+          this.type = 0;
+        }).finally(() => {
+          Page && Page.postMessage(
+            JSON.stringify({
+              "event": "dismissProgress"
+            })
+          )
+        })
+    },
+    share() {
+
+    },
+    switchToAnswer() {
+      this.type = 1;
+    }
   }
 }
 </script>
@@ -186,6 +244,14 @@ h3 {
   margin-top: 10px;
   padding: 0 28px;
   align-items: center;
+}
+
+.actions .action-item {
+  border-bottom: 2px solid transparent;
+}
+
+.actions .action-item.active {
+  border-bottom: 2px solid #8DCE44FF;
 }
 
 .action-item {

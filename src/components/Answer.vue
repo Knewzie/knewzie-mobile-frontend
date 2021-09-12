@@ -6,7 +6,7 @@
         </div>
         <div class="info">
             <h4>{{ nickname }}</h4>
-            <abbr>5分钟前 · 回答了问题</abbr>
+            <abbr>{{ duration }} · 回答了问题</abbr>
         </div>
     </div>
     <article class="content" v-html="content" />
@@ -22,6 +22,7 @@
 </template>
 <script>
 import axios from 'axios';
+import moment from 'moment';
 
 export default {
   name: 'Answer',
@@ -36,7 +37,7 @@ export default {
     likes: Number,
     isLike: Boolean,
     replyList: Array,
-    createdAt: Number,
+    repliedAt: Number,
   },
   data () {
     return {
@@ -47,6 +48,28 @@ export default {
   computed: {
     likeIcon() {
       return this.currentIsLike ? "/images/btn_love_highlighted.png" : "/images/btn_love_tick.png"
+    },
+    duration() {
+      if (!this.repliedAt) {
+        return "加载中..."
+      } 
+
+      let now = moment();  
+      let createdAt = moment(this.repliedAt * 1000);
+      let diff = moment.duration(now.diff(createdAt));
+      if (diff.asDays() > 10) {
+        return createdAt.format('YYYY-MM-DD')
+      } else if (diff.asHours() >= 24) {
+        return `${parseInt(diff.asDays())} 天前`
+      } else if (diff.asMinutes() >= 60) {
+        return `${parseInt(diff.asHours())} 小时前`
+      } else if (diff.asSeconds() >= 60) {
+        return `${parseInt(diff.asMinutes())} 分钟前`
+      } else if (diff.asSeconds() > 0) {
+        return `${parseInt(diff.asSeconds())} 秒前`
+      } else {
+        return "刚刚";
+      }
     }
   },
   methods: {
