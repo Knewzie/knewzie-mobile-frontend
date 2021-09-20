@@ -22,7 +22,7 @@
       </article>
     </div>
     <section class="answer-actions">
-      <a class="action-item">
+      <a class="action-item" v-on:click="invite">
         <img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span>
       </a>
       <a class="action-item"
@@ -197,6 +197,15 @@ export default {
           {"event": "doShare", data: this.article}  
         ) 
       )
+    },
+    invite() {
+      const { Page } = window;
+      if (!Page) { return; }
+      Page.postMessage(
+        JSON.stringify(
+          {"event": "inviteUser"}  
+        )
+      ); 
     },
     answer() {
       const { Page } = window;
