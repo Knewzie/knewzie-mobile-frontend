@@ -1,5 +1,3 @@
-import Quill from "quill";
-
 
 // var toolbarOptions = {
 //     container: [[{"size": [ 'small', false, 'large']}],["bold", "italic", "link"], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ["image", "video"] ],
@@ -37,7 +35,7 @@ var options = {
     theme: 'snow'
 };
 
-window.quill = new Quill(
+window.quill = new window.Quill(
     "#editor", 
     options,
 )
