@@ -56,6 +56,7 @@
           :replies="reply.replies"
           :likes="reply.likes"
           :isLike="reply.isLike"
+          :repliedAt="reply.repliedAt"
           :nickname="reply.replier.nickname" /> 
       </div>
     </div>
