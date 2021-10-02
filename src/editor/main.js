@@ -1,4 +1,4 @@
-// import Quill from "quill";
+import Quill from "quill";
 // var toolbarOptions = {
 //     container: [[{"size": [ 'small', false, 'large']}],["bold", "italic", "link"], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ["image", "video"] ],
 //     handlers: {
@@ -35,7 +35,7 @@ var options = {
     theme: 'snow'
 };
 
-window.quill = new window.Quill(
+window.quill = new Quill(
     "#editor", 
     options,
 )
@@ -50,14 +50,18 @@ window.addEventListener("load", () => {
     );
   }
 
-  window.addEventListener('click', () => {
-    setTimeout(() => {
-      console.dir(`重置 scroll ${document.scrollingElement.scrollTop}`)
-      document.scrollingElement.scrollTop = 0;
-    }, 200);
-  });
+  window.addEventListener('focus', () => {
+    if (Page) {
+      Page.postMessage(
+        JSON.stringify(
+          {"event": "focused"}  
+        )
+      );
+    } 
+  })
 })
 
 window.getContent = function () {
   return window.quill.root.innerHTML;
 }
+
