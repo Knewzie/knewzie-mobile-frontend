@@ -6,7 +6,8 @@ module.exports = {
         },
         topic: {
             entry: "src/topic_share/main.js",
-            template: "public/index.html"
+            template: "public/index.html",
+            title: "答知新"
         },
         editor: {
             entry: "src/editor/main.js",
@@ -15,7 +16,8 @@ module.exports = {
         },
         reply: {
             entry: "src/answer_share/main.js",
-            template: "public/answer.html"
+            template: "public/answer.html",
+            title: "答知新"
         },
         reply_mobile: {
             entry: "src/answer/main.js",
