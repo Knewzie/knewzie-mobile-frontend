@@ -192,7 +192,7 @@ export default {
       if(/MicroMessenger/i.test(window.navigator.userAgent)){
         alert("请在浏览器里打开")
       } else {
-        window.location.assert(`zhixin:///topic/${this.id}`);
+        window.location.assign(`zhixin:///topic/${this.id}`);
       }
     },
     invite() {
