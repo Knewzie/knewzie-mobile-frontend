@@ -189,10 +189,11 @@ export default {
       )
     },
     oia() {
+      const { id } = this.$router.currentRoute.params;
       if(/MicroMessenger/i.test(window.navigator.userAgent)){
         alert("请在浏览器里打开")
       } else {
-        window.location.assign(`zhixin:///topic/${this.id}`);
+        window.location.assign(`zhixin:///topic/${id}`);
       }
     },
     invite() {
