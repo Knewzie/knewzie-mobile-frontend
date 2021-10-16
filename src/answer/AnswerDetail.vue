@@ -6,6 +6,7 @@
           :name="article.replier.nickname" 
           :avatar="article.replier.avatar" 
           :intro="article.replier.intro"
+          :showFollow="true"
           :relationship="article.replier.relationship" />
       <article>
         <div class="abbr-box time-box">
