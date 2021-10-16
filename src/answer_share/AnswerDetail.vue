@@ -25,11 +25,6 @@
         <img class="btn-prefix" src="/images/btn_love_highlighted.png"/>
         <span>{{ article.likes }}</span>
       </a>
-      <a class="action-item"
-         v-on:click="share">
-        <img class="btn-prefix" src="/images/btn_share.png"/>
-        <span>分享</span>
-      </a>
       <div class="space"/>
       <a class="action-item"
          v-on:click="switchToAnswer"
@@ -179,9 +174,6 @@ export default {
       } else {
         window.location.assign(`zhixin:///reply/${replyId}/topic/${topicId}`);
       }
-    },
-    share() {
-
     },
     switchToAnswer() {
       this.type = 1;
