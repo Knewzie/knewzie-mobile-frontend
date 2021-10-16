@@ -169,7 +169,16 @@ export default {
         })
     },
     share() {
-
+      const { Page } = window;
+      const { topicId, replyId } = this.$router.currentRoute.params;
+      Page && Page.postMessage(
+          JSON.stringify({
+            "event": "doShare",
+            "data": {
+              topicId, replyId
+            }
+          })
+      );
     },
     switchToAnswer() {
       this.type = 1;
