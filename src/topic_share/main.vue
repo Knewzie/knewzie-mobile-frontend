@@ -131,7 +131,7 @@ export default {
     }
   },
   created() {
-    console.dir(this.$router.currentRoute)
+    axios.defaults.baseURL = "//api.knewzie.com"
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
     axios.post(`/topic/details`, { id })
