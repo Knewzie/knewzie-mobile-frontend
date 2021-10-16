@@ -6,6 +6,7 @@
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
           :intro="article.creator.intro"
+          :showFollow="false"
           :relationship="article.creator.relationship"/>
       <article>
         <h3>{{ article.title }}</h3>
@@ -191,7 +192,7 @@ export default {
       if(/MicroMessenger/i.test(window.navigator.userAgent)){
         alert("请在浏览器里打开")
       } else {
-        window.location.assert(`zhixin://topic/${this.id}`);
+        window.location.assert(`zhixin:///topic/${this.id}`);
       }
     },
     invite() {

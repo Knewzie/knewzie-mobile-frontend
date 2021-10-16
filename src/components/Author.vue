@@ -7,7 +7,7 @@
         <h4>{{ name }}</h4>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
     </div>
-    <a :class="followedClass" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
+    <a v-if="showFollow" :class="followedClass" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
 </div>
 </template>
 <script>
