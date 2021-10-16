@@ -1,7 +1,7 @@
 module.exports = {
     pages: {
-        index: {
-            entry: "src/main.js",
+        topic_mobile: {
+            entry: "src/topic/main.js",
             template: "public/index.html"
         },
         editor: {
@@ -12,6 +12,10 @@ module.exports = {
         reply: {
             entry: "src/answer/main.js",
             template: "public/answer.html"
+        },
+        topic: {
+            entry: "src/topic_share/main.js",
+            template: "public/index.html"
         }
     }
 }

@@ -32,7 +32,7 @@
     </section>
     <section class="actions">
       <a class="action-item" 
-         v-bind:class="{ active: type == 0 }"
+         v-bind:class="{ active: type === 0 }"
          style="margin-right: 32px" 
          v-on:click="like">
         <img class="btn-prefix" :src="likeIcon" />
@@ -50,7 +50,7 @@
         >{{ article.replies }} 个回答</a>
     </section>
 
-    <div v-if="type == 0">
+    <div v-if="type === 0">
       <AgreePerson 
         v-for="user in likers"
         :key="user.id"
@@ -81,9 +81,9 @@
 </template>
 
 <script>
-import Author from './components/Author.vue'
-import Answer from './components/Answer.vue'
-import AgreePerson from './components/AgreePerson.vue'
+import Author from '../components/Author.vue'
+import Answer from '../components/Answer.vue'
+import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
 
@@ -102,6 +102,7 @@ export default {
       likes: 0,
       replies: 0,
       isLike: false,
+      createdAt: 0,
       creator: {
         name: "加载中...",
         nickname: "加载中...",
@@ -130,22 +131,22 @@ export default {
       if (diff.asDays() > 10) {
         return createdAt.format('YYYY-MM-DD')
       } else if (diff.asHours() >= 24) {
-        return `${parseInt(diff.asDays())} 天前`
+        return `${diff.asDays()} 天前`
       } else if (diff.asMinutes() >= 60) {
-        return `${parseInt(diff.asHours())} 小时前`
+        return `${diff.asHours()} 小时前`
       } else if (diff.asSeconds() >= 60) {
-        return `${parseInt(diff.asMinutes())} 分钟前`
+        return `${diff.asMinutes()} 分钟前`
       } else if (diff.asSeconds() > 0) {
-        return `${parseInt(diff.asSeconds())} 秒前`
+        return `${diff.asSeconds()} 秒前`
       } else {
         return "刚刚";
       }
     }
   },
   created() {
-    const { id } = this.$router.currentRoute.query;
+    const { id } = this.$router.currentRoute.params;
     const { Page } = window;
-    axios.get(`/api/detail/${id}`)
+    axios.post(`/topic/details`, { id })
         .then((response) => {
           const { data } = response.data
           this.article = data;
@@ -168,7 +169,7 @@ export default {
     },
     like () {
       const { Page } = window;
-      const { id } = this.$router.currentRoute.query;
+      const { id } = this.$router.currentRoute.params;
 
       Page && Page.postMessage(
         JSON.stringify({
@@ -176,7 +177,7 @@ export default {
         })
       )
 
-      axios.get(`/api/detail/${id}/likedUser`)
+      axios.post(`/user/topic/likedUser`, {topicId: id, page: 1})
         .then((response) => {
           const { data } = response.data
           const { list } = data;

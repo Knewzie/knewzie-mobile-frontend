@@ -18,7 +18,7 @@
 
     <section class="actions">
       <a class="action-item" 
-         v-bind:class="{ active: type == 0 }"
+         v-bind:class="{ active: type === 0 }"
          style="margin-right: 32px" 
          v-on:click="like">
         <img class="btn-prefix" src="/images/btn_love_highlighted.png" />
@@ -32,11 +32,11 @@
       <div class="space" />
       <a class="action-item"
         v-on:click="switchToAnswer"
-        v-bind:class="{ active: type == 1 }"
+        v-bind:class="{ active: type === 1 }"
         >{{ article.replies }} 评论</a>
     </section>
 
-    <div v-if="type == 0">
+    <div v-if="type === 0">
       <AgreePerson 
         v-for="user in likers"
         :key="user.id"
@@ -110,22 +110,22 @@ export default {
       if (diff.asDays() > 10) {
         return createdAt.format('YYYY-MM-DD')
       } else if (diff.asHours() >= 24) {
-        return `${parseInt(diff.asDays())} 天前`
+        return `${diff.asDays()} 天前`
       } else if (diff.asMinutes() >= 60) {
-        return `${parseInt(diff.asHours())} 小时前`
+        return `${diff.asHours()} 小时前`
       } else if (diff.asSeconds() >= 60) {
-        return `${parseInt(diff.asMinutes())} 分钟前`
+        return `${diff.asMinutes()} 分钟前`
       } else if (diff.asSeconds() > 0) {
-        return `${parseInt(diff.asSeconds())} 秒前`
+        return `${diff.asSeconds()} 秒前`
       } else {
         return "刚刚";
       }
     }
   },
   created() {
-    const { topicId, replyId } = this.$router.currentRoute.query;
+    const { topicId, replyId } = this.$router.currentRoute.params;
     const { Page } = window;
-    axios.get(`/api/topic/${topicId}/reply/${replyId}`)
+    axios.post(`/reply/details`, { topicId, replyId })
         .then((response) => {
           const { data } = response.data
           this.article = data;
@@ -145,7 +145,7 @@ export default {
   methods: {
     like() {
       const { Page } = window;
-      const { topicId, replyId } = this.$router.currentRoute.query;
+      const { topicId, replyId } = this.$router.currentRoute.params;
 
       Page && Page.postMessage(
         JSON.stringify({
@@ -153,7 +153,7 @@ export default {
         })
       )
 
-      axios.get(`/api/topic/${topicId}/reply/${replyId}/likedUser`)
+      axios.post(`/user/topic/likedUser`, { topicId, replyId, page: 1})
         .then((response) => {
           const { data } = response.data
           const { list } = data;

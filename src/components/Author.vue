@@ -7,7 +7,7 @@
         <h4>{{ name }}</h4>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
     </div>
-    <a :class="followedClass" v-on:click="follow">{{ currentRelationship == 0? "关注" : "已关注" }}</a>
+    <a :class="followedClass" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
 </div>
 </template>
 <script>
@@ -20,6 +20,7 @@ export default {
     name: String,
     avatar: String,
     intro: String,
+    showFollow: Boolean,
     relationship: Number,
   },
   data() {
@@ -34,15 +35,15 @@ export default {
   },
   computed: {
     followedClass()  {
-        return this.currentRelationship == 0 ? "to-follow" : "followed";
+        return this.currentRelationship === 0 ? "to-follow" : "followed";
     }
   },
   methods: {
       follow: async function () {
           try {
-            await axios.post(`/api/user/${this.id}/follow`);
+            await axios.post(`/user/follow`, { toUid: this.id });
             let relationship = this.currentRelationship;
-            this.currentRelationship = relationship == 0 ? 1 : 0;
+            this.currentRelationship = relationship === 0 ? 1 : 0;
           } catch(e) {
             console.error(e);
           }

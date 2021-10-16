@@ -87,7 +87,10 @@ export default {
     },
     like() {
         const isLike = this.currentIsLike
-        axios.post(`/api/topic/${this.articleId}/answer/${this.id}/like`)
+        axios.post(`/user/topic/like`, {
+          topicId: this.articleId,
+          replyId: this.id
+        })
         .then(() => {
           this.currentIsLike = !isLike;
           const count = isLike? -1 : 1;
