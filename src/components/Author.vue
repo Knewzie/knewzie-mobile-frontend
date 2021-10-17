@@ -1,8 +1,8 @@
 <template>
 <div class="avatar-box">
-    <div class="avatar">
+    <a class="avatar" v-on:click="showAuthor">
         <img :src="avatar" />
-    </div>
+    </a>
     <div class="info">
         <h4>{{ name }}</h4>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
@@ -35,10 +35,16 @@ export default {
   },
   computed: {
     followedClass()  {
-        return this.currentRelationship === 0 ? "to-follow" : "followed";
+        return this.currentRelationship === 0 ? "to-follow follow-box" : "followed follow-box";
     }
   },
   methods: {
+      showAuthor () {
+        const { Page } = window;
+        Page && Page.postMessage(JSON.stringify(
+            {"event": "showAuthor", data : { id : this.id }}
+        ));
+      },
       follow: async function () {
           try {
             await axios.post(`/user/follow`, { toUid: this.id });
@@ -77,7 +83,8 @@ export default {
 h4 {
     margin: 0;
 }
-a {
+
+a.follow-box {
     box-sizing: border-box;
     width: 48px;
     font-size: 12px;
