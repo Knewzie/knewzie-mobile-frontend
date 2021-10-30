@@ -7,14 +7,22 @@
         <h4>{{ name }}</h4>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
     </div>
-    <a v-if="showFollow" :class="followedClass" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
+    <div class="loading-box" v-show="loading">
+        <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
+    </div>
+     <a :class="followedClass" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
 </div>
 </template>
 <script>
 import axios from 'axios'
+import RingLoader from 'vue-spinner/src/RingLoader.vue'
 
 export default {
   name: 'Author',
+   components: {
+    // eslint-disable-next-line
+    RingLoader
+  },
   props: {
     id: Number,
     name: String,
@@ -26,6 +34,7 @@ export default {
   data() {
       return {
           currentRelationship: this.relationship,
+          loading: false,
       }
   },
   watch: {
@@ -35,7 +44,11 @@ export default {
   },
   computed: {
     followedClass()  {
-        return this.currentRelationship === 0 ? "to-follow follow-box" : "followed follow-box";
+        let clazz = this.currentRelationship === 0 ? "to-follow follow-box" : "followed follow-box";
+        if (this.loading) {
+            clazz += " loading";
+        }
+        return clazz;
     }
   },
   methods: {
@@ -47,16 +60,30 @@ export default {
       },
       follow: async function () {
           try {
+            this.loading = true;
             await axios.post(`/user/follow`, { toUid: this.id });
             let relationship = this.currentRelationship;
             this.currentRelationship = relationship === 0 ? 1 : 0;
           } catch(e) {
             console.error(e);
+          } finally {
+              this.loading = false;
           }
       }
   }
 }
 </script>
+
+<style>
+.v-spinner > .v-ring {
+    margin: 0 auto;
+}
+
+.v-ring {
+    box-sizing: border-box;
+}
+
+</style>
 
 <style scoped>
 .avatar-box {
@@ -67,6 +94,12 @@ export default {
 }
 .info {
     flex: 1;
+}
+
+.loading-box {
+    width: 48px;
+    height: 25px;
+    text-align: center;
 }
 .avatar {
     width: 40px;
@@ -93,6 +126,10 @@ a.follow-box {
     text-align: center;
     margin-left: 5px;
     border: 1px solid #8DCF44;
+}
+
+a.loading {
+    display: none;
 }
 
 a.followed {
