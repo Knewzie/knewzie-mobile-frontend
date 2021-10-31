@@ -1,14 +1,14 @@
 <!-- 回答列表 item，包含多级回复 -->
 <template>
-<div class="body" v-on:click="goToDetail">
+  <div class="body">
     <div class="avatar-box">
-        <div class="avatar">
-            <img :src="avatar"/>
-        </div>
-        <div class="info">
-            <h4>{{ nickname }}</h4>
-            <abbr>{{ duration }} · 回答了问题</abbr>
-        </div>
+      <div class="avatar">
+        <img :src="avatar"/>
+      </div>
+      <div class="info">
+        <h4>{{ nickname }}</h4>
+        <abbr>{{ duration }} · 评论了回答</abbr>
+      </div>
     </div>
     <article class="content" v-html="content" />
     <section class="actions">
@@ -19,14 +19,14 @@
       <div class="space" />
       <div>{{ replies }} 个评论</div>
     </section>
-</div>
+  </div>
 </template>
 <script>
 import axios from 'axios';
 import moment from 'moment';
 
 export default {
-  name: 'Answer',
+  name: 'Reply',
   props: {
     articleId: Number,
     id: Number,
@@ -53,9 +53,9 @@ export default {
     duration() {
       if (!this.repliedAt) {
         return "加载中..."
-      } 
+      }
 
-      let now = moment();  
+      let now = moment();
       let createdAt = moment(this.repliedAt * 1000);
       let diff = moment.duration(now.diff(createdAt));
       if (diff.asDays() > 10) {
@@ -77,26 +77,26 @@ export default {
     goToDetail() {
       const { Page } = window;
       Page && Page.postMessage(
-        JSON.stringify({
-          "event": "showAnswerDetail", 
-          "data": {
-            "topicId": this.articleId,
-            "replyId": this.id
-          }
-        })
+          JSON.stringify({
+            "event": "showAnswerDetail",
+            "data": {
+              "topicId": this.articleId,
+              "replyId": this.id
+            }
+          })
       )
     },
     like() {
-        const isLike = this.currentIsLike
-        axios.post(`/user/topic/like`, {
-          topicId: this.articleId,
-          replyId: this.id
-        })
-        .then(() => {
-          this.currentIsLike = !isLike;
-          const count = isLike? -1 : 1;
-          this.currentLikes += count;
-        });
+      const isLike = this.currentIsLike
+      axios.post(`/user/topic/like`, {
+        topicId: this.articleId,
+        replyId: this.id
+      })
+          .then(() => {
+            this.currentIsLike = !isLike;
+            const count = isLike? -1 : 1;
+            this.currentLikes += count;
+          });
     }
   }
 }
@@ -104,40 +104,40 @@ export default {
 
 <style scoped>
 .body {
-    background: white;
-    padding: 16px 0;
+  background: white;
+  padding: 16px 0;
 }
 
 .avatar-box {
-    padding: 0 18px 16px;
-    display: flex;
-    align-items: center;
+  padding: 0 18px 16px;
+  display: flex;
+  align-items: center;
 }
 
 .info {
-    flex: 1;
+  flex: 1;
 }
 
 .avatar {
-    width: 40px;
-    height: 40px;
-    margin-right: 16px;
+  width: 40px;
+  height: 40px;
+  margin-right: 16px;
 }
 
 .avatar img {
-    object-fit: cover; /* Do not scale the image */
-    width: 40px;
-    height: 40px;
-    background-color: gray;
-    border-radius: 20px;
+  object-fit: cover; /* Do not scale the image */
+  width: 40px;
+  height: 40px;
+  background-color: gray;
+  border-radius: 20px;
 }
 
 article {
-    padding: 0px 18px;
+  padding: 0px 18px;
 }
 
 h4 {
-    margin: 0;
+  margin: 0;
 }
 
 .actions {
@@ -157,7 +157,7 @@ h4 {
   padding: 7px 0;
   display: flex;
   align-items: center;
-  
+
 }
 
 .action-item > img {

@@ -47,7 +47,7 @@
     </div>
     <div v-else>
       <div v-if="article.replyList.length > 0">
-        <Answer class="answer-item" 
+        <Reply class="answer-item"
           v-for="reply in article.replyList" 
           :articleId="article.id"
           :id="reply.id"
@@ -66,7 +66,7 @@
 
 <script>
 import Author from '../components/Author.vue'
-import Answer from '../components/Answer.vue'
+import Reply from '../components/Reply.vue'
 import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
@@ -75,7 +75,7 @@ export default {
   name: 'AnswerDetail',
   components: {
     // eslint-disable-next-line
-    Author, Answer, AgreePerson
+    Author, Reply, AgreePerson
   },
   data: () => ({
     article: {
@@ -227,12 +227,6 @@ h3 {
   margin: 0;
 }
 
-.sort {
- padding: 12px 28px;
- color: #B3B3B3;
- font-size: 12px;
-}
-
 .answer-actions {
   display: flex;
   background: white;
@@ -293,10 +287,6 @@ h3 {
 
 .article {
   background: white;
-}
-
-.tags {
-  margin: 10px 0;
 }
 
 .tags span {

@@ -67,7 +67,7 @@ export default {
           } catch(e) {
             console.error(e);
           } finally {
-              this.loading = false;
+            this.loading = false;
           }
       }
   }
