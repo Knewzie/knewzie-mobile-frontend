@@ -230,6 +230,10 @@ body {
   background: #F6F6F6;
 }
 
+article {
+  color: black;
+}
+
 .content img {
   width: 100%;
 }

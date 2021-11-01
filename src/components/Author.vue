@@ -93,7 +93,14 @@ export default {
     border-bottom: 1px solid #E6E6E7;
 }
 .info {
-    flex: 1;
+  color: black;
+  flex: 1;
+}
+
+.info abbr {
+  display: block;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 60%)
 }
 
 .loading-box {

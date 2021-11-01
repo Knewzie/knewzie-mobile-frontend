@@ -115,7 +115,14 @@ export default {
 }
 
 .info {
-    flex: 1;
+  color: black;
+  flex: 1;
+}
+
+.info abbr {
+  display: block;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 60%)
 }
 
 .avatar {
