@@ -106,7 +106,7 @@ export default {
   }),
   computed: {
     likeIcon() {
-      return "/images/btn_love_highlighted.png";
+      return "/img/btn_love_highlighted.png";
     },
     duration() {
       if (!this.article.createdAt) {

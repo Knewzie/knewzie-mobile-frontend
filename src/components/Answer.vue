@@ -15,7 +15,7 @@
       <a class="action-item" style="margin-right: 32px" v-on:click="like">
         <img :src="likeIcon" /><span>{{ currentLikes }}</span>
       </a>
-      <div class="action-item"><img src="/images/btn_share.png" /><span>分享</span></div>
+      <div class="action-item"><img src="/img/btn_share.png" /><span>分享</span></div>
       <div class="space" />
       <div>{{ replies }} 个评论</div>
     </section>
@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     likeIcon() {
-      return this.currentIsLike ? "/images/btn_love_highlighted.png" : "/images/btn_love_tick.png"
+      return this.currentIsLike ? "/img/btn_love_highlighted.png" : "/img/btn_love_tick.png"
     },
     duration() {
       if (!this.repliedAt) {

@@ -22,7 +22,7 @@
          v-bind:class="{ active: type === 0 }"
          style="margin-right: 32px"
          v-on:click="like">
-        <img class="btn-prefix" src="/images/btn_love_highlighted.png"/>
+        <img class="btn-prefix" src="/img/btn_love_highlighted.png"/>
         <span>{{ article.likes }}</span>
       </a>
       <div class="space"/>

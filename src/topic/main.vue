@@ -6,6 +6,8 @@
           :name="article.creator.nickname" 
           :avatar="article.creator.avatar" 
           :intro="article.creator.intro"
+          :role="article.creator.role"
+          :title="article.creator.title"
           :showFollow="true"
           :relationship="article.creator.relationship" />
       <article>
@@ -24,11 +26,11 @@
     </div>
     <section class="answer-actions">
       <a class="action-item" v-on:click="invite">
-        <img class="btn-prefix" src="/images/btn_answer.png" /><span>邀请回答</span>
+        <img class="btn-prefix" src="/img/btn_answer.png" /><span>邀请回答</span>
       </a>
       <a class="action-item"
          v-on:click="answer">
-        <img class="btn-prefix" src="/images/btn_answer.png" /><span>我要回答</span>
+        <img class="btn-prefix" src="/img/btn_answer.png" /><span>我要回答</span>
       </a>
     </section>
     <section class="actions">
@@ -41,7 +43,7 @@
       </a>
       <a class="action-item"
          v-on:click="share">
-        <img class="btn-prefix" src="/images/btn_share.png" />
+        <img class="btn-prefix" src="/img/btn_share.png" />
         <span>分享</span>
       </a>
       <div class="space" />
@@ -110,6 +112,7 @@ export default {
         title: "",
         avatar: "",
         intro: "",
+        role: 1,
         relationship: 0,
       },
       replyList: []
@@ -119,7 +122,7 @@ export default {
   }),
   computed: {
     likeIcon() {
-      return "/images/btn_love_highlighted.png";
+      return "/img/btn_love_highlighted.png";
     },
     duration() {
       if (!this.article.createdAt) {
