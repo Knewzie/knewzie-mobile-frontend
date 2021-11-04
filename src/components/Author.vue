@@ -2,9 +2,10 @@
 <div class="avatar-box">
     <a class="avatar" v-on:click="showAuthor">
         <img :src="avatar" />
+        <div :class="certificatedClass"></div>
     </a>
     <div class="info">
-        <h4>{{ name }}</h4>
+        <div><h4>{{ name }}</h4><span class="certificate-info">{{ this.title }}</span></div>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
     </div>
     <div class="loading-box" v-show="loading">
@@ -29,6 +30,8 @@ export default {
     avatar: String,
     intro: String,
     showFollow: Boolean,
+    role: Number,
+    title: String,
     relationship: Number,
   },
   data() {
@@ -49,6 +52,28 @@ export default {
             clazz += " loading";
         }
         return clazz;
+    },
+    certificatedClass () {
+      let returnClass = "certificate-box";
+      switch (this.role) {
+        case 2: {
+          returnClass += " enterprise"
+          break;
+        }
+        case 3: {
+          returnClass += " organization"
+          break;
+        }
+        case 4: {
+          returnClass += " vip"
+          break;
+        }
+        case 5: {
+          returnClass += " certificated"
+          break;
+        }
+      }
+      return returnClass;
     }
   },
   methods: {
@@ -86,15 +111,64 @@ export default {
 </style>
 
 <style scoped>
+
 .avatar-box {
     padding: 16px 18px;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #E6E6E7;
 }
+
+.certificate-info {
+  display: inline-block;
+  margin-left: 6px;
+  color: rgba(0,0,0, 30%);
+  font-size: 12px;
+}
+
+.avatar {
+  position: relative;
+}
+
+
+.certificate-box {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  content: " ";
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  background-size: cover;
+}
+
+.certificate-box.enterprise {
+  background-image: url("./images/ic_enterprise.png");
+}
+
+.certificate-box.organization {
+  background-image: url("./images/ic_organization.png");
+}
+
+.certificate-box.vip {
+  background-image: url("./images/ic_vip.png");
+}
+
+.certificate-box.certificated {
+  background-image: url("./images/ic_certificated.png");
+}
+
+.certificate-info {
+
+}
+
 .info {
   color: black;
   flex: 1;
+}
+
+.info h4 {
+  display: inline-block;
 }
 
 .info abbr {
