@@ -3,16 +3,18 @@
     <div class="article"> 
       <Author 
           :id="article.replier.uid"
-          :name="article.replier.nickname" 
+          :name="article.replier.nickname"
           :avatar="article.replier.avatar" 
           :intro="article.replier.intro"
+          :role="article.replier.role"
+          :title="article.replier.title"
           :showFollow="true"
           :relationship="article.replier.relationship" />
-      <article>
+      <article v-on:click="replyTo">
         <div class="abbr-box time-box">
           <time>{{ duration }}</time>
         </div>
-        <div class="content" v-html="article.content">
+        <div class="content" v-html="article.content" >
         </div>
       </article>
     </div>
@@ -48,17 +50,19 @@
     <div v-else>
       <div v-if="article.replyList.length > 0">
         <Reply class="answer-item"
-          v-for="reply in article.replyList" 
+          v-for="reply in article.replyList"
           :articleId="article.id"
           :id="reply.id"
           :key="reply.id"
           :content="reply.content"
           :avatar="reply.replier.avatar"
+          :authorId="reply.replier.uid"
+          :nickname="reply.replier.nickname"
           :replies="reply.replies"
           :likes="reply.likes"
           :isLike="reply.isLike"
           :repliedAt="reply.repliedAt"
-          :nickname="reply.replier.nickname" /> 
+          :replyList="reply.replyList" />
       </div>
     </div>
   </div>
@@ -88,7 +92,7 @@ export default {
       repliedAt: 0,
       replier: {
         name: "加载中...",
-        nickname: "加载中...",
+        nickname: null,
         title: "",
         avatar: "",
         intro: "",
@@ -144,6 +148,14 @@ export default {
         })
   },
   methods: {
+    replyTo() {
+      const { topicId, replyId } = this.$router.currentRoute.params;
+      const { Page } = window;
+      if (!Page) return;
+      Page.postMessage(JSON.stringify(
+          {"event": "replyTo", data : { topicId, replyId, author: this.article.replier.nickname }}
+      ));
+    },
     like() {
       const { Page } = window;
       const { topicId, replyId } = this.$router.currentRoute.params;

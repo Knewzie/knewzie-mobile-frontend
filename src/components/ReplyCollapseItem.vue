@@ -1,60 +1,25 @@
 <!-- 回答列表 item，包含多级回复 -->
 <template>
-  <div class="body">
-    <div class="avatar-box" v-on:click="showAuthor">
-      <div class="avatar">
-        <img :src="avatar"/>
-      </div>
-      <div class="info">
-        <h4>{{ nickname }}</h4>
-        <abbr>{{ duration }} · 评论了回答</abbr>
-      </div>
+  <div class="reply-box">
+    <div class="reply-content-container">
+      <span class="author">{{ nickname }}：</span>
+      <span class="reply-content">{{ content }}</span>
     </div>
-    <article class="content" v-html="content" v-on:click="replyTo" />
-    <section class="actions">
-      <a class="action-item" style="margin-right: 32px" v-on:click="like">
-        <img :src="likeIcon" /><span>{{ currentLikes }}</span>
-      </a>
-      <div class="action-item"><img src="/img/btn_share.png" /><span>分享</span></div>
-      <div class="space" />
-      <div>{{ replies }} 个评论</div>
-    </section>
-    <div class="reply-container" v-if="replyList.length > 0">
-      <ReplyCollapseItem
-          v-for="reply in replyList"
-          :key="reply.id"
-          :id="reply.id"
-          :nickname="reply.replier.nickname"
-          :content="reply.content"
-          :likes="reply.likes"
-          :isLike="reply.isLike"
-          :repliedAt="reply.repliedAt"
-      />
-    </div>
+    <a class="action-item"><img :src="likeIcon" /><span>{{ currentLikes }}</span></a>
   </div>
 </template>
 <script>
 import axios from 'axios';
 import moment from 'moment';
-import ReplyCollapseItem from "./ReplyCollapseItem";
 
 export default {
-  name: 'Reply',
-  components: {
-    ReplyCollapseItem
-  },
+  name: 'ReplyCollapseItem',
   props: {
-    articleId: Number,
     id: Number,
     nickname: String,
-    authorId: Number,
-    intro: String,
-    avatar: String,
     content: String,
-    replies: Number,
     likes: Number,
     isLike: Boolean,
-    replyList: Array,
     repliedAt: Number,
   },
   data () {
@@ -91,30 +56,17 @@ export default {
     }
   },
   methods: {
-    showAuthor () {
-      const { Page } = window;
-      Page && Page.postMessage(JSON.stringify(
-          {"event": "showAuthor", data : { id : this.authorId }}
-      ));
-    },
     like() {
       const isLike = this.currentIsLike
       axios.post(`/user/topic/like`, {
         topicId: this.articleId,
         replyId: this.id
       })
-      .then(() => {
-          this.currentIsLike = !isLike;
-          const count = isLike? -1 : 1;
-          this.currentLikes += count;
-      });
-    },
-    replyTo() {
-      const { Page } = window;
-      if (!Page) return;
-      Page.postMessage(JSON.stringify(
-          {"event": "replyTo", data : { topicId: this.articleId, replyId: this.id, author: this.nickname }}
-      ));
+          .then(() => {
+            this.currentIsLike = !isLike;
+            const count = isLike? -1 : 1;
+            this.currentLikes += count;
+          });
     }
   }
 }
