@@ -44,7 +44,7 @@ export default {
     ReplyCollapseItem
   },
   props: {
-    articleId: Number,
+    topicId: Number,
     id: Number,
     nickname: String,
     authorId: Number,
@@ -100,7 +100,7 @@ export default {
     like() {
       const isLike = this.currentIsLike
       axios.post(`/user/topic/like`, {
-        topicId: this.articleId,
+        topicId: this.topicId,
         replyId: this.id
       })
       .then(() => {
@@ -113,7 +113,7 @@ export default {
       const { Page } = window;
       if (!Page) return;
       Page.postMessage(JSON.stringify(
-          {"event": "replyTo", data : { topicId: this.articleId, replyId: this.id, author: this.nickname }}
+          {"event": "replyTo", data : { topicId: parseInt(this.topicId), replyId: parseInt(this.id), author: this.nickname }}
       ));
     }
   }
