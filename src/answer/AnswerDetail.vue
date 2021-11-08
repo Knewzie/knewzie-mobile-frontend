@@ -51,7 +51,7 @@
       <div v-if="article.replyList.length > 0">
         <Reply class="answer-item"
           v-for="reply in article.replyList"
-          :articleId="article.id"
+          :topicId="topicId"
           :id="reply.id"
           :key="reply.id"
           :content="reply.content"
@@ -104,6 +104,10 @@ export default {
     likers: []
   }),
   computed: {
+    topicId() {
+      const { topicId } = this.$router.currentRoute.params;
+      return topicId;
+    },
     duration() {
       if (!this.article.repliedAt) {
         return "加载中..."
@@ -153,7 +157,7 @@ export default {
       const { Page } = window;
       if (!Page) return;
       Page.postMessage(JSON.stringify(
-          {"event": "replyTo", data : { topicId, replyId, author: this.article.replier.nickname }}
+          {"event": "replyTo", data : { topicId: parseInt(topicId), replyId: parseInt(replyId), author: this.article.replier.nickname }}
       ));
     },
     like() {
