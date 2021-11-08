@@ -15,6 +15,7 @@ import moment from 'moment';
 export default {
   name: 'ReplyCollapseItem',
   props: {
+    topicId: Number,
     id: Number,
     nickname: String,
     content: String,
@@ -59,7 +60,7 @@ export default {
     like() {
       const isLike = this.currentIsLike
       axios.post(`/user/topic/like`, {
-        topicId: this.articleId,
+        topicId: this.topicId,
         replyId: this.id
       })
           .then(() => {

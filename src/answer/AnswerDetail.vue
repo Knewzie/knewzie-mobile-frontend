@@ -11,10 +11,10 @@
           :showFollow="true"
           :relationship="article.replier.relationship" />
       <article v-on:click="replyTo">
-        <div class="abbr-box time-box">
-          <time>{{ duration }}</time>
-        </div>
         <div class="content" v-html="article.content" >
+        </div>
+        <div class="abbr-box time-box">
+          <time>回答于 {{ duration }}</time>
         </div>
       </article>
     </div>
@@ -320,6 +320,8 @@ h3 {
 
 .time-box {
   margin: 7px 0;
+  font-size: 12px;
+  color: rgba(0,0,0, 60%);
 }
 
 #app {
