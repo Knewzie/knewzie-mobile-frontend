@@ -12,15 +12,15 @@
           :relationship="article.creator.relationship" />
       <article>
         <h3>{{ article.title }}</h3>
-        <div class="abbr-box time-box">
-          <time>{{ duration }}</time>
-        </div>
         <div class="abbr-box tags"  v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
             {{ category.name }}
           </span>
         </div>
         <div class="content" v-html="article.content">
+        </div>
+        <div class="abbr-box time-box">
+          <time>发布于 {{ duration }}</time>
         </div>
       </article>
     </div>
@@ -356,6 +356,8 @@ h3 {
 
 .time-box {
   margin: 7px 0;
+  font-size: 12px;
+  color: rgba(0,0,0, 60%);
 }
 
 #app {
