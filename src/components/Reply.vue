@@ -29,6 +29,7 @@
           :content="reply.content"
           :likes="reply.likes"
           :isLike="reply.isLike"
+          :receiver="reply.receiver"
           :repliedAt="reply.repliedAt"
       />
     </div>

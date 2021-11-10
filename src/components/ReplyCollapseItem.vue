@@ -1,11 +1,11 @@
 <!-- 回答列表 item，包含多级回复 -->
 <template>
-  <div class="reply-box">
-    <div class="reply-content-container">
-      <span class="author">{{ nickname }}：</span>
+  <div class="reply-box" >
+    <div class="reply-content-container" v-on:click="replyTo">
+      <span v-html="displayAuthor"></span>
       <span class="reply-content">{{ content }}</span>
     </div>
-    <a class="action-item"><img :src="likeIcon" /><span>{{ currentLikes }}</span></a>
+    <a class="action-item" v-on:click="like"><img :src="likeIcon" /><span>{{ currentLikes }}</span></a>
   </div>
 </template>
 <script>
@@ -22,6 +22,7 @@ export default {
     likes: Number,
     isLike: Boolean,
     repliedAt: Number,
+    receiver: Object
   },
   data () {
     return {
@@ -30,6 +31,13 @@ export default {
     }
   },
   computed: {
+    displayAuthor() {
+      if (this.receiver) {
+        return `<span class="author">${this.nickname}</span><span> 回复了 </span><span class="author">${this.receiver.nickname}</span><span>：</span>`
+      } else {
+        return `<span class="author">${this.nickname}</span><span>：</span>`
+      }
+    },
     likeIcon() {
       return this.currentIsLike ? "/img/btn_love_highlighted.png" : "/img/btn_love_tick.png"
     },
@@ -68,7 +76,14 @@ export default {
             const count = isLike? -1 : 1;
             this.currentLikes += count;
           });
-    }
+    },
+    replyTo() {
+      const { Page } = window;
+      if (!Page) return;
+      Page.postMessage(JSON.stringify(
+          {"event": "replyTo", data : { topicId: parseInt(this.topicId), replyId: parseInt(this.id), author: this.nickname }}
+      ));
+    },
   }
 }
 </script>
