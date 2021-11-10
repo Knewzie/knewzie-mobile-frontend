@@ -24,7 +24,7 @@
           v-for="reply in replyList"
           :key="reply.id"
           :id="reply.id"
-          :topicId="this.topicId"
+          :topicId="topicId"
           :nickname="reply.replier.nickname"
           :content="reply.content"
           :likes="reply.likes"
