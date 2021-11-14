@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <div class="article"> 
-      <Author 
+    <div class="article">
+      <div class="topic-title">{{ article.title }}</div>
+      <Author
           :id="article.replier.uid"
           :name="article.replier.nickname"
           :avatar="article.replier.avatar" 
@@ -84,6 +85,7 @@ export default {
   data: () => ({
     article: {
       id: -1,
+      title: "加载中...",
       content: "加载中...",
       categories: [],
       likes: 0,
@@ -202,7 +204,6 @@ export default {
   }
 }
 </script>
-
 <style>
 body {
   margin: 0;
@@ -241,6 +242,13 @@ a {
 
 h3 {
   margin: 0;
+}
+
+.topic-title {
+  padding: 16px;
+  font-weight: bold;
+  color: black;
+  font-size: 20px;
 }
 
 .answer-actions {
