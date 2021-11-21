@@ -21,6 +21,8 @@
         </div>
         <div class="abbr-box time-box">
           <time>发布于 {{ duration }}</time>
+          <span style="flex: 1"></span>
+          <a v-on:click="report"><i class="btn-report" /></a>
         </div>
       </article>
     </div>
@@ -203,6 +205,14 @@ export default {
         ) 
       )
     },
+    report() {
+      const { Page } = window;
+      Page && Page.postMessage(
+        JSON.stringify({
+          "event": "report", data: { topicId: this.article.id }
+        })
+      );
+    },
     invite() {
       const { Page } = window;
       if (!Page) { return; }
@@ -272,6 +282,14 @@ a {
 </style>
 
 <style scoped>
+
+.btn-report {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-image: url("@/images/ic_report.png");
+  background-size: contain;
+}
 
 h3 {
   margin: 0;

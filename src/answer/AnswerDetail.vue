@@ -16,6 +16,8 @@
         </div>
         <div class="abbr-box time-box">
           <time>回答于 {{ duration }}</time>
+          <span style="flex: 1"></span>
+          <a v-on:click="report"><i class="btn-report" /></a>
         </div>
       </article>
     </div>
@@ -154,6 +156,15 @@ export default {
         })
   },
   methods: {
+    report() {
+      const { topicId, replyId } = this.$router.currentRoute.params;
+      const { Page } = window;
+      Page && Page.postMessage(
+          JSON.stringify({
+            "event": "report", data: { topicId, replyId }
+          })
+      );
+    },
     replyTo() {
       const { topicId, replyId } = this.$router.currentRoute.params;
       const { Page } = window;
@@ -239,6 +250,14 @@ a {
 </style>
 
 <style scoped>
+
+.btn-report {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-image: url("@/images/ic_report.png");
+  background-size: contain;
+}
 
 h3 {
   margin: 0;
