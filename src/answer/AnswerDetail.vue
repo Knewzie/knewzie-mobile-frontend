@@ -161,7 +161,7 @@ export default {
       const { Page } = window;
       Page && Page.postMessage(
           JSON.stringify({
-            "event": "report", data: { topicId, replyId }
+            "event": "report", data: { topicId: parseInt(topicId), replyId: parseInt(replyId) }
           })
       );
     },
