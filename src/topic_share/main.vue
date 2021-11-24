@@ -128,7 +128,6 @@ export default {
     axios.post(`/topic/details`, { id })
         .then((response) => {
           const { data } = response.data
-          console.dir(data);
           this.article = data;
     })
 
