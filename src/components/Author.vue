@@ -8,10 +8,10 @@
         <div><h4>{{ name }}</h4><span class="certificate-info">{{ this.title }}</span></div>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
     </div>
-    <div class="loading-box" v-show="loading">
+    <div class="loading-box"  v-show="loading">
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
     </div>
-     <a :class="followedClass" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
+     <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
 </div>
 </template>
 <script>
