@@ -26,7 +26,7 @@ module.exports = {
       template: "public/answer.html"
     },
   },
-  chainWebpack: config => config.optimization.minimize(false),
+  // chainWebpack: config => config.optimization.minimize(false),
   configureWebpack: {
     resolve: {
       alias: {
