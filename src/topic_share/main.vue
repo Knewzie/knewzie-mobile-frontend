@@ -8,7 +8,7 @@
           :intro="article.creator.intro"
           :role="article.creator.role"
           :title="article.creator.title"
-          :showFollow="true"
+          :showFollow="false"
           :relationship="article.creator.relationship" />
       <article>
         <h3>{{ article.title }}</h3>
