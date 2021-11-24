@@ -371,7 +371,7 @@ article {
   background-color: #3EB871FF;
   color: white;
   display: inline-block;
-  position: absolute;
+  position: fixed;
   left: 50%;
   transform: translate(-50%, 0);
   bottom: 20px;
