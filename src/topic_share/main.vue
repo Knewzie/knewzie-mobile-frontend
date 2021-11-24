@@ -53,7 +53,7 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app v-if="wxReady"  appid="wxd6fe3b0d4e0030ac">
+      <wx-open-launch-app appid="wxd6fe3b0d4e0030ac">
           <a class="view-in-app">在 App 里打开</a>
       </wx-open-launch-app>
     </div>
