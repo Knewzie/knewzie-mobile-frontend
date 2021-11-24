@@ -125,23 +125,13 @@ export default {
   created() {
     axios.defaults.baseURL = "//api.knewzie.com"
     const { id } = this.$router.currentRoute.params;
-    const { Page } = window;
     axios.post(`/topic/details`, { id })
         .then((response) => {
           const { data } = response.data
+          console.dir(data);
           this.article = data;
-          Page && Page.postMessage(
-              JSON.stringify(
-                  {"event": "topicLoaded", data}
-              )
-          )
-        }).finally(() => {
-      Page && Page.postMessage(
-          JSON.stringify(
-              {"event": "pageMounted"}
-          )
-      );
     })
+
   },
   methods: {
     switchToAnswer() {
