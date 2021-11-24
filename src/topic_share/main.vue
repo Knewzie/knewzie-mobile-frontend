@@ -53,7 +53,9 @@
       </div>
     </div>
     <div id="mask" >
-      <a class="view-in-app"  v-on:click="oia">在 App 里打开</a>
+      <wx-open-launch-app appid="wx4e61c8e6b7007cc8">
+        <a class="view-in-app" >在 App 里打开</a>
+      </wx-open-launch-app>
     </div>
   </div>
 </template>
