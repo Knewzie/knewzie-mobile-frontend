@@ -136,6 +136,14 @@ export default {
     switchToAnswer() {
       this.type = 1;
     },
+    oia() {
+      const { id } = this.$router.currentRoute.params;
+      if(/MicroMessenger/i.test(window.navigator.userAgent)){
+        alert("请在浏览器里打开")
+      } else {
+        window.location.assign(`zhixin:///topic/${id}`);
+      }
+    },
     like () {
       const { Page } = window;
       const { id } = this.$router.currentRoute.params;
