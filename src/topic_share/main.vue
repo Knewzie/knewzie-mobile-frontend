@@ -53,7 +53,7 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app appid="wx4e61c8e6b7007cc8">
+      <wx-open-launch-app appid="wxd6fe3b0d4e0030ac">
         <script type="text/wxtag-template">
           <style>.view-in-app {   margin: 0 auto;
             border-radius: 100px;
@@ -154,7 +154,7 @@ export default {
     })
 
     const timestamp = moment().unix();
-    const appId = "wx4e61c8e6b7007cc8";
+    const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
     axios.post(`/config/mp/signature`,
 {
