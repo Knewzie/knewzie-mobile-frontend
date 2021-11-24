@@ -133,6 +133,14 @@ export default {
           this.article = data;
     })
 
+    window.wx.ready(() => {
+      console.log("wx ready");
+    })
+    window.wx.error((res) => {
+      console.log("wx error");
+      console.dir(res);
+    })
+
     const timestamp = +moment();
     const appId = "wx4e61c8e6b7007cc8";
     axios.post(`/config/mp/signature`,
@@ -153,13 +161,7 @@ export default {
         jsApiList: ['wx-open-launch-app'], // 必填，需要使用的JS接口列表
         openTagList: ['wx-open-launch-app'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
       });
-      window.wx.ready(() => {
-        console.log("wx ready");
-      })
-      window.wx.error((res) => {
-        console.log("wx error");
-        console.dir(res);
-      })
+
     });
 
   },
