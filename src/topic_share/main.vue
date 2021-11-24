@@ -53,7 +53,7 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app appid="wxd6fe3b0d4e0030ac">
+      <wx-open-launch-app v-if="wxReady"  appid="wxd6fe3b0d4e0030ac">
         <script type="text/wxtag-template">
           <style>.view-in-app {   margin: 0 auto;
             border-radius: 100px;
@@ -107,6 +107,7 @@ export default {
       replyList: []
     },
     type: 1,
+    wxReady: false,
     likers: []
   }),
   computed: {
@@ -146,7 +147,8 @@ export default {
     })
 
     window.wx.ready(() => {
-      console.log("wx ready");
+      alert("wx ready");
+      this.wxReady = true;
     })
     window.wx.error((res) => {
       console.log("wx error");
