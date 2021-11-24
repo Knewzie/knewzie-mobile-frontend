@@ -150,7 +150,7 @@ export default {
     })
     window.wx.error((res) => {
       console.log("wx error");
-      console.dir(res);
+      window.alert(res.errMsg);
     })
 
     const timestamp = moment().unix();
