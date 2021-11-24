@@ -153,7 +153,7 @@ export default {
       console.dir(res);
     })
 
-    const timestamp = +moment();
+    const timestamp = moment().unix();
     const appId = "wx4e61c8e6b7007cc8";
     const nonceStr = "knewzie";
     axios.post(`/config/mp/signature`,
