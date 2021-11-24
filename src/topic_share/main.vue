@@ -6,37 +6,24 @@
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
           :intro="article.creator.intro"
+          :role="article.creator.role"
+          :title="article.creator.title"
           :showFollow="false"
-          :relationship="article.creator.relationship"/>
+          :relationship="article.creator.relationship" />
       <article>
         <h3>{{ article.title }}</h3>
-        <div class="abbr-box time-box">
-          <time>{{ duration }}</time>
-        </div>
-        <div class="abbr-box tags" v-if="article.categories.length > 0">
+        <div class="abbr-box tags"  v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
             {{ category.name }}
           </span>
         </div>
         <div class="content" v-html="article.content">
         </div>
+        <div class="abbr-box time-box">
+          <time>发布于 {{ duration }}</time>
+        </div>
       </article>
     </div>
-    <section class="actions">
-      <a class="action-item"
-         v-bind:class="{ active: type === 0 }"
-         style="margin-right: 32px"
-         v-on:click="like">
-        <img class="btn-prefix" :src="likeIcon"/>
-        <span>{{ article.likes }}</span>
-      </a>
-
-      <div class="space"/>
-      <a class="action-item"
-         v-on:click="switchToAnswer"
-         v-bind:class="{ active: type == 1 }"
-      >{{ article.replies }} 个回答</a>
-    </section>
 
     <div v-if="type === 0">
       <AgreePerson
@@ -44,9 +31,12 @@
           :key="user.id"
           :avatar="user.avatar"
           :name="user.nickname"
-          :likedAt="user.likedAt"/>
+          :likedAt="user.likedAt" />
     </div>
     <div v-else>
+      <section class="sort" v-if="article.replyList.length > 0">
+        按热度
+      </section>
       <div v-if="article.replyList.length > 0">
         <Answer class="answer-item"
                 v-for="reply in article.replyList"
@@ -59,7 +49,7 @@
                 :likes="reply.likes"
                 :repliedAt="reply.repliedAt"
                 :isLike="reply.isLike"
-                :nickname="reply.replier.nickname"/>
+                :nickname="reply.replier.nickname" />
       </div>
     </div>
     <div id="mask" >
@@ -97,6 +87,7 @@ export default {
         title: "",
         avatar: "",
         intro: "",
+        role: 1,
         relationship: 0,
       },
       replyList: []
@@ -132,7 +123,6 @@ export default {
     }
   },
   created() {
-    axios.defaults.baseURL = "//api.knewzie.com"
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
     axios.post(`/topic/details`, { id })
@@ -141,13 +131,13 @@ export default {
           this.article = data;
           Page && Page.postMessage(
               JSON.stringify(
-                  { "event": "topicLoaded", data }
+                  {"event": "topicLoaded", data}
               )
           )
         }).finally(() => {
       Page && Page.postMessage(
           JSON.stringify(
-              { "event": "pageMounted" }
+              {"event": "pageMounted"}
           )
       );
     })
@@ -156,7 +146,7 @@ export default {
     switchToAnswer() {
       this.type = 1;
     },
-    like() {
+    like () {
       const { Page } = window;
       const { id } = this.$router.currentRoute.params;
 
@@ -166,7 +156,7 @@ export default {
           })
       )
 
-      axios.post(`/user/topic/likedUser`, { topicId: id, page: 1 })
+      axios.post(`/user/topic/likedUser`, {topicId: id, page: 1})
           .then((response) => {
             const { data } = response.data
             const { list } = data;
@@ -184,37 +174,33 @@ export default {
       const { Page } = window;
       Page && Page.postMessage(
           JSON.stringify(
-              { "event": "doShare", data: this.article }
+              {"event": "doShare", data: this.article}
           )
       )
     },
-    oia() {
-      const { id } = this.$router.currentRoute.params;
-      if(/MicroMessenger/i.test(window.navigator.userAgent)){
-        alert("请在浏览器里打开")
-      } else {
-        window.location.assign(`zhixin:///topic/${id}`);
-      }
+    report() {
+      const { Page } = window;
+      Page && Page.postMessage(
+          JSON.stringify({
+            "event": "report", data: { topicId: this.article.id }
+          })
+      );
     },
     invite() {
       const { Page } = window;
-      if (!Page) {
-        return;
-      }
+      if (!Page) { return; }
       Page.postMessage(
           JSON.stringify(
-              { "event": "inviteUser" }
+              {"event": "inviteUser"}
           )
       );
     },
     answer() {
       const { Page } = window;
-      if (!Page) {
-        return;
-      }
+      if (!Page) { return; }
       Page.postMessage(
           JSON.stringify(
-              { "event": "doAnswer" }
+              {"event": "doAnswer"}
           )
       );
     }
@@ -230,10 +216,13 @@ body {
   background: #F6F6F6;
 }
 
+article {
+  color: black;
+}
+
 .content img {
   width: 100%;
 }
-
 .content video {
   width: 100%;
 }
@@ -260,7 +249,7 @@ body {
 
 a {
   text-decoration: none;
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.6);
+  -webkit-tap-highlight-color:rgba(255,255,255,0.6);
 }
 
 </style>
@@ -318,7 +307,7 @@ h3 {
 }
 
 .space {
-  flex: 1
+  flex:1
 }
 
 .actions > * {
@@ -350,6 +339,8 @@ h3 {
 
 .time-box {
   margin: 7px 0;
+  font-size: 12px;
+  color: rgba(0,0,0, 60%);
 }
 
 #app {
@@ -375,16 +366,6 @@ article {
   margin: 0;
 }
 
-#mask {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%);
-}
-
 #mask .view-in-app {
   margin: 0 auto;
   border-radius: 100px;
@@ -397,4 +378,5 @@ article {
   transform: translate(-50%, 0);
   bottom: 20px;
 }
+
 </style>
