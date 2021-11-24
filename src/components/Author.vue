@@ -83,7 +83,7 @@ export default {
             {"event": "showAuthor", data : { id : this.id }}
         ));
       },
-      follow: async function () {
+      async follow () {
           try {
             this.loading = true;
             await axios.post(`/user/follow`, { toUid: this.id });
