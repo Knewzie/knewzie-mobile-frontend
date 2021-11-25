@@ -55,10 +55,8 @@
     <div id="mask" >
       <wx-open-launch-app v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
         <script type="text/wxtag-template">
-          <style>.btn { padding: 12px }</style>
-          <button class="btn">App内查看</button>
+          <a class="view-in-app">App内查看</a>
         </script>
-
       </wx-open-launch-app>
     </div>
   </div>
@@ -188,8 +186,8 @@ export default {
     launchApp() {
 
     },
-    launchError(err) {
-      alert(err.detail.errMsg);
+    launchError() {
+      this.oia();
     },
     like () {
       const { Page } = window;
@@ -295,6 +293,19 @@ article {
 a {
   text-decoration: none;
   -webkit-tap-highlight-color:rgba(255,255,255,0.6);
+}
+
+.view-in-app {
+  margin: 0 auto;
+  border-radius: 100px;
+  padding: 8px 16px;
+  background-color: #3EB871FF;
+  color: white;
+  display: inline-block;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  bottom: 20px;
 }
 
 </style>
@@ -411,17 +422,5 @@ article {
   margin: 0;
 }
 
-#mask .view-in-app {
-  margin: 0 auto;
-  border-radius: 100px;
-  padding: 8px 16px;
-  background-color: #3EB871FF;
-  color: white;
-  display: inline-block;
-  position: fixed;
-  left: 50%;
-  transform: translate(-50%, 0);
-  bottom: 20px;
-}
 
 </style>
