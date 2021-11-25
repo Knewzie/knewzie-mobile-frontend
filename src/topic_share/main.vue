@@ -55,6 +55,14 @@
     <div id="mask" >
       <wx-open-launch-app v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
         <script type="text/wxtag-template">
+          <style>
+            .view-in-app {
+              border-radius: 100px;
+              padding: 8px 16px;
+              background-color: #3EB871;
+              color: white;
+            }
+          </style>
           <button class="view-in-app">App内查看</button>
         </script>
       </wx-open-launch-app>
@@ -300,7 +308,7 @@ a {
   margin: 0 auto;
   border-radius: 100px;
   padding: 8px 16px;
-  background-color: #3EB871FF;
+  background-color: #3EB871;
   color: white;
   display: inline-block;
   position: fixed;
