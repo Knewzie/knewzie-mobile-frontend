@@ -62,7 +62,7 @@
               background-color: #3EB871;
               color: white;
               border: none;
-              font-size: 18px;
+              font-size: 14px;
             }
           </style>
           <button class="view-in-app">App内查看</button>
@@ -149,10 +149,6 @@ export default {
     window.wx.ready(() => {
       this.wxReady = true;
     })
-    window.wx.error((res) => {
-      console.log("wx error");
-      window.alert(res.errMsg);
-    })
 
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
@@ -195,7 +191,7 @@ export default {
 
     },
     launchError(err) {
-      alert(err.detail.errMsg);
+      // alert(err.detail.errMsg);
       this.oia();
     },
     like () {
