@@ -53,7 +53,7 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
+      <wx-open-launch-app class="view-in-app" v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
         <script type="text/wxtag-template">
           <style>
             .view-in-app {
