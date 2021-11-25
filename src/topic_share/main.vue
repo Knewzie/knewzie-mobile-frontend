@@ -62,6 +62,7 @@
               background-color: #3EB871;
               color: white;
               border: none;
+              font-size: 18px;
             }
           </style>
           <button class="view-in-app">App内查看</button>
@@ -146,7 +147,6 @@ export default {
     })
 
     window.wx.ready(() => {
-      alert("wx ready");
       this.wxReady = true;
     })
     window.wx.error((res) => {
@@ -166,7 +166,6 @@ export default {
       }
     ).then((response) => {
       const { data: sign } = response.data;
-      alert(sign);
       window.wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
         appId: appId, // 必填，公众号的唯一标识
