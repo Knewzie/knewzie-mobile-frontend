@@ -53,7 +53,7 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app appid="wx4e61c8e6b7007cc8">
+      <wx-open-launch-app v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
         <script type="text/wxtag-template">
           <style>.btn { padding: 12px }</style>
           <button class="btn">App内查看</button>
@@ -184,6 +184,12 @@ export default {
       } else {
         window.location.assign(`zhixin:///topic/${id}`);
       }
+    },
+    launchApp() {
+
+    },
+    launchError(err) {
+      alert(err.errMsg);
     },
     like () {
       const { Page } = window;
