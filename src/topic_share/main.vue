@@ -61,6 +61,7 @@
               padding: 8px 16px;
               background-color: #3EB871;
               color: white;
+              border: none;
             }
           </style>
           <button class="view-in-app">App内查看</button>
@@ -305,16 +306,10 @@ a {
 }
 
 .view-in-app {
-  margin: 0 auto;
-  border-radius: 100px;
-  padding: 8px 16px;
-  background-color: #3EB871;
-  color: white;
-  display: inline-block;
   position: fixed;
+  bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
-  bottom: 20px;
 }
 
 </style>
