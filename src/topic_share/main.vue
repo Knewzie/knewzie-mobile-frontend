@@ -186,7 +186,8 @@ export default {
     launchApp() {
 
     },
-    launchError() {
+    launchError(err) {
+      alert(err.detail.errMsg);
       this.oia();
     },
     like () {
