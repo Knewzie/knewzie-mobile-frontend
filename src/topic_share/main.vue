@@ -53,7 +53,7 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app appid="wxd6fe3b0d4e0030ac">
+      <wx-open-launch-app appid="wx4e61c8e6b7007cc8">
         <script type="text/wxtag-template">
           <style>.btn { padding: 12px }</style>
           <button class="btn">App内查看</button>
