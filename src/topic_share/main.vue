@@ -189,7 +189,7 @@ export default {
 
     },
     launchError(err) {
-      alert(err.errMsg);
+      alert(err.detail);
     },
     like () {
       const { Page } = window;
