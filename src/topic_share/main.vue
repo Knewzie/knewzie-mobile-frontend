@@ -190,7 +190,7 @@ export default {
     launchApp() {
 
     },
-    launchError(err) {
+    launchError() {
       // alert(err.detail.errMsg);
       this.oia();
     },
