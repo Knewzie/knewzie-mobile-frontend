@@ -53,7 +53,11 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app class="view-in-app" v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
+      <wx-open-launch-app class="view-in-app"
+                          v-on:launch="launchApp"
+                          v-on:error="launchError"
+                          appid="wx4e61c8e6b7007cc8"
+                          :extinfo="launchAppUrl">
         <script type="text/wxtag-template">
           <style>
             .view-in-app {
@@ -111,6 +115,14 @@ export default {
     likers: []
   }),
   computed: {
+    launchAppUrl () {
+      const { id } = this.$router.currentRoute.params;
+      return `/topic/${id}`;
+    },
+    topicId() {
+      const { id } = this.$router.currentRoute.params;
+      return id;
+    },
     likeIcon() {
       return "/img/btn_love_highlighted.png";
     },
