@@ -1,32 +1,37 @@
 <template>
   <div id="app">
-    <div class="article">
+    <div className="article">
+      <div className="topic-title">{{ article.title }}</div>
       <Author
           :id="article.replier.uid"
           :name="article.replier.nickname"
           :avatar="article.replier.avatar"
           :intro="article.replier.intro"
+          :role="article.replier.role"
+          :title="article.replier.title"
           :showFollow="false"
           :relationship="article.replier.relationship"/>
-      <article>
-        <div class="abbr-box time-box">
-          <time>{{ duration }}</time>
+      <article v-on:click="replyTo">
+        <div className="content" v-html="article.content">
         </div>
-        <div class="content" v-html="article.content">
+        <div className="abbr-box time-box">
+          <time>回答于 {{ duration }}</time>
+          <span style="flex: 1"></span>
+          <a v-on:click="report"><i className="btn-report"/></a>
         </div>
       </article>
     </div>
 
-    <section class="actions">
-      <a class="action-item"
+    <section className="actions">
+      <a className="action-item"
          v-bind:class="{ active: type === 0 }"
          style="margin-right: 32px"
          v-on:click="like">
-        <img class="btn-prefix" src="/img/btn_love_highlighted.png"/>
+        <img className="btn-prefix" src="/img/btn_love_highlighted.png"/>
         <span>{{ article.likes }}</span>
       </a>
-      <div class="space"/>
-      <a class="action-item"
+      <div className="space"/>
+      <a className="action-item"
          v-on:click="switchToAnswer"
          v-bind:class="{ active: type === 1 }"
       >{{ article.replies }} 评论</a>
@@ -42,29 +47,45 @@
     </div>
     <div v-else>
       <div v-if="article.replyList.length > 0">
-        <Answer class="answer-item"
-                v-for="reply in article.replyList"
-                :articleId="article.id"
-                :id="reply.id"
-                :key="reply.id"
-                :content="reply.content"
-                :avatar="reply.replier.avatar"
-                :replies="reply.replies"
-                :likes="reply.likes"
-                :isLike="reply.isLike"
-                :repliedAt="reply.repliedAt"
-                :nickname="reply.replier.nickname"/>
+        <Reply class="answer-item"
+               v-for="reply in article.replyList"
+               :topicId="topicId"
+               :id="reply.id"
+               :key="reply.id"
+               :content="reply.content"
+               :avatar="reply.replier.avatar"
+               :authorId="reply.replier.uid"
+               :nickname="reply.replier.nickname"
+               :replies="reply.replies"
+               :likes="reply.likes"
+               :isLike="reply.isLike"
+               :repliedAt="reply.repliedAt"
+               :replyList="reply.replyList"/>
       </div>
     </div>
     <div id="mask" >
-      <a class="view-in-app"  v-on:click="oia">在 App 里打开</a>
+      <wx-open-launch-app class="view-in-app" v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
+        <script type="text/wxtag-template">
+          <style>
+            .view-in-app {
+              border-radius: 100px;
+              padding: 8px 16px;
+              background-color: #3EB871;
+              color: white;
+              border: none;
+              font-size: 14px;
+            }
+          </style>
+          <button class="view-in-app">App内查看</button>
+        </script>
+      </wx-open-launch-app>
     </div>
   </div>
 </template>
 
 <script>
 import Author from '../components/Author.vue'
-import Answer from '../components/Answer.vue'
+import Reply from '../components/Reply.vue'
 import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
@@ -73,11 +94,12 @@ export default {
   name: 'AnswerDetail',
   components: {
     // eslint-disable-next-line
-    Author, Answer, AgreePerson
+    Author, Reply, AgreePerson
   },
   data: () => ({
     article: {
       id: -1,
+      title: "加载中...",
       content: "加载中...",
       categories: [],
       likes: 0,
@@ -86,7 +108,7 @@ export default {
       repliedAt: 0,
       replier: {
         name: "加载中...",
-        nickname: "加载中...",
+        nickname: null,
         title: "",
         avatar: "",
         intro: "",
@@ -98,6 +120,10 @@ export default {
     likers: []
   }),
   computed: {
+    topicId() {
+      const { topicId } = this.$router.currentRoute.params;
+      return topicId;
+    },
     duration() {
       if (!this.article.repliedAt) {
         return "加载中..."
@@ -110,7 +136,7 @@ export default {
         return createdAt.format('YYYY-MM-DD')
       } else if (diff.asHours() >= 24) {
         return `${Math.floor(diff.asDays())} 天前`
-      } else if (diff.asMinutes() >= 60) {
+      } else if (Math.floor(diff.asMinutes()) >= 60) {
         return `${Math.floor(diff.asHours())} 小时前`
       } else if (diff.asSeconds() >= 60) {
         return `${Math.floor(diff.asMinutes())} 分钟前`
@@ -141,8 +167,71 @@ export default {
           )
       );
     })
+
+    window.wx.ready(() => {
+      this.wxReady = true;
+    })
+
+    const timestamp = moment().unix();
+    const appId = "wxd6fe3b0d4e0030ac";
+    const nonceStr = "knewzie";
+    axios.post(`/config/mp/signature`,
+        {
+          appId,
+          "noncestr": nonceStr,
+          "timestamp": timestamp,
+          url: window.location.href
+        }
+    ).then((response) => {
+      const { data: sign } = response.data;
+      window.wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+        appId: appId, // 必填，公众号的唯一标识
+        timestamp: timestamp, // 必填，生成签名的时间戳
+        nonceStr: nonceStr, // 必填，生成签名的随机串
+        signature: sign,// 必填，签名
+        jsApiList: ['wx-open-launch-app'], // 必填，需要使用的JS接口列表
+        openTagList: ['wx-open-launch-app'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+      });
+
+    });
   },
   methods: {
+    report() {
+      const { topicId, replyId } = this.$router.currentRoute.params;
+      const { Page } = window;
+      Page && Page.postMessage(
+          JSON.stringify({
+            "event": "report", data: { topicId: parseInt(topicId), replyId: parseInt(replyId) }
+          })
+      );
+    },
+    oia() {
+      const { topicId, replyId } = this.$router.currentRoute.params;
+      if(/MicroMessenger/i.test(window.navigator.userAgent)){
+        alert("请在浏览器里打开")
+      } else {
+        window.location.assign(`zhixin:///reply/${replyId}/topic/${topicId}`);
+      }
+    },
+    launchApp() {
+
+    },
+    launchError() {
+      // alert(err.detail.errMsg);
+      this.oia();
+    },
+    replyTo() {
+      const { topicId, replyId } = this.$router.currentRoute.params;
+      const { Page } = window;
+      if (!Page) return;
+      Page.postMessage(JSON.stringify(
+          {
+            "event": "replyTo",
+            data: { topicId: parseInt(topicId), replyId: parseInt(replyId), author: this.article.replier.nickname }
+          }
+      ));
+    },
     like() {
       const { Page } = window;
       const { topicId, replyId } = this.$router.currentRoute.params;
@@ -167,13 +256,17 @@ export default {
         )
       })
     },
-    oia() {
+    share() {
+      const { Page } = window;
       const { topicId, replyId } = this.$router.currentRoute.params;
-      if (/MicroMessenger/i.test(window.navigator.userAgent)) {
-        alert("请在浏览器里打开")
-      } else {
-        window.location.assign(`zhixin:///reply/${replyId}/topic/${topicId}`);
-      }
+      Page && Page.postMessage(
+          JSON.stringify({
+            "event": "doShare",
+            "data": {
+              topicId, replyId
+            }
+          })
+      );
     },
     switchToAnswer() {
       this.type = 1;
@@ -181,7 +274,6 @@ export default {
   }
 }
 </script>
-
 <style>
 body {
   margin: 0;
@@ -219,14 +311,23 @@ a {
 
 <style scoped>
 
+.btn-report {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-image: url("@/images/ic_report.png");
+  background-size: contain;
+}
+
 h3 {
   margin: 0;
 }
 
-.sort {
-  padding: 12px 28px;
-  color: #B3B3B3;
-  font-size: 12px;
+.topic-title {
+  padding: 16px;
+  font-weight: bold;
+  color: black;
+  font-size: 20px;
 }
 
 .answer-actions {
@@ -291,10 +392,6 @@ h3 {
   background: white;
 }
 
-.tags {
-  margin: 10px 0;
-}
-
 .tags span {
   background: #D0D0D0;
   padding: 1px 8px;
@@ -310,6 +407,8 @@ h3 {
 
 .time-box {
   margin: 7px 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 60%);
 }
 
 #app {
@@ -333,29 +432,6 @@ article {
 
 .answer-item:first-child {
   margin: 0;
-}
-
-#mask {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%);
-}
-
-#mask .view-in-app {
-  margin: 0 auto;
-  border-radius: 100px;
-  padding: 8px 16px;
-  background-color: #3EB871FF;
-  color: white;
-  display: inline-block;
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  bottom: 20px;
 }
 
 </style>
