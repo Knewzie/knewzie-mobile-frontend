@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <div className="article">
-      <div className="topic-title">{{ article.title }}</div>
+    <div class="article">
+      <div class="topic-title">{{ article.title }}</div>
       <Author
           :id="article.replier.uid"
           :name="article.replier.nickname"
@@ -12,26 +12,26 @@
           :showFollow="false"
           :relationship="article.replier.relationship"/>
       <article v-on:click="replyTo">
-        <div className="content" v-html="article.content">
+        <div class="content" v-html="article.content">
         </div>
-        <div className="abbr-box time-box">
+        <div class="abbr-box time-box">
           <time>回答于 {{ duration }}</time>
           <span style="flex: 1"></span>
-          <a v-on:click="report"><i className="btn-report"/></a>
+          <a v-on:click="report"><i class="btn-report"/></a>
         </div>
       </article>
     </div>
 
-    <section className="actions">
-      <a className="action-item"
+    <section class="actions">
+      <a class="action-item"
          v-bind:class="{ active: type === 0 }"
          style="margin-right: 32px"
          v-on:click="like">
-        <img className="btn-prefix" src="/img/btn_love_highlighted.png"/>
+        <img class="btn-prefix" src="/img/btn_love_highlighted.png"/>
         <span>{{ article.likes }}</span>
       </a>
-      <div className="space"/>
-      <a className="action-item"
+      <div class="space"/>
+      <a class="action-item"
          v-on:click="switchToAnswer"
          v-bind:class="{ active: type === 1 }"
       >{{ article.replies }} 评论</a>
