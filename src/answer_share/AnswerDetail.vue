@@ -282,6 +282,13 @@ body {
   background: #F6F6F6;
 }
 
+.view-in-app {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
 .content img {
   width: 100%;
 }
