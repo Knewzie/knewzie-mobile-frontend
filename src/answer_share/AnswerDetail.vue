@@ -64,7 +64,11 @@
       </div>
     </div>
     <div id="mask" >
-      <wx-open-launch-app class="view-in-app" v-on:launch="launchApp" v-on:error="launchError" appid="wx4e61c8e6b7007cc8">
+      <wx-open-launch-app class="view-in-app"
+                          v-on:launch="launchApp"
+                          v-on:error="launchError"
+                          :extinfo="launchAppUrl"
+                          appid="wx4e61c8e6b7007cc8">
         <script type="text/wxtag-template">
           <style>
             .view-in-app {
@@ -120,6 +124,10 @@ export default {
     likers: []
   }),
   computed: {
+    launchAppUrl () {
+      const { topicId, replyId } = this.$router.currentRoute.params;
+      return `/reply/${replyId}/topic/${topicId}`;
+    },
     topicId() {
       const { topicId } = this.$router.currentRoute.params;
       return topicId;
