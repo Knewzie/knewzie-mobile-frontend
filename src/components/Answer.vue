@@ -85,6 +85,9 @@ export default {
           }
         })
       )
+      if (!Page) {
+        window.location.href = `/reply/${this.id}/topic/${this.articleId}`;
+      }
     },
     like() {
         const isLike = this.currentIsLike
