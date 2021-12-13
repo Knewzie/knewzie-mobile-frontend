@@ -171,12 +171,8 @@ export default {
         link: window.location.href,
         imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         success: function () {
-          // 设置成功
-          console.dir("wx update success");
         }
       });
-
-
 
 
       wx.onMenuShareTimeline({
@@ -184,8 +180,6 @@ export default {
         link: window.location.href,
         imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         success: function () {
-          // 设置成功
-          console.dir("wx update success");
         }
       });
 
