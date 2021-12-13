@@ -156,16 +156,6 @@ export default {
 
     wx.ready(() => {
       this.wxReady = true;
-      wx.updateAppMessageShareData({
-        title: this.article.title,
-        desc: "分享你的知识",
-        link: window.location.href,
-        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
-        success: function () {
-          // 设置成功
-          console.dir("wx update success");
-        }
-      });
 
       wx.onMenuShareAppMessage({
         title: this.article.title,
@@ -174,18 +164,7 @@ export default {
         imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         success: function () {
           // 设置成功
-          console.dir("wx update success");
-        }
-      });
-
-
-      wx.updateTimelineShareData({
-        title: this.article.title,
-        link: window.location.href,
-        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
-        success: function () {
-          // 设置成功
-          console.dir("wx update success");
+          console.dir("wx share success");
         }
       });
 
@@ -195,7 +174,7 @@ export default {
         imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         success: function () {
           // 设置成功
-          console.dir("wx update success");
+          console.dir("wx share success");
         }
       });
     })
@@ -227,6 +206,27 @@ export default {
         signature: sign,// 必填，签名
         jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage','onMenuShareTimeline', 'onMenuShareQQ', 'onMenuShareQZone'], // 必填，需要使用的JS接口列表
         openTagList: ['wx-open-launch-app'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+      });
+
+      wx.updateAppMessageShareData({
+        title: this.article.title,
+        desc: "分享你的知识",
+        link: window.location.href,
+        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        success: function () {
+          // 设置成功
+          console.dir("wx update success");
+        }
+      });
+
+      wx.updateTimelineShareData({
+        title: this.article.title,
+        link: window.location.href,
+        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        success: function () {
+          // 设置成功
+          console.dir("wx update success");
+        }
       });
 
     });
