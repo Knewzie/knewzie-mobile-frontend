@@ -108,6 +108,7 @@ export default {
       categories: [],
       likes: 0,
       replies: 0,
+      pv: 0,
       isLike: false,
       repliedAt: 0,
       replier: {
@@ -166,7 +167,7 @@ export default {
 
       wx.onMenuShareAppMessage({
         title: this.article.title,
-        desc: "分享你的知识",
+        desc: `${this.article.likes} 人喜欢, ${this.article.pv} 人查看`,
         link: window.location.href,
         imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         success: function () {
