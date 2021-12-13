@@ -159,7 +159,7 @@ export default {
       this.wxReady = true;
       wx.onMenuShareAppMessage({
         title: this.article.title,
-        desc: `${this.article.likes} 人喜欢, ${this.article.pv} 人查看`,
+        desc: `${this.article.replies} 人回答, ${this.article.pv} 人查看`,
         link: window.location.href,
         imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         success: function () {
