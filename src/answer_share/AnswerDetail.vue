@@ -165,12 +165,21 @@ export default {
 
       wx.updateAppMessageShareData({
         title: this.article.title,
+        desc: "分享你的知识",
         link: window.location.href,
+        success: function () {
+          // 设置成功
+          console.dir("wx update success");
+        }
       });
       wx.updateTimelineShareData({
         title: this.article.title,
         link: window.location.href,
         // imgUrl: '', // 分享图标
+        success: function () {
+          // 设置成功
+          console.dir("wx update success");
+        }
       });
 
     })
