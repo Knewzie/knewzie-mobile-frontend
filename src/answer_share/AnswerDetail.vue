@@ -173,7 +173,30 @@ export default {
           console.dir("wx update success");
         }
       });
+
+      wx.onMenuShareAppMessage({
+        title: this.article.title,
+        desc: "分享你的知识",
+        link: window.location.href,
+        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        success: function () {
+          // 设置成功
+          console.dir("wx update success");
+        }
+      });
+
+
       wx.updateTimelineShareData({
+        title: this.article.title,
+        link: window.location.href,
+        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        success: function () {
+          // 设置成功
+          console.dir("wx update success");
+        }
+      });
+
+      wx.onMenuShareTimeline({
         title: this.article.title,
         link: window.location.href,
         imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
