@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="article">
-      <div class="topic-title">{{ article.title }}</div>
+      <div class="topic-title" v-on:click="openArticle">{{ article.title }}</div>
       <Author
           :id="article.replier.uid"
           :name="article.replier.nickname"
@@ -214,6 +214,10 @@ export default {
     });
   },
   methods: {
+    openArticle() {
+      const { topicId } = this.$router.currentRoute.params;
+      window.location.href = `/topic/${topicId}`;
+    },
     report() {
       const { topicId, replyId } = this.$router.currentRoute.params;
       const { Page } = window;
