@@ -158,50 +158,49 @@ export default {
   created() {
     axios.defaults.baseURL = "//api.knewzie.com"
     const { topicId, replyId } = this.$router.currentRoute.params;
-    const { Page } = window;
-    axios.post(`/reply/details`, { topicId, replyId })
-        .then((response) => {
-          const { data } = response.data
-          this.article = data;
-          Page && Page.postMessage(
-              JSON.stringify(
-                  { "event": "loaded", data }
-              )
-          )
-        }).finally(() => {
-      Page && Page.postMessage(
-          JSON.stringify(
-              { "event": "pageMounted" }
-          )
-      );
-    })
+    const { wx } = window;
 
-    window.wx.ready(() => {
+    wx.ready(() => {
       this.wxReady = true;
+
+      wx.updateAppMessageShareData({
+        title: this.article.title,
+        link: window.location.href,
+      });
+      wx.updateTimelineShareData({
+        title: this.article.title,
+        link: window.location.href,
+        // imgUrl: '', // 分享图标
+      });
+
     })
 
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
-    axios.post(`/config/mp/signature`,
-        {
+    axios.post(`/reply/details`, { topicId, replyId })
+    .then((response) => {
+      const { data } = response.data
+      this.article = data;
+    }).then(() => axios.post(`/config/mp/signature`,
+{
           appId,
           "noncestr": nonceStr,
           "timestamp": timestamp,
           url: window.location.href
-        }
-    ).then((response) => {
+      }
+    ))
+    .then((response) => {
       const { data: sign } = response.data;
-      window.wx.config({
+      wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
         appId: appId, // 必填，公众号的唯一标识
         timestamp: timestamp, // 必填，生成签名的时间戳
         nonceStr: nonceStr, // 必填，生成签名的随机串
         signature: sign,// 必填，签名
-        jsApiList: ['wx-open-launch-app'], // 必填，需要使用的JS接口列表
+        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 必填，需要使用的JS接口列表
         openTagList: ['wx-open-launch-app'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
       });
-
     });
   },
   methods: {
