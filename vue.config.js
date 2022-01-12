@@ -21,6 +21,11 @@ module.exports = {
       template: "public/answer.html",
       title: "答知新"
     },
+    show: {
+      entry: "src/show/main.js",
+      template: "public/show.html",
+      title: "答知新 - 晒一晒"
+    },
     reply_mobile: {
       entry: "src/answer/main.js",
       template: "public/answer.html"
