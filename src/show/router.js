@@ -1,20 +1,18 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Image from './pages/image'
-import Video from './pages/video'
+import ShowImage from './pages/image'
+import ShowVideo from './pages/video'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/show/image/:id',
-    name: 'image',
-    component: Image
+    component: ShowImage
   },
   {
     path: '/show/video/:id',
-    name: 'video',
-    component: Video
+    component: ShowVideo
   }
 ]
 
