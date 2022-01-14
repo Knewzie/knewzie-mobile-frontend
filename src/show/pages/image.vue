@@ -33,7 +33,7 @@
       <a class="action-item"
          v-bind:class="{ active: type === 0 }"
          style="margin-right: 32px"
-         v-on:click="like">
+         v-on:click="switchToLike">
         <img class="btn-prefix" src="/img/btn_love_highlighted.png"/>
         <span>{{ article.likes }}</span>
       </a>
@@ -170,9 +170,10 @@ export default {
       this.type = 1;
     },
 
-    like() {
+    switchToLike() {
       const {Page} = window;
       const {id} = this.$router.currentRoute.params;
+      this.type = 0;
 
       Page && Page.postMessage(
           JSON.stringify({
