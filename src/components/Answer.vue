@@ -53,9 +53,9 @@ export default {
     duration() {
       if (!this.repliedAt) {
         return "加载中..."
-      } 
+      }
 
-      let now = moment();  
+      let now = moment();
       let createdAt = moment(this.repliedAt * 1000);
       let diff = moment.duration(now.diff(createdAt));
       if (diff.asDays() > 10) {
@@ -78,7 +78,7 @@ export default {
       const { Page } = window;
       Page && Page.postMessage(
         JSON.stringify({
-          "event": "showAnswerDetail", 
+          "event": "showAnswerDetail",
           "data": {
             "topicId": this.articleId,
             "replyId": this.id
@@ -162,12 +162,11 @@ h4 {
   flex:1
 }
 
-
 .action-item {
   padding: 7px 0;
   display: flex;
   align-items: center;
-  
+
 }
 
 .action-item > img {
