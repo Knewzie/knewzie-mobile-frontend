@@ -1,2 +1,4 @@
 /topic/*  /topic  200
 /reply/*  /reply  200
+/show/image/*  /show/image  200
+/show/video/*  /show/video  200
