@@ -1,33 +1,382 @@
 <template>
-  <div class="block">
-    <div class="block">
-      <span class="demonstration">默认 Hover 指示器触发</span>
-      <el-carousel height="300px">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3 class="small">{{ item }}</h3>
-        </el-carousel-item>
-      </el-carousel>
+  <div id="app">
+    <div class="article">
+      <Author
+          :id="article.creator.uid"
+          :name="article.creator.nickname"
+          :avatar="article.creator.avatar"
+          :intro="article.creator.intro"
+          :role="article.creator.role"
+          :title="article.creator.title"
+          :showFollow="false"
+          :relationship="article.creator.relationship"/>
+      <swiper class="swiper">
+        <swiper-slide class="slider" v-for="image in article.imageList" :key="image">
+          <img :src="image"/>
+        </swiper-slide>
+      </swiper>
+      <article>
+        <h3>{{ article.title }}</h3>
+        <div class="abbr-box tags" v-if="article.categories.length > 0">
+          <span v-for="category in article.categories" :key="category.id">
+            {{ category.name }}
+          </span>
+        </div>
+        <div class="abbr-box time-box">
+          <time>发布于 {{ duration }}</time>
+        </div>
+        <div class="content">{{ article.content }}</div>
+      </article>
     </div>
-    <div class="block">
-      <span class="demonstration">Click 指示器触发</span>
-      <el-carousel trigger="click" height="150px">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3 class="small">{{ item }}</h3>
-        </el-carousel-item>
-      </el-carousel>
+
+    <section class="actions">
+      <a class="action-item"
+         v-bind:class="{ active: type === 0 }"
+         style="margin-right: 32px"
+         v-on:click="like">
+        <img class="btn-prefix" src="/img/btn_love_highlighted.png"/>
+        <span>{{ article.likes }}</span>
+      </a>
+      <div class="space"/>
+      <a class="action-item"
+         v-on:click="switchToAnswer"
+         v-bind:class="{ active: type === 1 }"
+      >{{ article.replies }} 评论</a>
+    </section>
+
+    <div v-if="type === 0">
+      <AgreePerson
+          v-for="user in likers"
+          :key="user.id"
+          :avatar="user.avatar"
+          :name="user.nickname"
+          :likedAt="user.likedAt"/>
+    </div>
+    <div v-else>
+      <div v-if="article.replyList.length > 0">
+        <Answer class="answer-item"
+                v-for="reply in article.replyList"
+                :articleId="article.id"
+                :id="reply.id"
+                :key="reply.id"
+                :content="reply.content"
+                :avatar="reply.replier.avatar"
+                :replies="reply.replies"
+                :likes="reply.likes"
+                :repliedAt="reply.repliedAt"
+                :isLike="reply.isLike"
+                :nickname="reply.replier.nickname"/>
+      </div>
+    </div>
+    <div id="mask">
+      <wx-open-launch-app class="view-in-app"
+                          v-on:launch="launchApp"
+                          v-on:error="launchError"
+                          appid="wx4e61c8e6b7007cc8"
+                          :extinfo="launchAppUrl">
+        <script type="text/wxtag-template">
+          <style>
+            .view-in-app {
+              border-radius: 100px;
+              padding: 8px 16px;
+              background-color: #3EB871;
+              color: white;
+              border: none;
+              font-size: 14px;
+            }
+          </style>
+          <button class="view-in-app">App内查看</button>
+        </script>
+      </wx-open-launch-app>
     </div>
   </div>
+
 </template>
 
 <script>
+import Author from '../../components/Author.vue'
+import Answer from '../../components/Answer.vue'
+import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
+import 'swiper/css/bundle'
+import axios from "axios";
+import moment from "moment";
+
 export default {
   name: "ShowImage",
+  components: {
+    Swiper,
+    SwiperSlide,
+    Author, Answer
+  },
+
+  data: () => ({
+    article: {
+      id: -1,
+      title: "加载中...",
+      content: "加载中...",
+      categories: [],
+      likes: 0,
+      replies: 0,
+      isLike: false,
+      createdAt: 0,
+      creator: {
+        name: "加载中...",
+        nickname: "加载中...",
+        title: "",
+        avatar: "",
+        intro: "",
+        role: 1,
+        relationship: 0,
+      },
+      imageList: [],
+      videoList: [],
+      replyList: []
+    },
+    type: 1,
+    likers: []
+  }),
+
+  computed: {
+    launchAppUrl() {
+      const {id} = this.$router.currentRoute.params;
+      return `/topic/${id}`;
+    },
+    duration() {
+      if (!this.article.createdAt) {
+        return "加载中..."
+      }
+
+      let now = moment();
+      let createdAt = moment(this.article.createdAt * 1000);
+      let diff = moment.duration(now.diff(createdAt));
+      if (diff.asDays() > 10) {
+        return createdAt.format('YYYY-MM-DD')
+      } else if (diff.asHours() >= 24) {
+        return `${Math.floor(diff.asDays())} 天前`
+      } else if (diff.asMinutes() >= 60) {
+        return `${Math.floor(diff.asHours())} 小时前`
+      } else if (diff.asSeconds() >= 60) {
+        return `${Math.floor(diff.asMinutes())} 分钟前`
+      } else if (diff.asSeconds() > 0) {
+        return `${Math.floor(diff.asSeconds())} 秒前`
+      } else {
+        return "刚刚";
+      }
+    },
+  },
+
+  methods: {
+    switchToAnswer() {
+      this.type = 1;
+    },
+
+    like() {
+      const {Page} = window;
+      const {id} = this.$router.currentRoute.params;
+
+      Page && Page.postMessage(
+          JSON.stringify({
+            "event": "showProgress"
+          })
+      )
+
+      axios.post(`/user/topic/likedUser`, {topicId: id, page: 1})
+          .then((response) => {
+            const {data} = response.data
+            const {list} = data;
+            this.likers = list;
+            this.type = 0;
+          }).finally(() => {
+        Page && Page.postMessage(
+            JSON.stringify({
+              "event": "dismissProgress"
+            })
+        )
+      })
+    },
+    oia() {
+      const {id} = this.$router.currentRoute.params;
+      if (/MicroMessenger/i.test(window.navigator.userAgent)) {
+        alert("请在浏览器里打开")
+      } else {
+        window.location.assign(`zhixin:///topic/${id}`);
+      }
+    },
+    launchApp() {
+
+    },
+    launchError() {
+      // alert(err.detail.errMsg);
+      this.oia();
+    },
+  },
+
   created() {
-    console.dir("hello world")
-  }
+    axios.defaults.baseURL = "https://api.knewzie.com"
+
+    const {wx} = window
+
+    wx.ready(() => {
+      this.wxReady = true;
+      wx.onMenuShareAppMessage({
+        title: this.article.title,
+        desc: `${this.article.replies} 人回答, ${this.article.pv} 人查看`,
+        link: window.location.href,
+        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        success: function () {
+        }
+      });
+
+      wx.onMenuShareTimeline({
+        title: this.article.title,
+        link: window.location.href,
+        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        success: function () {
+        }
+      });
+    })
+
+
+    const timestamp = moment().unix();
+    const appId = "wxd6fe3b0d4e0030ac";
+    const nonceStr = "knewzie";
+    const {id} = this.$router.currentRoute.params;
+
+    axios.post(`/topic/details`, {id})
+        .then((response) => {
+          const {data} = response.data
+          this.article = data;
+        }).then(() => axios.post(`/config/mp/signature`,
+        {
+          appId,
+          "noncestr": nonceStr,
+          "timestamp": timestamp,
+          url: window.location.href
+        }
+    )).then((response) => {
+      const {data: sign} = response.data;
+      wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+        appId: appId, // 必填，公众号的唯一标识
+        timestamp: timestamp, // 必填，生成签名的时间戳
+        nonceStr: nonceStr, // 必填，生成签名的随机串
+        signature: sign,// 必填，签名
+        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline', 'onMenuShareQQ', 'onMenuShareQZone'], // 必填，需要使用的JS接口列表
+        openTagList: ['wx-open-launch-app'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+      });
+    });
+  },
 }
 </script>
 
+<style>
+body {
+  margin: 0;
+  -webkit-touch-callout: none;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: #F6F6F6;
+}
+</style>
+
 <style scoped>
+.article {
+  background: white;
+}
+
+
+.body {
+  background: white;
+  padding: 16px 0;
+}
+
+.slider {
+  height: 400px;
+}
+
+.slider img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: auto;
+}
+
+article {
+  color: black;
+  padding: 14px 18px;
+}
+
+
+.tags {
+  margin: 10px 0;
+}
+
+.tags span {
+  background: #D0D0D0;
+  padding: 1px 8px;
+  border-radius: 10px;
+  margin-left: 5px;
+  font-size: 10px;
+  color: #8D8D8E;
+}
+
+.tags span:first-child {
+  margin: 0px;
+}
+
+.time-box {
+  margin: 7px 0;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 60%);
+}
+
+.abbr-box {
+  display: flex;
+}
+
+.actions {
+  display: flex;
+  background: white;
+  margin: 10px 0;
+  padding: 0px 28px;
+  align-items: center;
+}
+
+.space {
+  flex: 1
+}
+
+.action-item {
+  padding: 7px 0;
+  display: flex;
+  align-items: center;
+
+}
+
+.action-item > img {
+  width: 18px;
+  margin-right: 5px;
+}
+
+.action-item > span {
+  line-height: normal;
+}
+
+
+.space {
+  flex: 1
+}
+
+.actions > * {
+  color: #3C3C3E;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
 
 </style>
