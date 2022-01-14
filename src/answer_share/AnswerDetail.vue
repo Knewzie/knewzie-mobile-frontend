@@ -26,7 +26,7 @@
       <a class="action-item"
          v-bind:class="{ active: type === 0 }"
          style="margin-right: 32px"
-         v-on:click="like">
+         v-on:click="switchToLike">
         <img class="btn-prefix" src="/img/btn_love_highlighted.png"/>
         <span>{{ article.likes }}</span>
       </a>
@@ -253,7 +253,7 @@ export default {
           }
       ));
     },
-    like() {
+    switchToLike() {
       const { Page } = window;
       const { topicId, replyId } = this.$router.currentRoute.params;
 
@@ -262,6 +262,8 @@ export default {
             "event": "showProgress"
           })
       )
+
+      this.type = 0;
 
       axios.post(`/user/topic/likedUser`, { topicId, replyId, page: 1 })
           .then((response) => {
