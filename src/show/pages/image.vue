@@ -277,6 +277,13 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
   background: #F6F6F6;
 }
+
+.view-in-app {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
 </style>
 
 <style scoped>
