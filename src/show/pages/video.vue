@@ -94,7 +94,7 @@ export default {
   computed: {
     launchAppUrl() {
       const {id} = this.$router.currentRoute.params;
-      return `/topic/${id}`;
+      return `/show/video/${id}`;
     },
     duration() {
       if (!this.article.createdAt) {
