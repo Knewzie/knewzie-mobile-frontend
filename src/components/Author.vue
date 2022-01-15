@@ -1,9 +1,6 @@
 <template>
 <div class="avatar-box">
-    <a class="avatar" v-on:click="showAuthor">
-        <img :src="avatar" />
-        <div :class="certificatedClass"></div>
-    </a>
+    <Avatar :avatar="avatar" :role="role" />
     <div class="info">
         <div><h4>{{ name }}</h4><span class="certificate-info">{{ this.title }}</span></div>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
@@ -17,12 +14,13 @@
 <script>
 import axios from 'axios'
 import RingLoader from 'vue-spinner/src/RingLoader.vue'
+import Avatar from './Avatar'
 
 export default {
   name: 'Author',
    components: {
     // eslint-disable-next-line
-    RingLoader
+    RingLoader, Avatar
   },
   props: {
     id: Number,
@@ -126,42 +124,6 @@ export default {
   font-size: 12px;
 }
 
-.avatar {
-  position: relative;
-}
-
-
-.certificate-box {
-  display: inline-block;
-  width: 17px;
-  height: 17px;
-  content: " ";
-  position: absolute;
-  bottom: -3px;
-  right: -3px;
-  background-size: cover;
-}
-
-.certificate-box.enterprise {
-  background-image: url("./images/ic_enterprise.png");
-}
-
-.certificate-box.organization {
-  background-image: url("./images/ic_organization.png");
-}
-
-.certificate-box.vip {
-  background-image: url("./images/ic_vip.png");
-}
-
-.certificate-box.certificated {
-  background-image: url("./images/ic_certificated.png");
-}
-
-.certificate-info {
-
-}
-
 .info {
   color: black;
   flex: 1;
@@ -181,18 +143,6 @@ export default {
     width: 48px;
     height: 25px;
     text-align: center;
-}
-.avatar {
-    width: 40px;
-    height: 40px;
-    margin-right: 16px;
-}
-.avatar img {
-    object-fit: cover; /* Do not scale the image */
-    width: 40px;
-    height: 40px;
-    background-color: gray;
-    border-radius: 20px;
 }
 h4 {
     margin: 0;

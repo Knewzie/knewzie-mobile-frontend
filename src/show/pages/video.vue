@@ -1,22 +1,20 @@
 <template>
   <div id="app">
     <div class="article">
-      <Author
-          :id="article.creator.uid"
-          :name="article.creator.nickname"
-          :avatar="article.creator.avatar"
-          :intro="article.creator.intro"
-          :role="article.creator.role"
-          :title="article.creator.title"
-          :showFollow="false"
-          :relationship="article.creator.relationship"/>
-      <swiper class="swiper">
-        <swiper-slide class="slider" v-for="image in article.imageList" :key="image">
-          <img :src="image"/>
-        </swiper-slide>
-      </swiper>
+      <div class="video-container">
+        <video class="video" :src="article.videoList[0]" controls />
+      </div>
       <article>
-        <h3>{{ article.title }}</h3>
+        <Author
+            :id="article.creator.uid"
+            :name="article.creator.nickname"
+            :avatar="article.creator.avatar"
+            :intro="article.creator.intro"
+            :role="article.creator.role"
+            :title="article.creator.title"
+            :showFollow="false"
+            :relationship="article.creator.relationship"/>
+        <h3 >{{ article.title }}</h3>
         <div class="abbr-box tags" v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
             {{ category.name }}
@@ -29,45 +27,7 @@
       </article>
     </div>
 
-    <section class="actions">
-      <a class="action-item"
-         v-bind:class="{ active: type === 0 }"
-         style="margin-right: 32px"
-         v-on:click="switchToLike">
-        <img class="btn-prefix" src="/img/btn_love_highlighted.png"/>
-        <span>{{ article.likes }}</span>
-      </a>
-      <div class="space"/>
-      <a class="action-item"
-         v-on:click="switchToAnswer"
-         v-bind:class="{ active: type === 1 }"
-      >{{ article.replies }} 评论</a>
-    </section>
 
-    <div v-if="type === 0">
-      <AgreePerson
-          v-for="user in likers"
-          :key="user.id"
-          :avatar="user.avatar"
-          :name="user.nickname"
-          :likedAt="user.likedAt"/>
-    </div>
-    <div v-else>
-      <div v-if="article.replyList.length > 0">
-        <Answer class="answer-item"
-                v-for="reply in article.replyList"
-                :articleId="article.id"
-                :id="reply.id"
-                :key="reply.id"
-                :content="reply.content"
-                :avatar="reply.replier.avatar"
-                :replies="reply.replies"
-                :likes="reply.likes"
-                :repliedAt="reply.repliedAt"
-                :isLike="reply.isLike"
-                :nickname="reply.replier.nickname"/>
-      </div>
-    </div>
     <div id="mask">
       <wx-open-launch-app class="view-in-app"
                           v-on:launch="launchApp"
@@ -94,19 +54,14 @@
 </template>
 
 <script>
-import Author from '../../components/Author.vue'
-import Answer from '../../components/Answer.vue'
-import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
-import 'swiper/css/bundle'
 import axios from "axios";
 import moment from "moment";
+import Author from "../../components/Author";
 
 export default {
   name: "ShowImage",
   components: {
-    Swiper,
-    SwiperSlide,
-    Author, Answer
+    Author
   },
 
   data: () => ({
@@ -277,28 +232,18 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
   background: #F6F6F6;
 }
+
+.view-in-app {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
 </style>
 
 <style scoped>
 .article {
   background: white;
-}
-
-
-.body {
-  background: white;
-  padding: 16px 0;
-}
-
-.slider {
-  height: 400px;
-}
-
-.slider img {
-  max-width: 100%;
-  max-height: 100%;
-  display: block;
-  margin: auto;
 }
 
 article {
@@ -362,7 +307,6 @@ article {
   line-height: normal;
 }
 
-
 .space {
   flex: 1
 }
@@ -371,6 +315,16 @@ article {
   color: #3C3C3E;
   font-size: 14px;
   font-weight: bold;
+}
+
+.video-container {
+  text-align: center;
+  background: black;
+}
+
+.video {
+  margin: 0 auto;
+  min-height: 648px;
 }
 
 #app {
