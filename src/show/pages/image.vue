@@ -140,7 +140,7 @@ export default {
   computed: {
     launchAppUrl() {
       const {id} = this.$router.currentRoute.params;
-      return `/topic/${id}`;
+      return `/show/image/${id}`;
     },
     duration() {
       if (!this.article.createdAt) {
