@@ -325,6 +325,7 @@ article {
 .video {
   margin: 0 auto;
   min-height: 648px;
+  width: 100%;
 }
 
 #app {
