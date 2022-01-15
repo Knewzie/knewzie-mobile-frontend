@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div class="article"> 
-      <Author 
+    <div class="article">
+      <Author
           :id="article.creator.uid"
-          :name="article.creator.nickname" 
-          :avatar="article.creator.avatar" 
+          :name="article.creator.nickname"
+          :avatar="article.creator.avatar"
           :intro="article.creator.intro"
           :role="article.creator.role"
           :title="article.creator.title"
@@ -36,9 +36,9 @@
       </a>
     </section>
     <section class="actions">
-      <a class="action-item" 
+      <a class="action-item"
          v-bind:class="{ active: type === 0 }"
-         style="margin-right: 32px" 
+         style="margin-right: 32px"
          v-on:click="like">
         <img class="btn-prefix" :src="likeIcon" />
         <span>{{ article.likes }}</span>
@@ -56,7 +56,7 @@
     </section>
 
     <div v-if="type === 0">
-      <AgreePerson 
+      <AgreePerson
         v-for="user in likers"
         :key="user.id"
         :avatar="user.avatar"
@@ -68,18 +68,19 @@
       按热度
     </section>
     <div v-if="article.replyList.length > 0">
-      <Answer class="answer-item" 
-        v-for="reply in article.replyList" 
+      <Answer class="answer-item"
+        v-for="reply in article.replyList"
         :articleId="article.id"
         :id="reply.id"
         :key="reply.id"
         :content="reply.content"
         :avatar="reply.replier.avatar"
+        :role="reply.replier.role"
         :replies="reply.replies"
         :likes="reply.likes"
         :repliedAt="reply.repliedAt"
         :isLike="reply.isLike"
-        :nickname="reply.replier.nickname" /> 
+        :nickname="reply.replier.nickname" />
     </div>
     </div>
   </div>
@@ -129,9 +130,9 @@ export default {
     duration() {
       if (!this.article.createdAt) {
         return "加载中..."
-      } 
+      }
 
-      let now = moment();  
+      let now = moment();
       let createdAt = moment(this.article.createdAt * 1000);
       let diff = moment.duration(now.diff(createdAt));
       if (diff.asDays() > 10) {
@@ -164,7 +165,7 @@ export default {
         }).finally(() => {
           Page && Page.postMessage(
             JSON.stringify(
-              {"event": "pageMounted"}  
+              {"event": "pageMounted"}
             )
           );
         })
@@ -198,11 +199,11 @@ export default {
         })
     },
     share() {
-      const { Page } = window; 
+      const { Page } = window;
        Page && Page.postMessage(
         JSON.stringify(
-          {"event": "doShare", data: this.article}  
-        ) 
+          {"event": "doShare", data: this.article}
+        )
       )
     },
     report() {
@@ -218,18 +219,18 @@ export default {
       if (!Page) { return; }
       Page.postMessage(
         JSON.stringify(
-          {"event": "inviteUser"}  
+          {"event": "inviteUser"}
         )
-      ); 
+      );
     },
     answer() {
       const { Page } = window;
       if (!Page) { return; }
       Page.postMessage(
         JSON.stringify(
-          {"event": "doAnswer"}  
+          {"event": "doAnswer"}
         )
-      ); 
+      );
     }
   }
 }
@@ -276,7 +277,7 @@ article {
 
 a {
   text-decoration: none;
-  -webkit-tap-highlight-color:rgba(255,255,255,0.6); 
+  -webkit-tap-highlight-color:rgba(255,255,255,0.6);
 }
 
 </style>
