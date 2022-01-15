@@ -3,7 +3,7 @@
 <div class="body" v-on:click="goToDetail">
     <div class="avatar-box">
         <div class="avatar">
-            <img :src="avatar"/>
+          <Avatar :avatar="this.avatar" :role="role" />
         </div>
         <div class="info">
             <h4>{{ nickname }}</h4>
@@ -24,9 +24,11 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import Avatar from "./Avatar";
 
 export default {
   name: 'Answer',
+  components: { Avatar },
   props: {
     articleId: Number,
     id: Number,
@@ -38,6 +40,7 @@ export default {
     likes: Number,
     isLike: Boolean,
     replyList: Array,
+    role: Number,
     repliedAt: Number,
   },
   data () {
@@ -129,17 +132,6 @@ export default {
 }
 
 .avatar {
-    width: 40px;
-    height: 40px;
-    margin-right: 16px;
-}
-
-.avatar img {
-    object-fit: cover; /* Do not scale the image */
-    width: 40px;
-    height: 40px;
-    background-color: gray;
-    border-radius: 20px;
 }
 
 article {
