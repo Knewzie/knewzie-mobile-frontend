@@ -2,7 +2,7 @@
   <div id="app">
     <div class="article">
       <div class="video-container">
-        <video class="video" :src="article.videoList[0]" controls />
+        <video class="video" :src="article.videoList[0]" controls playsinline />
       </div>
       <article>
         <Author
