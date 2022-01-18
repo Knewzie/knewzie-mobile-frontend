@@ -1,16 +1,16 @@
 <!-- 回答列表 item，包含多级回复 -->
 <template>
-<div class="body" v-on:click="goToDetail">
+<div class="body">
     <div class="avatar-box">
         <div class="avatar">
-          <Avatar :avatar="this.avatar" :role="role" />
+          <Avatar :avatar="this.avatar" :role="role" :id="replier" />
         </div>
         <div class="info">
             <h4>{{ nickname }}</h4>
             <abbr>{{ duration }} · 回答了问题</abbr>
         </div>
     </div>
-    <article class="content" v-html="content" />
+    <article class="content" v-html="content" v-on:click="goToDetail" />
     <section class="actions">
       <a class="action-item" style="margin-right: 32px" v-on:click="like">
         <img :src="likeIcon" /><span>{{ currentLikes }}</span>
@@ -34,6 +34,7 @@ export default {
     id: Number,
     nickname: String,
     intro: String,
+    replier: Number,
     avatar: String,
     content: String,
     replies: Number,

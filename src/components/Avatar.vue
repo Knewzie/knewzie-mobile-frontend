@@ -11,6 +11,7 @@ export default {
   props: {
     avatar: String,
     role: Number,
+    id: Number,
   },
   computed: {
     certificatedClass () {
