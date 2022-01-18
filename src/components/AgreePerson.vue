@@ -1,7 +1,7 @@
 <template>
 <div class="avatar-box">
     <div class="avatar">
-        <img :src="avatar" />
+        <Avatar :avatar="this.avatar" :role="role" :id="id" />
     </div>
     <div class="info">
         <div><h4>{{ name }}</h4><span>赞同了这个问题</span></div>
@@ -11,22 +11,25 @@
 </template>
 <script>
 import moment from 'moment'
+import Avatar from "./Avatar";
 
 export default {
   name: 'AgreePerson',
+  components: { Avatar },
   props: {
     id: Number,
     name: String,
     avatar: String,
+    role: Number,
     likedAt: Number
   },
   computed: {
       duration() {
         if (!this.likedAt) {
             return "加载中..."
-        } 
+        }
 
-        let now = moment();  
+        let now = moment();
         let createdAt = moment(this.likedAt * 1000);
         let diff = moment.duration(now.diff(createdAt));
         if (diff.asDays() > 10) {
@@ -66,7 +69,7 @@ export default {
     background-color: gray;
     border-radius: 20px;
 }
- 
+
 .info h4 {
     display: inline-block;
     margin: 0 14px 0 0;

@@ -1,6 +1,6 @@
 <template>
 <div class="avatar-box">
-    <Avatar :avatar="avatar" :role="role" />
+    <Avatar :avatar="avatar" :role="role" :id="id" />
     <div class="info">
         <div><h4>{{ name }}</h4><span class="certificate-info">{{ this.title }}</span></div>
         <abbr>简介：{{ intro || "暂无简介"}}</abbr>
@@ -75,12 +75,6 @@ export default {
     }
   },
   methods: {
-      showAuthor () {
-        const { Page } = window;
-        Page && Page.postMessage(JSON.stringify(
-            {"event": "showAuthor", data : { id : this.id }}
-        ));
-      },
       async follow () {
           try {
             this.loading = true;

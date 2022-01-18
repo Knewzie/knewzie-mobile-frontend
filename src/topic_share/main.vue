@@ -44,6 +44,7 @@
                 :id="reply.id"
                 :key="reply.id"
                 :content="reply.content"
+                :replier="reply.replier.uid"
                 :avatar="reply.replier.avatar"
                 :role="reply.replier.role"
                 :replies="reply.replies"

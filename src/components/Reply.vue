@@ -1,9 +1,9 @@
 <!-- 回答列表 item，包含多级回复 -->
 <template>
   <div class="body">
-    <div class="avatar-box" v-on:click="showAuthor">
+    <div class="avatar-box">
       <div class="avatar">
-        <img :src="avatar"/>
+        <Avatar :avatar="this.avatar" :role="role" :id="id" />
       </div>
       <div class="info">
         <h4>{{ nickname }}</h4>
@@ -93,12 +93,6 @@ export default {
     }
   },
   methods: {
-    showAuthor () {
-      const { Page } = window;
-      Page && Page.postMessage(JSON.stringify(
-          {"event": "showAuthor", data : { id : this.authorId }}
-      ));
-    },
     like() {
       const isLike = this.currentIsLike
       axios.post(`/user/topic/like`, {

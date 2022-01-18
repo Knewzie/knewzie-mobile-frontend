@@ -59,6 +59,7 @@
       <AgreePerson
         v-for="user in likers"
         :key="user.id"
+        :role="user.role"
         :avatar="user.avatar"
         :name="user.nickname"
         :likedAt="user.likedAt" />
@@ -74,6 +75,7 @@
         :id="reply.id"
         :key="reply.id"
         :content="reply.content"
+        :replier="reply.replier.uid"
         :avatar="reply.replier.avatar"
         :role="reply.replier.role"
         :replies="reply.replies"
