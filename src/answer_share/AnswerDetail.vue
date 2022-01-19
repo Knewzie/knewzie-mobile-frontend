@@ -53,6 +53,7 @@
                :id="reply.id"
                :key="reply.id"
                :content="reply.content"
+               :role="reply.replier.role"
                :avatar="reply.replier.avatar"
                :authorId="reply.replier.uid"
                :nickname="reply.replier.nickname"
