@@ -3,7 +3,7 @@
   <div class="body">
     <div class="avatar-box">
       <div class="avatar">
-        <Avatar :avatar="this.avatar" :role="role" :id="id" />
+        <Avatar :avatar="this.avatar" :role="role" :id="authorId" />
       </div>
       <div class="info">
         <h4>{{ nickname }}</h4>
@@ -38,12 +38,13 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import Avatar from "./Avatar";
 import ReplyCollapseItem from "./ReplyCollapseItem";
 
 export default {
   name: 'Reply',
   components: {
-    ReplyCollapseItem
+    ReplyCollapseItem, Avatar
   },
   props: {
     topicId: Number,
@@ -52,6 +53,7 @@ export default {
     authorId: Number,
     intro: String,
     avatar: String,
+    role: Number,
     content: String,
     replies: Number,
     likes: Number,

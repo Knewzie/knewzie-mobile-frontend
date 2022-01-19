@@ -5,7 +5,7 @@
       <Author
           :id="article.replier.uid"
           :name="article.replier.nickname"
-          :avatar="article.replier.avatar" 
+          :avatar="article.replier.avatar"
           :intro="article.replier.intro"
           :role="article.replier.role"
           :title="article.replier.title"
@@ -23,9 +23,9 @@
     </div>
 
     <section class="actions">
-      <a class="action-item" 
+      <a class="action-item"
          v-bind:class="{ active: type === 0 }"
-         style="margin-right: 32px" 
+         style="margin-right: 32px"
          v-on:click="like">
         <img class="btn-prefix" src="/img/btn_love_highlighted.png" />
         <span>{{ article.likes }}</span>
@@ -43,7 +43,7 @@
     </section>
 
     <div v-if="type === 0">
-      <AgreePerson 
+      <AgreePerson
         v-for="user in likers"
         :key="user.id"
         :avatar="user.avatar"
@@ -59,6 +59,7 @@
           :key="reply.id"
           :content="reply.content"
           :avatar="reply.replier.avatar"
+          :role="reply.replier.role"
           :authorId="reply.replier.uid"
           :nickname="reply.replier.nickname"
           :replies="reply.replies"
@@ -115,9 +116,9 @@ export default {
     duration() {
       if (!this.article.repliedAt) {
         return "加载中..."
-      } 
+      }
 
-      let now = moment();  
+      let now = moment();
       let createdAt = moment(this.article.repliedAt * 1000);
       let diff = moment.duration(now.diff(createdAt));
       if (diff.asDays() > 10) {
@@ -150,7 +151,7 @@ export default {
         }).finally(() => {
           Page && Page.postMessage(
             JSON.stringify(
-              {"event": "pageMounted"}  
+              {"event": "pageMounted"}
             )
           );
         })
@@ -244,7 +245,7 @@ body {
 
 a {
   text-decoration: none;
-  -webkit-tap-highlight-color:rgba(255,255,255,0.6); 
+  -webkit-tap-highlight-color:rgba(255,255,255,0.6);
 }
 
 </style>
