@@ -111,7 +111,7 @@ export default {
   computed: {
     topicId() {
       const { topicId } = this.$router.currentRoute.params;
-      return topicId;
+      return parseInt(topicId);
     },
     duration() {
       if (!this.article.repliedAt) {
