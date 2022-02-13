@@ -1,4 +1,5 @@
 import Quill from "quill";
+import axios from 'axios';
 import "./editor.css"
 // var toolbarOptions = {
 //     container: [[{"size": [ 'small', false, 'large']}],["bold", "italic", "link"], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ["image", "video"] ],
@@ -36,11 +37,13 @@ class HashtagBlot extends Embed {
 
     static create(data) {
         const node = super.create();
-        const atSign = document.createElement('span');
+        const atSign = document.createElement('a');
         atSign.className = 'ql-hashtag-at-sign';
-        atSign.innerHTML = '#';
+        atSign.innerHTML = '#' + data.value + " ";
+        atSign.href = "/issue/" + encodeURIComponent(data.value);
+        atSign.dataset.issue = data.value
         node.appendChild(atSign);
-        node.innerHTML += data.value;
+        // node.innerHTML += data.value;
         node.dataset.id = data.id;
         node.dataset.value = data.value;
         return node;
@@ -376,17 +379,25 @@ var options = {
     modules: {
         toolbar: false,
         hashtag: {
-            source: function (searchTerm) {
-                const list = [
-                    {id:"b", value:"b"},
-                    {id:"c", value:"c"},
-                ];
+            source: async function (searchTerm) {
+                const list = [];
 
                 if (searchTerm) {
-                    list.unshift( {id: searchTerm, value: searchTerm})
+                    list.unshift( {id: -1, value: searchTerm})
                 }
 
                 this.renderList(list, searchTerm);
+
+                let response = await axios.post("/issue/list", { "keyword": searchTerm });
+                const { success } = response.data
+                if (!success) {
+                    return;
+                }
+
+                const { data } = response.data;
+                let netList = data.map(it => ({ "id": it.id, "value": it.name}))
+
+                this.renderList(list.concat(netList), searchTerm);
             },
         }
     },
