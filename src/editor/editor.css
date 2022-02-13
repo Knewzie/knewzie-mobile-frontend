@@ -35,6 +35,11 @@
     padding: 3px 0;
 }
 
+.hashtag  a {
+    text-decoration: none !important;
+    color: #3EB871;
+}
+
 .hashtag > span {
     margin: 0 3px;
 }
