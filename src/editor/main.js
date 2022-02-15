@@ -384,6 +384,8 @@ var options = {
 
                 if (searchTerm) {
                     list.unshift( {id: -1, value: searchTerm})
+                } else {
+                    return;
                 }
 
                 this.renderList(list, searchTerm);
