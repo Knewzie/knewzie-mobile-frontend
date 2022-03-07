@@ -25,7 +25,8 @@
         <div class="abbr-box time-box">
           <time>发布于 {{ duration }}</time>
         </div>
-        <div class="content">{{ article.content }}</div>
+        <!-- <div class="content">{{ article.content }}</div> -->
+        <div class="content" v-html="article.content">
       </article>
     </div>
 
