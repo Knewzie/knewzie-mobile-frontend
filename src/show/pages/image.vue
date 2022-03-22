@@ -26,7 +26,7 @@
           <time>发布于 {{ duration }}</time>
         </div>
         <!-- <div class="content">{{ article.content }}</div> -->
-        <div class="content" v-html="article.content">
+        <div class="content" v-html="article.content"></div>
       </article>
     </div>
 
