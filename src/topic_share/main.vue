@@ -164,7 +164,8 @@ export default {
     },
   },
   created() {
-    axios.defaults.baseURL = "//api.knewzie.com";
+    // axios.defaults.baseURL = "//api.knewzie.com";
+        axios.defaults.baseURL = "https://api.knewzie.com"
 
     const { wx } = window;
 
@@ -313,7 +314,7 @@ export default {
       }
       var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
       if (isAndroid) {
-        var isHuawei = ua.match(/huawei/i) == "huawei";
+        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
         if (isHuawei) {
           url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
         }
