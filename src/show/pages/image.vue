@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <div class="topBar">
+      <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
+      <div class="topBtn">
+        <a v-on:click="download"><span class="topBtnText">下载App</span></a>
+      </div>
+    </div>
     <div class="article">
       <Author
           :id="article.creator.uid"
@@ -26,7 +32,7 @@
           <time>发布于 {{ duration }}</time>
         </div>
         <!-- <div class="content">{{ article.content }}</div> -->
-        <div class="content" v-html="article.content">
+        <div class="content" v-html="article.content"></div>
       </article>
     </div>
 
@@ -270,6 +276,28 @@ export default {
       });
     });
   },
+
+   download() {
+      var ua = navigator.userAgent;
+      //  var appVer = navigator.appVersion;
+      // console.log('appver='+appVer);
+      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
+      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      if (isIOS) {
+        url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
+      }
+      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
+      if (isAndroid) {
+        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
+        if (isHuawei) {
+          url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
+        }
+      }
+      window.location.href = url;
+      setTimeout(() => {
+        window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
+      }, 2000);
+    },
 }
 </script>
 
@@ -290,6 +318,40 @@ body {
 </style>
 
 <style scoped>
+.topBar {
+  background-image: url("@/images/bg.png");
+  background-size: cover;
+  height: 60px;
+}
+
+.topLogo {
+  top: 10px;
+  left: 30px;
+  position: absolute;
+}
+
+.logo {
+  width: 100px;
+  object-fit: cover;
+  pointer-events: visible;
+}
+
+.topBtn {
+  border-radius: 100px;
+  padding: 4px 8px;
+  background-color: white;
+  position: absolute;
+  top: 12px;
+  right: 20px;
+}
+
+.topBtnText {
+  font-family: SourceHan Sans CN-Medium;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8dce44;
+}
+
 .article {
   background: white;
 }
