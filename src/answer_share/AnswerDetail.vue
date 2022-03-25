@@ -126,6 +126,7 @@ export default {
         intro: "",
         relationship: 0,
       },
+      imageList: [],
       replyList: []
     },
     type: 1,
@@ -173,12 +174,17 @@ export default {
     wx.ready(() => {
       this.wxReady = true;
 
+      let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
+      if (this.article.imageList && this.article.imageList.length > 0) {
+        imgUrlThis = this.article.imageList[0];
+      }
 
       wx.onMenuShareAppMessage({
         title: this.article.title,
         desc: `${this.article.likes} 人喜欢, ${this.article.pv} 人查看`,
         link: window.location.href,
-        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        imgUrl: imgUrlThis,
         success: function () {
         }
       });
