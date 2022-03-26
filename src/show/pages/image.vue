@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <div class="topBar">
-      <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
-      <div class="topBtn">
+     <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
+        <div class="topBtn">
         <a v-on:click="download"><span class="topBtnText">下载App</span></a>
-      </div>
+      </div> 
     </div>
     <div class="article">
+      <article>
       <Author
           :id="article.creator.uid"
           :name="article.creator.nickname"
@@ -21,7 +22,7 @@
           <img :src="image"/>
         </swiper-slide>
       </swiper>
-      <article>
+      
         <h3>{{ article.title }}</h3>
         <div class="abbr-box tags" v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
@@ -115,7 +116,8 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
-    Author, Answer
+    Author, 
+    Answer
   },
 
   data: () => ({
@@ -219,6 +221,27 @@ export default {
       // alert(err.detail.errMsg);
       this.oia();
     },
+     download() {
+      var ua = navigator.userAgent;
+      //  var appVer = navigator.appVersion;
+      // console.log('appver='+appVer);
+      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
+      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      if (isIOS) {
+        url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
+      }
+      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
+      if (isAndroid) {
+        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
+        if (isHuawei) {
+          url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
+        }
+      }
+      window.location.href = url;
+      setTimeout(() => {
+        window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
+      }, 2000);
+    },
   },
 
   created() {
@@ -284,27 +307,7 @@ export default {
     });
   },
 
-   download() {
-      var ua = navigator.userAgent;
-      //  var appVer = navigator.appVersion;
-      // console.log('appver='+appVer);
-      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
-      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-      if (isIOS) {
-        url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
-      }
-      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
-      if (isAndroid) {
-        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
-        if (isHuawei) {
-          url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
-        }
-      }
-      window.location.href = url;
-      setTimeout(() => {
-        window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
-      }, 2000);
-    },
+  
 }
 </script>
 
