@@ -270,7 +270,8 @@ export default {
       wx.onMenuShareTimeline({
         title: this.article.title,
         link: window.location.href,
-        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        imgUrl: imgUrlThis,
         success: function () {
         }
       });
@@ -332,6 +333,9 @@ body {
   background-image: url("@/images/bg.png");
   background-size: cover;
   height: 60px;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
 }
 
 .topLogo {
@@ -364,6 +368,8 @@ body {
 
 .article {
   background: white;
+  top: 60px;
+  position: relative; 
 }
 
 
