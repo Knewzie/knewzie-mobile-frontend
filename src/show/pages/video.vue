@@ -89,8 +89,11 @@ export default {
         role: 1,
         relationship: 0,
       },
-      imageList: [],
+      // imageList: [],
       videoList: [],
+      extend:{
+        videoThumbnail: "",
+      },
       replyList: []
     },
     type: 1,
@@ -202,9 +205,9 @@ export default {
     wx.ready(() => {
       this.wxReady = true;
 
-      let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
-      if (this.article.imageList && this.article.imageList.length > 0) {
-        imgUrlThis = this.article.imageList[0];
+      let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";  
+      if (this.article.extend && this.article.extend.videoThumbnail) {
+        imgUrlThis = this.article.extend.videoThumbnail;
       }
 
       wx.onMenuShareAppMessage({
