@@ -166,7 +166,7 @@ export default {
   },
   created() {
     // axios.defaults.baseURL = "//api.knewzie.com";
-        axios.defaults.baseURL = "https://api.knewzie.com"
+    axios.defaults.baseURL = "https://api.knewzie.com";
 
     const { wx } = window;
 
@@ -189,7 +189,8 @@ export default {
       wx.onMenuShareTimeline({
         title: this.article.title,
         link: window.location.href,
-        imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        imgUrl: imgUrlThis,
         success: function () {},
       });
     });
@@ -340,6 +341,9 @@ export default {
   background-image: url("@/images/bg.png");
   background-size: cover;
   height: 60px;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
 }
 
 .topLogo {
@@ -484,6 +488,8 @@ h3 {
 
 .article {
   background: white;
+  top: 60px;
+  position: relative; 
 }
 
 .tags {
