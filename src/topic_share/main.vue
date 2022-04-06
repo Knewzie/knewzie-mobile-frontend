@@ -170,6 +170,12 @@ export default {
 
     const { wx } = window;
 
+    wx.error(function(res){
+      console.dir(res);
+      alert(res);
+    });
+
+
     wx.ready(() => {
       this.wxReady = true;
       let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
@@ -489,7 +495,7 @@ h3 {
 .article {
   background: white;
   top: 60px;
-  position: relative; 
+  position: relative;
 }
 
 .tags {
