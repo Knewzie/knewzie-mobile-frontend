@@ -171,8 +171,7 @@ export default {
     const { wx } = window;
 
     wx.error(function(res){
-      console.dir(JSON.stringify(res));
-      // alert(JSON.stringify(res));
+      alert(JSON.stringify(res));
     });
 
 
