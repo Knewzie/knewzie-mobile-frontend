@@ -212,13 +212,16 @@ export default {
         const { data } = response.data;
         this.article = data;
       })
-      .then(() =>
-        axios.post(`/config/mp/signature`, {
+      .then(() => {
+        let params = {
           appId,
           noncestr: nonceStr,
           timestamp: timestamp,
           url: window.location.href,
-        })
+        };
+        alert(JSON.stringify(params));
+        return axios.post(`/config/mp/signature`, params)
+      }
       )
       .then((response) => {
         const { data: sign } = response.data;
