@@ -17,11 +17,16 @@
           :title="article.creator.title"
           :showFollow="false"
           :relationship="article.creator.relationship"/>
-      <swiper class="swiper">
+      <!-- <swiper class="swiper">
         <swiper-slide class="slider" v-for="image in article.imageList" :key="image">
           <img :src="image"/>
         </swiper-slide>
-      </swiper>
+      </swiper> -->
+       <Carousel height="400px" indicatorPosition="outside">
+      <CarouselItem v-for="image in article.imageList" :key="image">       
+         <img :src="image" className="image"/> 
+      </CarouselItem>
+    </Carousel>
       
         <h3>{{ article.title }}</h3>
         <div class="abbr-box tags" v-if="article.categories.length > 0">
@@ -106,18 +111,24 @@
 <script>
 import Author from '../../components/Author.vue'
 import Answer from '../../components/Answer.vue'
-import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
+// import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import 'swiper/css/bundle'
 import axios from "axios";
 import moment from "moment";
 
+import {Carousel,CarouselItem} from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+ 
+
 export default {
   name: "ShowImage",
   components: {
-    Swiper,
-    SwiperSlide,
+    // Swiper,
+    // SwiperSlide,
     Author, 
-    Answer
+    Answer,
+    Carousel,
+    CarouselItem
   },
 
   data: () => ({
@@ -466,6 +477,29 @@ article {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+
+/* .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 400px;
+    margin: 0;
+  } */
+
+  /* .el-carousel__item:nth-child(2n) {
+     background-color: #99a9bf;
+  }
+  
+  .el-carousel__item:nth-child(2n+1) {
+     background-color: #d3dce6;
+  } */
+
+  .el-carousel__item img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
 }
 
 </style>
