@@ -170,6 +170,11 @@ export default {
 
     const { wx } = window;
 
+    wx.error(function(res){
+      alert(JSON.stringify(res));
+    });
+
+
     wx.ready(() => {
       this.wxReady = true;
       let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
@@ -206,16 +211,20 @@ export default {
         const { data } = response.data;
         this.article = data;
       })
-      .then(() =>
-        axios.post(`/config/mp/signature`, {
+      .then(() => {
+        let params = {
           appId,
           noncestr: nonceStr,
           timestamp: timestamp,
           url: window.location.href,
-        })
+        };
+        // alert(JSON.stringify(params));
+        return axios.post(`/config/mp/signature`, params)
+      }
       )
       .then((response) => {
         const { data: sign } = response.data;
+        // alert(sign);
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
           appId: appId, // 必填，公众号的唯一标识
@@ -489,7 +498,7 @@ h3 {
 .article {
   background: white;
   top: 60px;
-  position: relative; 
+  position: relative;
 }
 
 .tags {

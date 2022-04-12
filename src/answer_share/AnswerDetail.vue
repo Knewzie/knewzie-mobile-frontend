@@ -171,6 +171,10 @@ export default {
     const { topicId, replyId } = this.$router.currentRoute.params;
     const { wx } = window;
 
+    wx.error(function(res){
+      alert(JSON.stringify(res));
+    });
+
     wx.ready(() => {
       this.wxReady = true;
 
@@ -331,7 +335,7 @@ export default {
         window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
       }, 2000);
     },
-    
+
   }
 }
 </script>
@@ -496,7 +500,7 @@ h3 {
 .article {
   background: white;
   top: 60px;
-  position: relative; 
+  position: relative;
 }
 
 .tags span {
