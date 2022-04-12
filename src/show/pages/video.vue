@@ -202,10 +202,14 @@ export default {
 
     const {wx} = window
 
+    wx.error(function(res){
+      alert(JSON.stringify(res));
+    });
+
     wx.ready(() => {
       this.wxReady = true;
 
-      let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";  
+      let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
       if (this.article.extend && this.article.extend.videoThumbnail) {
         imgUrlThis = this.article.extend.videoThumbnail;
       }
@@ -319,7 +323,7 @@ body {
 .article {
   background: white;
   top: 60px;
-  position: relative; 
+  position: relative;
 }
 
 article {

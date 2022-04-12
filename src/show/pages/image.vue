@@ -4,7 +4,7 @@
      <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
         <div class="topBtn">
         <a v-on:click="download"><span class="topBtnText">下载App</span></a>
-      </div> 
+      </div>
     </div>
     <div class="article">
       <article>
@@ -27,7 +27,6 @@
          <img :src="image" className="image"/> 
       </CarouselItem>
     </Carousel>
-      
         <h3>{{ article.title }}</h3>
         <div class="abbr-box tags" v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
@@ -260,6 +259,10 @@ export default {
 
     const {wx} = window
 
+    wx.error(function(res){
+      alert(JSON.stringify(res));
+    });
+
     wx.ready(() => {
       this.wxReady = true;
 
@@ -319,7 +322,7 @@ export default {
     });
   },
 
-  
+
 }
 </script>
 
@@ -380,7 +383,7 @@ body {
 .article {
   background: white;
   top: 60px;
-  position: relative; 
+  position: relative;
 }
 
 
