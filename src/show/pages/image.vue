@@ -22,7 +22,7 @@
           <img :src="image"/>
         </swiper-slide>
       </swiper> -->
-       <Carousel height="400px" indicatorPosition="outside" :autoplay="false">
+       <Carousel height="400px" indicatorPosition="outside" :autoplay="false" arrow="always">
       <CarouselItem v-for="image in article.imageList" :key="image">       
          <img :src="image" className="image"/> 
       </CarouselItem>
