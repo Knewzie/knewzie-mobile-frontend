@@ -1,6 +1,10 @@
 const path = require("path")
 
 module.exports = {
+  devServer: {
+    // proxy: 'http://localhost:9529'
+    port: 9529
+  },
   pages: {
     topic_mobile: {
       entry: "src/topic/main.js",
@@ -29,6 +33,10 @@ module.exports = {
     reply_mobile: {
       entry: "src/answer/main.js",
       template: "public/answer.html"
+    },
+    activity_mobile: {
+      entry: "src/activity/main.js",
+      template: "public/index.html"
     },
   },
   // chainWebpack: config => config.optimization.minimize(false),
