@@ -1,17 +1,22 @@
 <template>
 <div class="avatar-box">
-  <div class="info">
-        <div><h4>{{ title }}</h4>
+    <!-- <Avatar :avatar="avatar" :role="role" :id="id" /> -->
+    <div class="info">
+        <div><h4>{{  this.title  }}</h4>
         <!-- <span class="certificate-info">{{ this.title }}</span> -->
         </div>
-        <!-- <abbr>简介：{{ intro || "暂无简介"}}</abbr> -->
+        <!-- <abbr>{{ duration || "ago"}}</abbr> -->
+         <!-- <div class="abbr-box time-box"> -->
+          <abbr> {{ duration }}</abbr>
+          <span style="flex: 1"></span>
+          <!-- <a v-on:click="report"><i class="btn-report" /></a> -->
+        <!-- </div> -->
     </div>
-    <Avatar :avatar="avatar" :role="role" :id="id" />
-    
-    <div v-show="loading">
+    <!-- <div class="loading-box"  v-show="loading">
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
-    </div>
-     <span class="certificate-info">{{ this.name }}</span>
+    </div> -->
+    <a v-on:click="report"><i class="btn-report" /></a>
+     <!-- <a v-on:click="report"><i class="btn-collect" /></a> -->
      <!-- <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a> -->
 </div>
 </template>
@@ -35,6 +40,7 @@ export default {
     role: Number,
     title: String,
     relationship: Number,
+    duration: String,
   },
   data() {
       return {
@@ -90,7 +96,15 @@ export default {
           } finally {
             this.loading = false;
           }
-      }
+      },
+      report() {
+      const { Page } = window;
+      Page && Page.postMessage(
+        JSON.stringify({
+          "event": "report", data: { topicId: this.article.id }
+        })
+      );
+    },
   }
 }
 </script>
@@ -107,6 +121,21 @@ export default {
 </style>
 
 <style scoped>
+.btn-report {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-image: url("@/images/ic_report.png");
+  background-size: contain;
+}
+
+/* .btn-collect {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  background-image: url("@/images/ic_collect.png");
+  background-size: contain;
+} */
 
 .avatar-box {
     padding: 16px 18px;
