@@ -1,22 +1,15 @@
 <template>
   <div id="app">
     <div class="article">
-      <!-- <ElImage
-      style="width: 100px; height: 100px"
-      :src="this.article.imageList[0]"
-      :fit="fit"/> -->
-        <img :src="this.article.imageList[0]" class="image" style="width: 100%; height: 150px" :fit="fit">
-      
-      <ActivityAuthor
+      <Author
           :id="article.creator.uid"
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
           :intro="article.creator.intro"
           :role="article.creator.role"
-          :title="article.title"
+          :title="article.creator.title"
           :showFollow="true"
-          :relationship="article.creator.relationship"
-          :duration="duration" />
+          :relationship="article.creator.relationship" />
       <article>
         <h3>{{ article.title }}</h3>
         <div class="abbr-box tags"  v-if="article.categories.length > 0">
@@ -24,16 +17,67 @@
             {{ category.name }}
           </span>
         </div>
+        <div class="abbr-box time-box">
+          <time> {{ duration }}</time>
+          <span style="flex: 1"></span>
+          <a v-on:click="report"><i class="btn-report" /></a>
+        </div>        
+        <div>
+          <section class="time-section">
+            <div>
+              <img class="btn-prefix" src="/img/activity_time.png" />
+            </div>
+            <div class="time-info">
+               <div><span class="time_title">星期三，4月，2022</span></div>
+               <abbr>10:00-14:00 (新西兰时间)</abbr>
+            </div>
+          </section>          
+          <section class="time-section">
+            <div>
+              <img class="btn-prefix" src="/img/activity_video.png" />
+            </div>
+            <div class="time-info">
+               <div><span class="time_title">线上活动</span></div>
+               <abbr>参与活动即可获得活动链接</abbr>
+            </div>
+          </section>               
+        </div>
         <div class="content" v-html="article.content">
         </div>
-        <div class="abbr-box time-box">
+        <!-- <div class="abbr-box time-box">
           <time>发布于 {{ duration }}</time>
           <span style="flex: 1"></span>
           <a v-on:click="report"><i class="btn-report" /></a>
-        </div>
+        </div> -->
       </article>
     </div>
-    <section class="answer-actions">
+    <section class="sponsor-section">
+      <div>
+        <span class="sponsor">发起人</span>              
+      </div>
+      <div>
+        <Avatar :avatar="avatar" :role="role" :id="id" />
+      </div>
+    </section>
+    <section class="sponsor-section">
+      <div>
+        <span class="sponsor">参与人</span>              
+      </div>
+      <div>
+        <Avatar :avatar="avatar" :role="role" :id="id" />
+      </div>
+    </section>    
+    <section class="signup-section">      
+        <div>
+           <span class="price_title">免费活动</span>
+        </div>
+        <div class="signup-action">
+           <div><img class="share" src="/img/share.png" /></div>&nbsp;
+           <div><img class="sign_up_now" src="/img/sign_up_now.png" /></div>
+        </div>      
+    </section>
+
+    <!-- <section class="answer-actions">
       <a class="action-item" v-on:click="invite">
         <img class="btn-prefix" src="/img/btn_answer.png" /><span>邀请回答</span>
       </a>
@@ -41,7 +85,7 @@
          v-on:click="answer">
         <img class="btn-prefix" src="/img/btn_answer.png" /><span>我要回答</span>
       </a>
-    </section>
+    </section> 
     <section class="actions">
       <a class="action-item"
          v-bind:class="{ active: type === 0 }"
@@ -60,7 +104,7 @@
         v-on:click="switchToAnswer"
         v-bind:class="{ active: type == 1 }"
         >{{ article.replies }} 个回答</a>
-    </section>
+    </section>-->
 
     <div v-if="type === 0">
       <AgreePerson
@@ -96,17 +140,19 @@
 </template>
 
 <script>
-import  ActivityAuthor from '../components/ActivityAuthor.vue'
+import Author from '../components/Author.vue'
 import Answer from '../components/Answer.vue'
 import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
+import Avatar from '../components/Avatar.vue'
 
 export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    ActivityAuthor, Answer, AgreePerson
+    Author, Answer, AgreePerson,
+    Avatar
   },
   data: () => ({
     article: {
@@ -127,7 +173,6 @@ export default {
         role: 1,
         relationship: 0,
       },
-      imageList: [],
       replyList: []
     },
     type: 1,
@@ -262,6 +307,7 @@ article {
 .content img {
   width: 100%;
 }
+
 .content video {
   width: 100%;
 }
@@ -311,6 +357,73 @@ h3 {
  padding: 12px 28px;
  color: #B3B3B3;
  font-size: 12px;
+}
+
+.time-section {
+  display: flex;
+  background: white;
+  margin-top: 10px;
+  padding: 7px 28px;
+  align-items: center;
+}
+
+.time-info {
+  display: inline-block;
+  flex-direction: column;
+  margin-left: 6px;
+  color: black;
+}
+
+.time_title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.sponsor-section {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  margin-top: 10px;
+  padding: 7px 28px;
+  align-items: left;
+}
+
+.sponsor{  
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.signup-section {
+  display: flex;
+  height: 40px;
+  background: white;
+  margin-top: 10px;
+  padding: 7px 28px;
+  align-items: left;
+}
+
+.price_title{
+  color: #8DCF44;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.signup-action{
+  display: flex;
+  right: 30px;
+  position:absolute;
+}
+
+.share{
+  object-fit: cover; 
+  width: 30px;
+  height: 30px;
+}
+
+.sign_up_now{
+  object-fit: cover; 
+  width: 100%;
+  height: 30px;
 }
 
 .answer-actions {
