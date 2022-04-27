@@ -1,15 +1,22 @@
 <template>
   <div id="app">
     <div class="article">
-      <Author
+      <!-- <ElImage
+      style="width: 100px; height: 100px"
+      :src="this.article.imageList[0]"
+      :fit="fit"/> -->
+        <img :src="this.article.imageList[0]" class="image" style="width: 100%; height: 150px" :fit="fit">
+      
+      <ActivityAuthor
           :id="article.creator.uid"
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
           :intro="article.creator.intro"
           :role="article.creator.role"
-          :title="article.creator.title"
+          :title="article.title"
           :showFollow="true"
-          :relationship="article.creator.relationship" />
+          :relationship="article.creator.relationship"
+          :duration="duration" />
       <article>
         <h3>{{ article.title }}</h3>
         <div class="abbr-box tags"  v-if="article.categories.length > 0">
@@ -89,7 +96,7 @@
 </template>
 
 <script>
-import Author from '../components/Author.vue'
+import  ActivityAuthor from '../components/ActivityAuthor.vue'
 import Answer from '../components/Answer.vue'
 import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
@@ -99,7 +106,7 @@ export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    Author, Answer, AgreePerson
+    ActivityAuthor, Answer, AgreePerson
   },
   data: () => ({
     article: {
@@ -120,6 +127,7 @@ export default {
         role: 1,
         relationship: 0,
       },
+      imageList: [],
       replyList: []
     },
     type: 1,
