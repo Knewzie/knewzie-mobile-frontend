@@ -1,27 +1,30 @@
 <template>
   <div id="app">
     <div class="article">
-      <Author
+      <img :src="this.article.imageList[0]" class="image" style="width: 100%; height: 150px" :fit="fit">
+      
+      <ActivityTitle
           :id="article.creator.uid"
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
           :intro="article.creator.intro"
           :role="article.creator.role"
-          :title="article.creator.title"
+          :title="article.title"
           :showFollow="true"
-          :relationship="article.creator.relationship" />
+          :relationship="article.creator.relationship"
+          :duration="duration" />
       <article>
-        <h3>{{ article.title }}</h3>
-        <div class="abbr-box tags"  v-if="article.categories.length > 0">
+        <!-- <h3>{{ article.title }}</h3> -->
+        <!-- <div class="abbr-box tags"  v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
             {{ category.name }}
           </span>
-        </div>
-        <div class="abbr-box time-box">
+        </div> -->
+        <!-- <div class="abbr-box time-box">
           <time> {{ duration }}</time>
           <span style="flex: 1"></span>
           <a v-on:click="report"><i class="btn-report" /></a>
-        </div>        
+        </div>         -->
         <div>
           <section class="time-section">
             <div>
@@ -37,13 +40,19 @@
               <img class="btn-prefix" src="/img/activity_video.png" />
             </div>
             <div class="time-info">
-               <div><span class="time_title">线上活动</span></div>
+               <div><span class="time_title">TODO</span></div>
                <abbr>参与活动即可获得活动链接</abbr>
             </div>
-          </section>               
+          </section>
+
+        <Collapse>
+          <CollapseItem title="展开详细">
+          <div class="content" v-html="article.content"> </div>
+          </CollapseItem>
+        </Collapse>
         </div>
-        <div class="content" v-html="article.content">
-        </div>
+        <!-- <div class="content" v-html="article.content"> -->
+        <!-- </div> -->
         <!-- <div class="abbr-box time-box">
           <time>发布于 {{ duration }}</time>
           <span style="flex: 1"></span>
@@ -51,23 +60,7 @@
         </div> -->
       </article>
     </div>
-    <section class="sponsor-section">
-      <div>
-        <span class="sponsor">发起人</span>              
-      </div>
-      <div>
-        <Avatar :avatar="avatar" :role="role" :id="id" />
-      </div>
-    </section>
-    <section class="sponsor-section">
-      <div>
-        <span class="sponsor">参与人</span>              
-      </div>
-      <div>
-        <Avatar :avatar="avatar" :role="role" :id="id" />
-      </div>
-    </section>    
-    <section class="signup-section">      
+      <section class="signup-section">      
         <div>
            <span class="price_title">免费活动</span>
         </div>
@@ -76,6 +69,43 @@
            <div><img class="sign_up_now" src="/img/sign_up_now.png" /></div>
         </div>      
     </section>
+    <section class="sponsor-section">
+      <ActivityAuthor
+       :id="article.creator.uid"
+          :name="article.creator.nickname"
+          :avatar="article.creator.avatar"
+          :intro="article.creator.intro"
+          :role="article.creator.role"
+          title="发起人"
+          :showFollow="true"
+          :relationship="article.creator.relationship"
+          :duration="duration"/>
+      <!-- <div>
+        <span class="sponsor">发起人</span>              
+      </div>
+      <div>
+        <Avatar :avatar="avatar" :role="role" :id="id" />
+      </div> -->
+    </section>
+    <section class="sponsor-section">
+       <ActivityAuthor
+        :id="article.creator.uid"
+          :name="article.creator.nickname"
+          :avatar="article.creator.avatar"
+          :intro="article.creator.intro"
+          :role="article.creator.role"
+          title="参与人"
+          :showFollow="true"
+          :relationship="article.creator.relationship"
+          :duration="duration"/>
+      <!-- <div>
+        <span class="sponsor">参与人</span>              
+      </div>
+      <div>
+        <Avatar :avatar="avatar" :role="role" :id="id" />
+      </div> -->
+    </section>    
+  
 
     <!-- <section class="answer-actions">
       <a class="action-item" v-on:click="invite">
@@ -140,19 +170,22 @@
 </template>
 
 <script>
-import Author from '../components/Author.vue'
-import Answer from '../components/Answer.vue'
-import AgreePerson from '../components/AgreePerson.vue'
+import ActivityTitle from '../components/ActivityTitle.vue'
+import ActivityAuthor from '../components/ActivityAuthor.vue'
+// import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
-import Avatar from '../components/Avatar.vue'
+// import Avatar from '../components/Avatar.vue'
+import {Collapse,CollapseItem } from  'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    Author, Answer, AgreePerson,
-    Avatar
+    ActivityTitle,  ActivityAuthor ,Collapse,CollapseItem
+    // Answer, AgreePerson,
+    // Avatar
   },
   data: () => ({
     article: {
@@ -176,7 +209,8 @@ export default {
       replyList: []
     },
     type: 1,
-    likers: []
+    likers: [],
+    activeNames: ['1']
   }),
   computed: {
     likeIcon() {
@@ -227,6 +261,9 @@ export default {
         })
   },
   methods: {
+    handleChange(val) {
+        console.log(val);
+      },
     switchToAnswer() {
       this.type = 1;
     },
