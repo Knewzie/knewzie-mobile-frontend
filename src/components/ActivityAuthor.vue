@@ -1,6 +1,6 @@
 <template>
 <div class="avatar-box">
-  <div class="info">
+    <div class="info">
         <div><h4>{{ title }}</h4>
         <!-- <span class="certificate-info">{{ this.title }}</span> -->
         </div>
@@ -11,7 +11,7 @@
     <div v-show="loading">
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
     </div>
-     <span class="certificate-info">{{ this.name }}</span>
+    <div><span class="certificate-info">{{ this.name }}</span></div>
      <!-- <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a> -->
 </div>
 </template>
@@ -111,13 +111,14 @@ export default {
 .avatar-box {
     padding: 16px 18px;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: left;
     border-bottom: 1px solid #E6E6E7;
 }
 
 .certificate-info {
   display: inline-block;
-  margin-left: 6px;
+  margin-left: 0px;
   color: rgba(0,0,0, 30%);
   font-size: 12px;
 }

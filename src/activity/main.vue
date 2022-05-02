@@ -60,15 +60,18 @@
         </div> -->
       </article>
     </div>
-      <section class="signup-section">      
+    <ActivityFree />
+      <!-- <section class="signup-section">      
         <div>
            <span class="price_title">免费活动</span>
         </div>
         <div class="signup-action">
            <div><img class="share" src="/img/share.png" /></div>&nbsp;
-           <div><img class="sign_up_now" src="/img/sign_up_now.png" /></div>
-        </div>      
-    </section>
+           <div><a class="action-item"
+         v-on:click="sign_up_now"><img class="sign_up_now" src="/img/sign_up_now.png" />
+         </a></div>
+        </div>            
+    </section> -->
     <section class="sponsor-section">
       <ActivityAuthor
        :id="article.creator.uid"
@@ -172,6 +175,7 @@
 <script>
 import ActivityTitle from '../components/ActivityTitle.vue'
 import ActivityAuthor from '../components/ActivityAuthor.vue'
+import ActivityFree from '../components/ActivityFree.vue'
 // import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
@@ -183,7 +187,7 @@ export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    ActivityTitle,  ActivityAuthor ,Collapse,CollapseItem
+    ActivityTitle,  ActivityAuthor ,ActivityFree,Collapse,CollapseItem
     // Answer, AgreePerson,
     // Avatar
   },
@@ -324,7 +328,16 @@ export default {
           {"event": "doAnswer"}
         )
       );
-    }
+    },
+    sign_up_now() {
+      const { Page } = window;
+      if (!Page) { return; }
+      Page.postMessage(
+        JSON.stringify(
+          {"event": "doSignUpNow", data: { activityId: this.article.id }}
+        )
+      );
+    }    
   }
 }
 </script>
