@@ -35,17 +35,8 @@
                <abbr>10:00-14:00 (新西兰时间)</abbr>
             </div>
           </section>          
-          <section class="time-section">
-            <div>
-              <img class="btn-prefix" src="/img/activity_video.png" />
-            </div>
-            <div class="time-info">
-               <div><span class="time_title">TODO</span></div>
-               <abbr>参与活动即可获得活动链接</abbr>
-            </div>
-          </section>
-
-        <Collapse>
+          <ActivityType isOnline="true" activityLocation="abc"/>
+        <Collapse> 
           <CollapseItem title="展开详细">
           <div class="content" v-html="article.content"> </div>
           </CollapseItem>
@@ -61,17 +52,7 @@
       </article>
     </div>
     <ActivityCategory :isFree="false" :isSignup="false" :price="21.00"/>
-      <!-- <section class="signup-section">      
-        <div>
-           <span class="price_title">免费活动</span>
-        </div>
-        <div class="signup-action">
-           <div><img class="share" src="/img/share.png" /></div>&nbsp;
-           <div><a class="action-item"
-         v-on:click="sign_up_now"><img class="sign_up_now" src="/img/sign_up_now.png" />
-         </a></div>
-        </div>            
-    </section> -->
+
     <section class="sponsor-section">
       <ActivityAuthor
        :id="article.creator.uid"
@@ -176,6 +157,7 @@
 import ActivityTitle from '../components/ActivityTitle.vue'
 import ActivityAuthor from '../components/ActivityAuthor.vue'
 import ActivityCategory from '../components/ActivityCategory.vue'
+import ActivityType from '../components/ActivityType.vue'
 // import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
@@ -187,7 +169,7 @@ export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    ActivityTitle,  ActivityAuthor, ActivityCategory, Collapse, CollapseItem
+    ActivityTitle,  ActivityAuthor, ActivityCategory, ActivityType, Collapse, CollapseItem
     // Answer, AgreePerson,
     // Avatar
   },
