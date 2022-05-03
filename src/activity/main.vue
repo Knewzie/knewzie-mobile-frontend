@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="article">
-      <img :src="this.article.imageList[0]" class="image" style="width: 100%; height: 150px" :fit="fit">
+      <img :src="this.article.imageList[0]" class="image" style="width: 100%; height: 150px">
       
       <ActivityTitle
           :id="article.creator.uid"
@@ -60,7 +60,7 @@
         </div> -->
       </article>
     </div>
-    <ActivityFree />
+    <ActivityCategory :isFree="false" :isSignup="false" :price="21.00"/>
       <!-- <section class="signup-section">      
         <div>
            <span class="price_title">免费活动</span>
@@ -175,7 +175,7 @@
 <script>
 import ActivityTitle from '../components/ActivityTitle.vue'
 import ActivityAuthor from '../components/ActivityAuthor.vue'
-import ActivityFree from '../components/ActivityFree.vue'
+import ActivityCategory from '../components/ActivityCategory.vue'
 // import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
@@ -187,7 +187,7 @@ export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    ActivityTitle,  ActivityAuthor ,ActivityFree,Collapse,CollapseItem
+    ActivityTitle,  ActivityAuthor, ActivityCategory, Collapse, CollapseItem
     // Answer, AgreePerson,
     // Avatar
   },
