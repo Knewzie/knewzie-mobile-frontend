@@ -38,6 +38,10 @@ module.exports = {
       entry: "src/activity/main.js",
       template: "public/index.html"
     },
+    activity: {
+      entry: "src/activity_share/main.js",
+      template: "public/index.html"
+    },
   },
   // chainWebpack: config => config.optimization.minimize(false),
   configureWebpack: {
