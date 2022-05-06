@@ -4,12 +4,31 @@
            <span v-html="displayTitle"></span>
         </div>
         <div class="signup-action">
-           <div class="action-item">
-             <img class="share" src="/img/share.png" />             
+        <div  class="action-item" v-if="currentIsSignup"> 
+          <div class="shareBtn">
+            <a v-on:click="share">
+                   <span class="shareBtnText">立即分享</span>
+                </a>
+                </div>   
+         </div>
+        <div  class="action-item" v-else>
+          <a class="action-item"
+         v-on:click="share">
+             <img class="share" src="/img/share.png" /> 
+             </a> 
+             <a v-on:click="sign_up_now">
+                   <img class="sign_up_now" src="/img/sign_up_now.png" />
+                </a>
+        </div>
+           <!-- <div class="action-item">
+             <a class="action-item"
+         v-on:click="share">
+             <img class="share" src="/img/share.png" /> 
+             </a>            
            </div>&nbsp;
            <div class="action-item">
              <span v-html="displayAction"></span>                
-            </div>
+            </div> -->
         </div>      
     </div>
 </template>
@@ -55,7 +74,7 @@ export default {
     },
     displayAction(){
       if (this.currentIsSignup) {
-          return `<div class="shareBtn"><a v-on:click="share_now">
+          return `<div class="shareBtn"><a v-on:click="share">
                    <span class="shareBtnText"/>立即分享</span>
                 </a></div>`           
       } else {
@@ -67,23 +86,32 @@ export default {
 
   },
   methods: {
-      sign_up_now() {
+    share() {
+      const { Page } = window;
+       Page && Page.postMessage(
+        JSON.stringify(
+          {"event": "doShare", data: this.id}
+        )
+      )
+    },
+    sign_up_now() {
+      alert('sign_up_now goto doSignUpNow id:'+this.id)
       const { Page } = window;
       if (!Page) { return; }
       Page.postMessage(
         JSON.stringify(
-          {"event": "doSignUpNow",data: { activityId: this.article.id }}
+          {"event": "doSignUpNow", data: { id: this.id }}
         )
       );
-    },
-      report() {
-      const { Page } = window;
-      Page && Page.postMessage(
-        JSON.stringify({
-          "event": "report", data: { topicId: this.article.id }
-        })
-      );
-    },
+    }    ,
+    //   report() {
+    //   const { Page } = window;
+    //   Page && Page.postMessage(
+    //     JSON.stringify({
+    //       "event": "report", data: { topicId: this.article.id }
+    //     })
+    //   );
+    // },
   }
 }
 </script>
