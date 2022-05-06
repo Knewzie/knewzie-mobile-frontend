@@ -26,21 +26,13 @@
           <a v-on:click="report"><i class="btn-report" /></a>
         </div>         -->
         <div>
-          <section class="time-section">
-            <div>
-              <img class="btn-prefix" src="/img/activity_time.png" />
-            </div>
-            <div class="time-info">
-               <div><span class="time_title">星期三，4月，2022</span></div>
-               <abbr>10:00-14:00 (新西兰时间)</abbr>
-            </div>
-          </section>          
-          <ActivityType isOnline="true" activityLocation="abc"/>
-        <Collapse> 
-          <CollapseItem title="展开详细">
-          <div class="content" v-html="article.content"> </div>
-          </CollapseItem>
-        </Collapse>
+          <ActivityTime activityTime="2022-05-06 10:00:00" activityDuration="10:00-15:00"/>
+          <ActivityType :isOnline="true" activityLocation="abc"/>
+          <Collapse> 
+            <CollapseItem title="展开详细">
+              <div class="content" v-html="article.content"> </div>
+            </CollapseItem>
+          </Collapse>
         </div>
         <!-- <div class="content" v-html="article.content"> -->
         <!-- </div> -->
@@ -158,6 +150,7 @@
 import ActivityTitle from '../components/ActivityTitle.vue'
 import ActivityAuthor from '../components/ActivityAuthor.vue'
 import ActivityCategory from '../components/ActivityCategory.vue'
+import ActivityTime from '../components/ActivityTime.vue'
 import ActivityType from '../components/ActivityType.vue'
 // import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
@@ -170,7 +163,7 @@ export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    ActivityTitle,  ActivityAuthor, ActivityCategory, ActivityType, Collapse, CollapseItem
+    ActivityTitle,  ActivityAuthor, ActivityCategory, ActivityTime, ActivityType, Collapse, CollapseItem
     // Answer, AgreePerson,
     // Avatar
   },
@@ -193,7 +186,8 @@ export default {
         role: 1,
         relationship: 0,
       },
-      replyList: []
+      replyList: [],
+      imageList: []
     },
     type: 1,
     likers: [],
@@ -227,7 +221,7 @@ export default {
     }
   },
   created() {
-    //  axios.defaults.baseURL = "https://api.knewzie.com";
+     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
     axios.post(`/topic/details`,{ id })
