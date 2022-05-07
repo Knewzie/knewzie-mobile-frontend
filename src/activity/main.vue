@@ -44,8 +44,6 @@
       </article>
     </div>
 
-    <ActivityCategory :isFree="false" :isSignup="false" :price="21.00" :id="article.id"/>
- 
     <section class="sponsor-section">
       <ActivityAuthor
        :id="article.creator.uid"
@@ -83,7 +81,9 @@
       </div> -->
     </section>    
   
-
+    <div id="activityCategory-section" class="activityCategory-section">
+      <ActivityCategory :isFree="false" :isSignup="false" :price="21.00" :id="article.id"/>      
+    </div>
     <!-- <section class="answer-actions">
       <a class="action-item" v-on:click="invite">
         <img class="btn-prefix" src="/img/btn_answer.png" /><span>邀请回答</span>
@@ -187,7 +187,6 @@ export default {
         relationship: 0,
       },
       replyList: [],
-      imageList: []
     },
     type: 1,
     likers: [],
@@ -239,7 +238,8 @@ export default {
               {"event": "pageMounted"}
             )
           );
-        })
+        });
+    window.addEventListener('scroll',this.handleScroll); 
   },
   methods: {
     handleChange(val) {
@@ -316,6 +316,24 @@ export default {
     //     )
     //   );
     // }    
+    handleScroll() {
+      //定义handleScroll事件函数
+      let section = document.getElementById('activityCategory-section');
+      //let wholeScrollHeight = document.documentElement.scrollHeight; // 能够滚动的总高度
+      //let visiableHeight = document.documentElement.clientHeight; // 可视区域高度
+      let currentOffset = document.documentElement.scrollTop; // 滚动的距离
+      if(currentOffset === null || currentOffset === 'undefined'){
+          currentOffset = document.body.scrollTop;
+      }
+
+      if (currentOffset > 10 && currentOffset < 1500){
+        section.classList.add('activityCategory-section2');
+      } else if(currentOffset > 1500) {
+        section.classList.add('activityCategory-section2');
+      } else{
+        section.classList.remove('activityCategory-section2');  
+      }
+    }
   }
 }
 </script>
@@ -387,31 +405,28 @@ h3 {
  font-size: 12px;
 }
 
-.time-section {
-  display: flex;
-  background: white;
+.activityCategory-section{
+  height: 60px;
+  width: 100%;
+  position:absolute;
+  bottom: 10px;
+  z-index: 10;
+}
+
+.activityCategory-section2{
+  height: 60px;
+  width: 100%;
+  position:fixed;
   margin-top: 10px;
-  padding: 7px 28px;
-  align-items: center;
-}
-
-.time-info {
-  display: inline-block;
-  flex-direction: column;
-  margin-left: 6px;
-  color: black;
-}
-
-.time_title {
-  font-size: 16px;
-  font-weight: bold;
+  bottom: 0px;
+  z-index: 10;
 }
 
 .sponsor-section {
   display: flex;
   flex-direction: column;
   background: white;
-  margin-top: 10px;
+  /* margin: 10px 10px; */
   padding: 7px 28px;
   align-items: left;
 }
@@ -420,39 +435,6 @@ h3 {
   font-size: 16px;
   font-weight: bold;
 }
-
-.signup-section {
-  display: flex;
-  height: 40px;
-  background: white;
-  margin-top: 10px;
-  padding: 7px 28px;
-  align-items: left;
-}
-
-.price_title{
-  color: #8DCF44;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.signup-action{
-  display: flex;
-  right: 30px;
-  position:absolute;
-}
-
-/* .share{
-  object-fit: cover; 
-  width: 30px;
-  height: 30px;
-} */
-
-/* .sign_up_now{
-  object-fit: cover; 
-  width: 100%;
-  height: 30px;
-} */
 
 .answer-actions {
   display: flex;
