@@ -4,21 +4,20 @@
            <span v-html="displayTitle"></span>
         </div>
         <div class="signup-action">
-        <div  class="action-item" v-if="currentIsSignup"> 
+        <div class="action-item" v-if="this.currentIsSignup"> 
           <div class="shareBtn">
             <a v-on:click="share">
-                   <span class="shareBtnText">立即分享</span>
-                </a>
-                </div>   
-         </div>
-        <div  class="action-item" v-else>
-          <a class="action-item"
-         v-on:click="share">
+              <span class="shareBtnText">立即分享</span>
+            </a>
+          </div>   
+        </div>
+        <div class="action-item" v-else>
+          <a v-on:click="share">
              <img class="share" src="/img/share.png" /> 
-             </a> 
-             <a v-on:click="sign_up_now">
-                   <img class="sign_up_now" src="/img/sign_up_now.png" />
-                </a>
+          </a> 
+          <a v-on:click="sign_up_now">
+            <img class="sign_up_now" src="/img/sign_up_now.png" />
+          </a>
         </div>
            <!-- <div class="action-item">
              <a class="action-item"
@@ -121,8 +120,7 @@ export default {
   display: flex;
   height: 40px;
   background: white;
-  margin-top: 10px;
-  padding: 7px 28px;
+  padding: 5px 20px;
   align-items: left;
 }
 
@@ -131,8 +129,7 @@ export default {
   display: flex;
   height: 40px;
   background: #8DCF44;
-  margin-top: 10px;
-  padding: 7px 28px;
+  padding: 5px 20px;
   align-items: left;
 }
 
@@ -170,7 +167,7 @@ export default {
 }
 
 .action-item {
-  padding: 7px 4px;
+  padding: 5px 5px;
   display: flex;
   justify-content: center;
   align-items: center;
