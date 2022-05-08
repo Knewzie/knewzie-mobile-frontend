@@ -14,63 +14,35 @@
           :relationship="article.creator.relationship"
           :duration="duration" />
       <article>
+        <div class="line-box">        
+          <ActivityTime activityTime="2022-05-06 10:00:00" activityDuration="10:00-15:00"/>
+        </div>
         <div class="line-box">
-        
-          <ActivityTime activityTime="2022-05-06 10:00:00" activityDuration="10:00-15:00"/>   
-      
- </div>
-   <div class="line-box">
-          <ActivityType :isOnline="true" activityLocation="abc"/>
-           </div>
+          <ActivityType :isOnline='article.addressType === 1?true:false' :activityLocation='article.addressDetail'/>
+        </div>
 
         <!-- <Collapse>
           <CollapseItem title="展开详细"> -->
           <div class="content" v-html="article.content"> </div>
           <!-- </CollapseItem>
         </Collapse> -->
-        <!-- </div> -->
-        <!-- <div class="content" v-html="article.content"> -->
-        <!-- </div> -->
-        <!-- <div class="abbr-box time-box">
-          <time>发布于 {{ duration }}</time>
-          <span style="flex: 1"></span>
-          <a v-on:click="report"><i class="btn-report" /></a>
-        </div> -->
       </article>
     </div>
-    <ActivityCategory :isFree="false" :isSignup="false" :price="21.00" :id="article.id"/>
-      <!-- <section class="signup-section">      
-        <div>
-           <span class="price_title">免费活动</span>
-        </div>
-        <div class="signup-action">
-           <div><img class="share" src="/img/share.png" /></div>&nbsp;
-           <div><a class="action-item"
-         v-on:click="sign_up_now"><img class="sign_up_now" src="/img/sign_up_now.png" />
-         </a></div>
-        </div>            
-    </section> -->
     <section class="sponsor-section">
       <ActivityAuthor
-       :id="article.creator.uid"
-          :name="article.creator.nickname"
-          :avatar="article.creator.avatar"
-          :intro="article.creator.intro"
-          :role="article.creator.role"
-          title="发起人"
-          :showFollow="true"
-          :relationship="article.creator.relationship"
-          :duration="duration"/>
-      <!-- <div>
-        <span class="sponsor">发起人</span>              
-      </div>
-      <div>
-        <Avatar :avatar="avatar" :role="role" :id="id" />
-      </div> -->
+        :id="article.creator.uid"
+        :name="article.creator.nickname"
+        :avatar="article.creator.avatar"
+        :intro="article.creator.intro"
+        :role="article.creator.role"
+        title="发起人"
+        :showFollow="true"
+        :relationship="article.creator.relationship"
+        :duration="duration"/>
     </section>
     <section class="sponsor-section">
        <ActivityAuthor
-        :id="article.creator.uid"
+          :id="article.creator.uid"
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
           :intro="article.creator.intro"
@@ -79,13 +51,10 @@
           :showFollow="true"
           :relationship="article.creator.relationship"
           :duration="duration"/>
-      <!-- <div>
-        <span class="sponsor">参与人</span>              
-      </div>
-      <div>
-        <Avatar :avatar="avatar" :role="role" :id="id" />
-      </div> -->
     </section>    
+    <div id="activityCategory-section" class="activityCategory-section">
+      <ActivityCategory :isFree='article.cost === 0?true:false' :isSignup="false" :price='article.cost*100' :id="article.id"/>
+    </div>
   </div>
 </template>
 
@@ -113,13 +82,19 @@ export default {
   data: () => ({
     article: {
       id: -1,
-    //   title: "加载中...",
-    //   content: "加载中...",
-    //   categories: [],
-    //   likes: 0,
-    //   replies: 0,
-    //   isLike: false,
-    //   createdAt: 0,
+      topicId: -1,
+      title: "加载中...",
+      content: "加载中...",
+      startAt: 0,
+      endAt: 0,
+      applyStartAt: 0,
+      applyEndAt: 0,
+      planNumber: 0,
+      applyNumber: 0,
+      cost: 0,
+      addressType: 1,
+      addressDetail: "加载中...",
+      extend: null,
       creator: {
         uid: -1,
         name: "加载中...",
@@ -131,7 +106,6 @@ export default {
         relationship: 0,
       },
       imageList: []
-    //   replyList: []
     },
     // type: 1,
     // likers: [],
@@ -184,6 +158,7 @@ export default {
             )
           );
         })
+        window.addEventListener('scroll',this.handleScroll); 
   },
   methods: {
     handleChange(val) {
@@ -259,7 +234,25 @@ export default {
     //       {"event": "doSignUpNow", data: { id: this.article.id }}
     //     )
     //   );
-    // }    
+    // }   
+    handleScroll() {
+      //定义handleScroll事件函数
+      let section = document.getElementById('activityCategory-section');
+      //let wholeScrollHeight = document.documentElement.scrollHeight; // 能够滚动的总高度
+      //let visiableHeight = document.documentElement.clientHeight; // 可视区域高度
+      let currentOffset = document.documentElement.scrollTop; // 滚动的距离
+      if(currentOffset === null || currentOffset === 'undefined'){
+          currentOffset = document.body.scrollTop;
+      }
+
+      if (currentOffset > 10 && currentOffset < 1500){
+        section.classList.add('activityCategory-section2');
+      } else if(currentOffset > 1500) {
+        section.classList.add('activityCategory-section2');
+      } else{
+        section.classList.remove('activityCategory-section2');  
+      }
+    } 
   }
 }
 </script>
@@ -331,24 +324,21 @@ h3 {
  font-size: 12px;
 }
 
-.time-section {
-  display: flex;
-  background: white;
+.activityCategory-section{
+  height: 60px;
+  width: 100%;
+  position:absolute;
+  bottom: 10px;
+  z-index: 10;
+}
+
+.activityCategory-section2{
+  height: 60px;
+  width: 100%;
+  position:fixed;
   margin-top: 10px;
-  padding: 7px 28px;
-  align-items: center;
-}
-
-.time-info {
-  display: inline-block;
-  flex-direction: column;
-  margin-left: 6px;
-  color: black;
-}
-
-.time_title {
-  font-size: 16px;
-  font-weight: bold;
+  bottom: 0px;
+  z-index: 10;
 }
 
 .sponsor-section {
