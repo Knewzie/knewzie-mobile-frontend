@@ -14,43 +14,21 @@
           :relationship="article.creator.relationship"
           :duration="duration" />
       <article>
-        <!-- <h3>{{ article.title }}</h3> -->
-        <!-- <div class="abbr-box tags"  v-if="article.categories.length > 0">
-          <span v-for="category in article.categories" :key="category.id">
-            {{ category.name }}
-          </span>
-        </div> -->
-        <!-- <div class="abbr-box time-box">
-          <time> {{ duration }}</time>
-          <span style="flex: 1"></span>
-          <a v-on:click="report"><i class="btn-report" /></a>
-        </div>         -->
-        <div>
-          <section class="time-section">
-            <div>
-              <img class="btn-prefix" src="/img/activity_time.png" />
-            </div>
-            <div class="time-info">
-               <div><span class="time_title">星期三，4月，2022</span></div>
-               <abbr>10:00-14:00 (新西兰时间)</abbr>
-            </div>
-          </section>          
-          <section class="time-section">
-            <div>
-              <img class="btn-prefix" src="/img/activity_video.png" />
-            </div>
-            <div class="time-info">
-               <div><span class="time_title">TODO</span></div>
-               <abbr>参与活动即可获得活动链接</abbr>
-            </div>
-          </section>
+        <div class="line-box">
+        
+          <ActivityTime activityTime="2022-05-06 10:00:00" activityDuration="10:00-15:00"/>   
+      
+ </div>
+   <div class="line-box">
+          <ActivityType :isOnline="true" activityLocation="abc"/>
+           </div>
 
-        <Collapse>
-          <CollapseItem title="展开详细">
+        <!-- <Collapse>
+          <CollapseItem title="展开详细"> -->
           <div class="content" v-html="article.content"> </div>
-          </CollapseItem>
-        </Collapse>
-        </div>
+          <!-- </CollapseItem>
+        </Collapse> -->
+        <!-- </div> -->
         <!-- <div class="content" v-html="article.content"> -->
         <!-- </div> -->
         <!-- <div class="abbr-box time-box">
@@ -108,67 +86,6 @@
         <Avatar :avatar="avatar" :role="role" :id="id" />
       </div> -->
     </section>    
-  
-
-    <!-- <section class="answer-actions">
-      <a class="action-item" v-on:click="invite">
-        <img class="btn-prefix" src="/img/btn_answer.png" /><span>邀请回答</span>
-      </a>
-      <a class="action-item"
-         v-on:click="answer">
-        <img class="btn-prefix" src="/img/btn_answer.png" /><span>我要回答</span>
-      </a>
-    </section> 
-    <section class="actions">
-      <a class="action-item"
-         v-bind:class="{ active: type === 0 }"
-         style="margin-right: 32px"
-         v-on:click="like">
-        <img class="btn-prefix" :src="likeIcon" />
-        <span>{{ article.likes }}</span>
-      </a>
-      <a class="action-item"
-         v-on:click="share">
-        <img class="btn-prefix" src="/img/btn_share.png" />
-        <span>分享</span>
-      </a>
-      <div class="space" />
-      <a class="action-item"
-        v-on:click="switchToAnswer"
-        v-bind:class="{ active: type == 1 }"
-        >{{ article.replies }} 个回答</a>
-    </section>-->
-
-    <div v-if="type === 0">
-      <AgreePerson
-        v-for="user in likers"
-        :key="user.id"
-        :role="user.role"
-        :avatar="user.avatar"
-        :name="user.nickname"
-        :likedAt="user.likedAt" />
-    </div>
-    <div v-else>
-    <section class="sort" v-if="article.replyList.length > 0">
-      按热度
-    </section>
-    <div v-if="article.replyList.length > 0">
-      <Answer class="answer-item"
-        v-for="reply in article.replyList"
-        :articleId="article.id"
-        :id="reply.id"
-        :key="reply.id"
-        :content="reply.content"
-        :replier="reply.replier.uid"
-        :avatar="reply.replier.avatar"
-        :role="reply.replier.role"
-        :replies="reply.replies"
-        :likes="reply.likes"
-        :repliedAt="reply.repliedAt"
-        :isLike="reply.isLike"
-        :nickname="reply.replier.nickname" />
-    </div>
-    </div>
   </div>
 </template>
 
@@ -176,6 +93,8 @@
 import ActivityTitle from '../components/ActivityTitle.vue'
 import ActivityAuthor from '../components/ActivityAuthor.vue'
 import ActivityCategory from '../components/ActivityCategory.vue'
+import ActivityTime from '../components/ActivityTime.vue'
+import ActivityType from '../components/ActivityType.vue'
 // import AgreePerson from '../components/AgreePerson.vue'
 import moment from 'moment'
 import axios from 'axios'
@@ -187,21 +106,22 @@ export default {
   name: 'App',
   components: {
     // eslint-disable-next-line
-    ActivityTitle,  ActivityAuthor, ActivityCategory, Collapse, CollapseItem
+    ActivityTitle,  ActivityAuthor, ActivityCategory, ActivityTime, ActivityType, Collapse, CollapseItem
     // Answer, AgreePerson,
     // Avatar
   },
   data: () => ({
     article: {
       id: -1,
-      title: "加载中...",
-      content: "加载中...",
-      categories: [],
-      likes: 0,
-      replies: 0,
-      isLike: false,
-      createdAt: 0,
+    //   title: "加载中...",
+    //   content: "加载中...",
+    //   categories: [],
+    //   likes: 0,
+    //   replies: 0,
+    //   isLike: false,
+    //   createdAt: 0,
       creator: {
+        uid: -1,
         name: "加载中...",
         nickname: "加载中...",
         title: "",
@@ -210,11 +130,12 @@ export default {
         role: 1,
         relationship: 0,
       },
-      replyList: []
+      imageList: []
+    //   replyList: []
     },
-    type: 1,
-    likers: [],
-    activeNames: ['1']
+    // type: 1,
+    // likers: [],
+    // activeNames: ['1']
   }),
   computed: {
     likeIcon() {
@@ -247,13 +168,13 @@ export default {
      axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
-    axios.post(`/topic/details`,{ id })
+    axios.post(`/activity/detail`,{ id })
         .then((response) => {
           const { data } = response.data
           this.article = data;
           Page && Page.postMessage(
             JSON.stringify(
-              {"event": "topicLoaded", data}
+              {"event": "activityLoaded", data}
             )
           )
         }).finally(() => {
@@ -575,6 +496,14 @@ article {
 
 .answer-item:first-child {
   margin: 0;
+}
+
+.line-box {
+    /* padding: 16px 18px; */
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    border-bottom: 1px solid #E6E6E7;
 }
 
 </style>
