@@ -113,7 +113,7 @@
         >{{ article.replies }} 个回答</a>
     </section>-->
 
-    <div v-if="type === 0">
+    <!-- <div v-if="type === 0">
       <AgreePerson
         v-for="user in likers"
         :key="user.id"
@@ -142,7 +142,7 @@
         :isLike="reply.isLike"
         :nickname="reply.replier.nickname" />
     </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
