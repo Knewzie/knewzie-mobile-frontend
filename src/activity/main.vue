@@ -223,7 +223,7 @@ export default {
      axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
-    axios.post(`/topic/details`,{ id })
+    axios.post(`/activity/detail`,{ id })
         .then((response) => {
           const { data } = response.data
           this.article = data;
