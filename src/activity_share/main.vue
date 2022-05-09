@@ -18,7 +18,7 @@
           <ActivityTime activityTime="2022-05-06 10:00:00" activityDuration="10:00-15:00"/>
         </div>
         <div class="line-box">
-          <ActivityType :isOnline='article.addressType === 1?true:false' :activityLocation='article.addressDetail'/>
+          <ActivityType :isOnline='article.addressType === 1?true:false' :activityLocation="article.addressDetail"/>
         </div>
 
         <!-- <Collapse>
@@ -92,7 +92,7 @@ export default {
       planNumber: 0,
       applyNumber: 0,
       cost: 0,
-      addressType: 1,
+      addressType: 0,
       addressDetail: "加载中...",
       extend: null,
       creator: {
