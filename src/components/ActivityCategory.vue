@@ -1,24 +1,29 @@
 <template>
      <div :class="isSignup?'signup-section2':'signup-section'">
-        <div class="signup_title">
-           <span v-html="displayTitle"></span>
+        <div class="signup_title" v-if="isSignup">           
+           <span :class="isSignup?'price_title2':'price_title'">已经报名</span>
+        </div>
+        <div class="signup_title" v-else>           
+           <div v-if="isFree"><span :class="isFree?'price_title':'price_title2'">免费活动</span></div>
+           <div v-else><span class="price_title">报名费用</span><br/>
+           <span class="price_title">${{this.price}}</span></div>
         </div>
         <div class="signup-action">
-        <div class="action-item" v-if="isSignup"> 
-          <div class="shareBtn">
+          <div class="action-item" v-if="isSignup"> 
+            <div class="shareBtn">
+              <a v-on:click="share">
+                <span class="shareBtnText">立即分享</span>
+              </a>
+            </div>   
+          </div>
+          <div class="action-item" v-else>
             <a v-on:click="share">
-              <span class="shareBtnText">立即分享</span>
+              <img class="share" src="/img/share.png" /> 
+            </a> 
+            <a v-on:click="sign_up_now">
+              <img class="sign_up_now" src="/img/sign_up_now.png" />
             </a>
-          </div>   
-        </div>
-        <div class="action-item" v-else>
-          <a v-on:click="share">
-             <img class="share" src="/img/share.png" /> 
-          </a> 
-          <a v-on:click="sign_up_now">
-            <img class="sign_up_now" src="/img/sign_up_now.png" />
-          </a>
-        </div>
+          </div>
            <!-- <div class="action-item">
              <a class="action-item"
          v-on:click="share">
@@ -57,14 +62,14 @@ export default {
   },
   computed: {
     displayTitle() {
-      if (this.currentIsSignup) {
-        if(this.currentIsFree){
+      if (this.IsSignup) {
+        if(this.IsFree){
           return `<span class="price_title">免费活动</span>`
         }else{
           return `<span class="price_title2">已经报名</span>`
         }        
       } else {
-        if(this.currentIsFree){
+        if(this.IsFree){
           return `<span class="price_title">免费活动</span>`
         }else{
           return `<span class="price_title">报名费用</span></br><span class="price_title">$${this.price}</span>`
@@ -72,7 +77,7 @@ export default {
       }
     },
     displayAction(){
-      if (this.currentIsSignup) {
+      if (this.IsSignup) {
           return `<div class="shareBtn"><a v-on:click="share">
                    <span class="shareBtnText"/>立即分享</span>
                 </a></div>`           
@@ -102,7 +107,7 @@ export default {
           {"event": "doSignUpNow", data: { id: this.id }}
         )
       );
-    }    ,
+    },
     //   report() {
     //   const { Page } = window;
     //   Page && Page.postMessage(
@@ -118,18 +123,18 @@ export default {
 <style>
 .signup-section {
   display: flex;
-  height: 40px;
+  height: 60px;
   background: white;
-  padding: 5px 20px;
+  padding: 5px 10px;
   align-items: left;
 }
 
 .signup-section2 {
   width: 100%;
   display: flex;
-  height: 40px;
+  height: 60px;
   background: #8DCF44;
-  padding: 5px 20px;
+  padding: 5px 10px;
   align-items: left;
 }
 

@@ -21,8 +21,8 @@
       <article>
         <div class="line-box">
           <ActivityTime
-            activityTime="2022-05-06 10:00:00"
-            activityDuration="10:00-15:00"
+            :activityTime="article.startAt"
+            :activityDuration="article.endAt"
           />
         </div>
         <div class="line-box">
@@ -67,9 +67,9 @@
     </section>
     <div id="activityCategory-section" class="activityCategory-section">
       <ActivityCategory
-        :isFree="article.cost ? false : true"
-        :isSignup="false"
-        :price="article.cost * 100"
+        :isFree="article.cost && article.cost !== 0? false : true"
+        :isSignup="article.isApply"
+        :price="article.cost?article.cost:0"
         :id="article.id"
       />
     </div>
@@ -130,6 +130,7 @@ export default {
         relationship: 0,
       },
       imageList: [],
+      isApply: false,
     },
     // type: 1,
     // likers: [],
@@ -161,6 +162,15 @@ export default {
         return "刚刚";
       }
     },
+    activityTime(){
+      if (!this.article.startAt) {
+        return "加载中...";
+      }     
+      let _startAt = moment(this.article.startAt * 1000);
+      _startAt = _startAt.format("YYYY-MM-DD HH:mm:ss");      
+      console.log(_startAt,'time');     
+      return _startAt;
+    }
   },
   created() {
     axios.defaults.baseURL = "https://api.knewzie.com";

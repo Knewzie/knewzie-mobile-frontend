@@ -5,7 +5,8 @@
     </div>
     <div class="time-info">
         <div><span class="title" v-html="displayTime"></span></div>
-        <abbr>{{this.currentActivityDuration}} (新西兰时间)</abbr>
+        <!-- <abbr>{{this.currentActivityDuration}} (新西兰时间)</abbr> -->
+        <abbr v-html="duration"></abbr>
     </div>
   </section> 
 </template>
@@ -19,8 +20,8 @@ export default {
   },
   props: {
     id: Number,
-    activityTime: String,
-    activityDuration: String
+    activityTime: Number,
+    activityDuration: Number
   },
   data() {
       return {
@@ -33,13 +34,22 @@ export default {
   },
   computed: {
     displayTime() {
-      let t = this.currentActivityTime;
+      let t = this.activityTime*1000;
       let day = moment(t).day();
       let date = moment(t).date();
       let month = moment(t).month() + 1;
       let week = this.getWeek(day);
       let year =  moment(t).year();
       return week + "，" + month + '月' + date + '日，' + year;     
+    },
+    duration() {
+      let begin = moment(this.activityTime*1000);
+      let end = moment(this.activityDuration*1000);
+      let _startAt = begin.format("YYYY-MM-DD HH:mm:ss");      
+      let _endAt = end.format("YYYY-MM-DD HH:mm:ss");
+      console.log(_startAt,'time');    
+      console.log(_endAt,'time');
+      return "10:00-12:00"
     }
   },
   methods: {
