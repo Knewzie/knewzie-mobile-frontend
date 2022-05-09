@@ -5,7 +5,9 @@
       </div>
       <div class="type-info">
           <div><span class="title">{{this.currentIsOnline?"线上活动":"活动地点"}}</span></div>
-          <abbr><span v-html="displayTitle"></span></abbr>
+          <abbr>
+            {{this.currentIsOnline?"参与活动即可获得活动链接":currentLocation}}
+          </abbr>
       </div>
     </section>
 </template>
@@ -35,7 +37,7 @@ export default {
       if (this.currentIsOnline) {
         return `<span class="title2">参与活动即可获得活动链接</span>`                
       } else {
-        return `<span class="title2">${this.currentLocation}</span>`
+        return `<span class="title2">{{currentLocation}}</span>`
       }
     }
   },
