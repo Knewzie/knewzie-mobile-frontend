@@ -53,7 +53,7 @@
       />
     </section>
     <section class="sponsor-section">
-      <ActivityAuthor
+      <!-- <ActivityAuthor
         :id="article.creator.uid"
         :name="article.creator.nickname"
         :avatar="article.creator.avatar"
@@ -63,7 +63,13 @@
         :showFollow="true"
         :relationship="article.creator.relationship"
         :duration="duration"
-      />
+      /> -->
+      <div>
+        <span class="sponsor">参与人</span>              
+      </div>
+      <div>
+<Avatar v-for="user in article.applyList" :key="user.uid"  :avatar="user.avatar" :role="user.role" :id="user.uid" />
+ </div>
     </section>
     <div id="activityCategory-section" class="activityCategory-section">
       <ActivityCategory
@@ -85,7 +91,7 @@ import ActivityType from "../components/ActivityType.vue";
 // import AgreePerson from '../components/AgreePerson.vue'
 import moment from "moment";
 import axios from "axios";
-// import Avatar from '../components/Avatar.vue'
+import Avatar from '../components/Avatar.vue'
 // import { Collapse, CollapseItem } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -97,11 +103,11 @@ export default {
     ActivityAuthor,
     ActivityCategory,
     ActivityTime,
-    ActivityType
+    ActivityType,
     // Collapse,
     // CollapseItem,
     // Answer, AgreePerson,
-    // Avatar
+    Avatar
   },
   data: () => ({
     article: {
@@ -131,6 +137,7 @@ export default {
       },
       imageList: [],
       isApply: false,
+      applyList: [],
     },
     // type: 1,
     // likers: [],
@@ -176,19 +183,28 @@ export default {
     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
-    axios
-      .post(`/activity/detail`, { id })
-      .then((response) => {
-        const { data } = response.data;
-        this.article = data;
-        console.log(data, "data");
-        console.log(this.article, "this.ariclte ");
+    let list =[];
+    // axios
+    //   .post(`/activity/detail`, { id })
+    axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
+    .then((response) => {
+      list = response.data.data.list;
+      // const { data } = response.data;
+      // this.article = data;
+      // console.log(data, "data");
+      // console.log(this.article, "this.ariclte ");
+      axios.post(`/activity/detail`,{ "id": id })
+      .then( (response)=>{
+        this.article = response.data.data;
+        this.article.applyList = list;
+        const { data } = this.article;
         Page &&
-          Page.postMessage(JSON.stringify({ event: "activityLoaded", data }));
+          Page.postMessage(JSON.stringify({ event: "activityLoaded", data }))
       })
       .finally(() => {
         Page && Page.postMessage(JSON.stringify({ event: "pageMounted" }));
       });
+    });
     window.addEventListener("scroll", this.handleScroll);
   },
   methods: {
