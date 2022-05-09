@@ -1,12 +1,15 @@
 <template>
     <section class="type-section">
       <div>
-        <img class="type-img" :src="this.currentIsOnline?'/img/activity_video.png':'/img/location.png'" />
+        <img class="type-img" :src="isOnline?'/img/activity_video.png':'/img/location.png'" />
       </div>
       <div class="type-info">
-          <div><span class="title">{{this.currentIsOnline?"线上活动":"活动地点"}}</span></div>
+          <div><span class="title">{{isOnline?"线上活动":"活动地点"}}</span></div>
           <abbr>
-            {{this.currentIsOnline?"参与活动即可获得活动链接":currentLocation}}
+            {{isOnline?"参与活动即可获得活动链接":activityLocation}}
+            <!-- {{id}} -->
+            <!-- {{isOnline}} 
+             {{currentIsOnline}} -->
           </abbr>
       </div>
     </section>

@@ -1,10 +1,10 @@
 <template>
-     <div :class="this.currentIsSignup?'signup-section2':'signup-section'">
+     <div :class="isSignup?'signup-section2':'signup-section'">
         <div class="signup_title">
            <span v-html="displayTitle"></span>
         </div>
         <div class="signup-action">
-        <div class="action-item" v-if="this.currentIsSignup"> 
+        <div class="action-item" v-if="isSignup"> 
           <div class="shareBtn">
             <a v-on:click="share">
               <span class="shareBtnText">立即分享</span>

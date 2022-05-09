@@ -1,30 +1,41 @@
 <template>
   <div id="app">
     <div class="article">
-      <img :src="this.article.imageList[0]" class="image" style="width: 100%; height: 150px">
-      
+      <img
+        :src="this.article.imageList[0]"
+        class="image"
+        style="width: 100%; height: 150px"
+      />
+
       <ActivityTitle
-          :id="article.creator.uid"
-          :name="article.creator.nickname"
-          :avatar="article.creator.avatar"
-          :intro="article.creator.intro"
-          :role="article.creator.role"
-          :title="article.title"
-          :showFollow="true"
-          :relationship="article.creator.relationship"
-          :duration="duration" />
+        :id="article.creator.uid"
+        :name="article.creator.nickname"
+        :avatar="article.creator.avatar"
+        :intro="article.creator.intro"
+        :role="article.creator.role"
+        :title="article.title"
+        :showFollow="true"
+        :relationship="article.creator.relationship"
+        :duration="duration"
+      />
       <article>
-        <div class="line-box">        
-          <ActivityTime activityTime="2022-05-06 10:00:00" activityDuration="10:00-15:00"/>
+        <div class="line-box">
+          <ActivityTime
+            activityTime="2022-05-06 10:00:00"
+            activityDuration="10:00-15:00"
+          />
         </div>
         <div class="line-box">
-          <ActivityType :isOnline='article.addressType === 1?true:false' :activityLocation="article.addressDetail"/>
+          <ActivityType
+            :isOnline="article.addressType === 1 ? true : false"
+            :activityLocation='article.addressDetail'
+          />
         </div>
 
         <!-- <Collapse>
           <CollapseItem title="展开详细"> -->
-          <div class="content" v-html="article.content"> </div>
-          <!-- </CollapseItem>
+        <div class="content" v-html="article.content"></div>
+        <!-- </CollapseItem>
         </Collapse> -->
       </article>
     </div>
@@ -38,44 +49,57 @@
         title="发起人"
         :showFollow="true"
         :relationship="article.creator.relationship"
-        :duration="duration"/>
+        :duration="duration"
+      />
     </section>
     <section class="sponsor-section">
-       <ActivityAuthor
-          :id="article.creator.uid"
-          :name="article.creator.nickname"
-          :avatar="article.creator.avatar"
-          :intro="article.creator.intro"
-          :role="article.creator.role"
-          title="参与人"
-          :showFollow="true"
-          :relationship="article.creator.relationship"
-          :duration="duration"/>
-    </section>    
+      <ActivityAuthor
+        :id="article.creator.uid"
+        :name="article.creator.nickname"
+        :avatar="article.creator.avatar"
+        :intro="article.creator.intro"
+        :role="article.creator.role"
+        title="参与人"
+        :showFollow="true"
+        :relationship="article.creator.relationship"
+        :duration="duration"
+      />
+    </section>
     <div id="activityCategory-section" class="activityCategory-section">
-      <ActivityCategory :isFree='article.cost === 0?true:false' :isSignup="false" :price='article.cost*100' :id="article.id"/>
+      <ActivityCategory
+        :isFree="article.cost ? false : true"
+        :isSignup="false"
+        :price="article.cost * 100"
+        :id="article.id"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import ActivityTitle from '../components/ActivityTitle.vue'
-import ActivityAuthor from '../components/ActivityAuthor.vue'
-import ActivityCategory from '../components/ActivityCategory.vue'
-import ActivityTime from '../components/ActivityTime.vue'
-import ActivityType from '../components/ActivityType.vue'
+import ActivityTitle from "../components/ActivityTitle.vue";
+import ActivityAuthor from "../components/ActivityAuthor.vue";
+import ActivityCategory from "../components/ActivityCategory.vue";
+import ActivityTime from "../components/ActivityTime.vue";
+import ActivityType from "../components/ActivityType.vue";
 // import AgreePerson from '../components/AgreePerson.vue'
-import moment from 'moment'
-import axios from 'axios'
+import moment from "moment";
+import axios from "axios";
 // import Avatar from '../components/Avatar.vue'
-import {Collapse,CollapseItem } from  'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import { Collapse, CollapseItem } from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     // eslint-disable-next-line
-    ActivityTitle,  ActivityAuthor, ActivityCategory, ActivityTime, ActivityType, Collapse, CollapseItem
+    ActivityTitle,
+    ActivityAuthor,
+    ActivityCategory,
+    ActivityTime,
+    ActivityType
+    // Collapse,
+    // CollapseItem,
     // Answer, AgreePerson,
     // Avatar
   },
@@ -105,7 +129,7 @@ export default {
         role: 1,
         relationship: 0,
       },
-      imageList: []
+      imageList: [],
     },
     // type: 1,
     // likers: [],
@@ -117,79 +141,80 @@ export default {
     },
     duration() {
       if (!this.article.createdAt) {
-        return "加载中..."
+        return "加载中...";
       }
 
       let now = moment();
       let createdAt = moment(this.article.createdAt * 1000);
       let diff = moment.duration(now.diff(createdAt));
       if (diff.asDays() > 10) {
-        return createdAt.format('YYYY-MM-DD')
+        return createdAt.format("YYYY-MM-DD");
       } else if (diff.asHours() >= 24) {
-        return `${Math.floor(diff.asDays())} 天前`
+        return `${Math.floor(diff.asDays())} 天前`;
       } else if (diff.asMinutes() >= 60) {
-        return `${Math.floor(diff.asHours())} 小时前`
+        return `${Math.floor(diff.asHours())} 小时前`;
       } else if (diff.asSeconds() >= 60) {
-        return `${Math.floor(diff.asMinutes())} 分钟前`
+        return `${Math.floor(diff.asMinutes())} 分钟前`;
       } else if (diff.asSeconds() > 0) {
-        return `${Math.floor(diff.asSeconds())} 秒前`
+        return `${Math.floor(diff.asSeconds())} 秒前`;
       } else {
         return "刚刚";
       }
-    }
+    },
   },
   created() {
-     axios.defaults.baseURL = "https://api.knewzie.com";
+    axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
-    axios.post(`/activity/detail`,{ id })
-        .then((response) => {
-          const { data } = response.data
-          this.article = data;
-          Page && Page.postMessage(
-            JSON.stringify(
-              {"event": "activityLoaded", data}
-            )
-          )
-        }).finally(() => {
-          Page && Page.postMessage(
-            JSON.stringify(
-              {"event": "pageMounted"}
-            )
-          );
-        })
-        window.addEventListener('scroll',this.handleScroll); 
+    axios
+      .post(`/activity/detail`, { id })
+      .then((response) => {
+        const { data } = response.data;
+        this.article = data;
+        console.log(data, "data");
+        console.log(this.article, "this.ariclte ");
+        Page &&
+          Page.postMessage(JSON.stringify({ event: "activityLoaded", data }));
+      })
+      .finally(() => {
+        Page && Page.postMessage(JSON.stringify({ event: "pageMounted" }));
+      });
+    window.addEventListener("scroll", this.handleScroll);
   },
   methods: {
     handleChange(val) {
-        console.log(val);
-      },
+      console.log(val);
+    },
     switchToAnswer() {
       this.type = 1;
     },
-    like () {
+    like() {
       const { Page } = window;
       const { id } = this.$router.currentRoute.params;
 
-      Page && Page.postMessage(
-        JSON.stringify({
-          "event": "showProgress"
-        })
-      )
+      Page &&
+        Page.postMessage(
+          JSON.stringify({
+            event: "showProgress",
+          })
+        );
 
-      axios.post(`/user/topic/likedUser`, {topicId: id, page: 1})
+      axios
+        .post(`/user/topic/likedUser`, { topicId: id, page: 1 })
         .then((response) => {
-          const { data } = response.data
+          const { data } = response.data;
           const { list } = data;
           this.likers = list;
           this.type = 0;
-        }).finally(() => {
-          Page && Page.postMessage(
-            JSON.stringify({
-              "event": "dismissProgress"
-            })
-          )
         })
+        .finally(() => {
+          Page &&
+            Page.postMessage(
+              JSON.stringify({
+                event: "dismissProgress",
+              })
+            );
+        });
     },
     // share() {
     //   const { Page } = window;
@@ -209,21 +234,17 @@ export default {
     // },
     invite() {
       const { Page } = window;
-      if (!Page) { return; }
-      Page.postMessage(
-        JSON.stringify(
-          {"event": "inviteUser"}
-        )
-      );
+      if (!Page) {
+        return;
+      }
+      Page.postMessage(JSON.stringify({ event: "inviteUser" }));
     },
     answer() {
       const { Page } = window;
-      if (!Page) { return; }
-      Page.postMessage(
-        JSON.stringify(
-          {"event": "doAnswer"}
-        )
-      );
+      if (!Page) {
+        return;
+      }
+      Page.postMessage(JSON.stringify({ event: "doAnswer" }));
     },
     // sign_up_now() {
     //   alert('sign_up_now goto doSignUpNow')
@@ -234,27 +255,27 @@ export default {
     //       {"event": "doSignUpNow", data: { id: this.article.id }}
     //     )
     //   );
-    // }   
+    // }
     handleScroll() {
       //定义handleScroll事件函数
-      let section = document.getElementById('activityCategory-section');
+      let section = document.getElementById("activityCategory-section");
       //let wholeScrollHeight = document.documentElement.scrollHeight; // 能够滚动的总高度
       //let visiableHeight = document.documentElement.clientHeight; // 可视区域高度
       let currentOffset = document.documentElement.scrollTop; // 滚动的距离
-      if(currentOffset === null || currentOffset === 'undefined'){
-          currentOffset = document.body.scrollTop;
+      if (currentOffset === null || currentOffset === "undefined") {
+        currentOffset = document.body.scrollTop;
       }
 
-      if (currentOffset > 10 && currentOffset < 1500){
-        section.classList.add('activityCategory-section2');
-      } else if(currentOffset > 1500) {
-        section.classList.add('activityCategory-section2');
-      } else{
-        section.classList.remove('activityCategory-section2');  
+      if (currentOffset > 10 && currentOffset < 1500) {
+        section.classList.add("activityCategory-section2");
+      } else if (currentOffset > 1500) {
+        section.classList.add("activityCategory-section2");
+      } else {
+        section.classList.remove("activityCategory-section2");
       }
-    } 
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
@@ -262,7 +283,7 @@ body {
   margin: 0;
   -webkit-touch-callout: none;
   padding-bottom: env(safe-area-inset-bottom);
-  background: #F6F6F6;
+  background: #f6f6f6;
 }
 
 article {
@@ -282,7 +303,7 @@ article {
 }
 
 .actions .action-item.active {
-  border-bottom: 2px solid #8DCE44FF;
+  border-bottom: 2px solid #8dce44ff;
 }
 
 .content .ql-video {
@@ -290,7 +311,7 @@ article {
 }
 
 .content a {
-  color: #8DCE44FF;
+  color: #8dce44ff;
 }
 
 ::-webkit-scrollbar {
@@ -299,13 +320,11 @@ article {
 
 a {
   text-decoration: none;
-  -webkit-tap-highlight-color:rgba(255,255,255,0.6);
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.6);
 }
-
 </style>
 
 <style scoped>
-
 /* .btn-report {
   width: 24px;
   height: 24px;
@@ -319,23 +338,23 @@ h3 {
 }
 
 .sort {
- padding: 12px 28px;
- color: #B3B3B3;
- font-size: 12px;
+  padding: 12px 28px;
+  color: #b3b3b3;
+  font-size: 12px;
 }
 
-.activityCategory-section{
+.activityCategory-section {
   height: 60px;
   width: 100%;
-  position:absolute;
+  position: absolute;
   bottom: 10px;
   z-index: 10;
 }
 
-.activityCategory-section2{
+.activityCategory-section2 {
   height: 60px;
   width: 100%;
-  position:fixed;
+  position: fixed;
   margin-top: 10px;
   bottom: 0px;
   z-index: 10;
@@ -350,7 +369,7 @@ h3 {
   align-items: left;
 }
 
-.sponsor{  
+.sponsor {
   font-size: 16px;
   font-weight: bold;
 }
@@ -364,16 +383,16 @@ h3 {
   align-items: left;
 }
 
-.price_title{
-  color: #8DCF44;
+.price_title {
+  color: #8dcf44;
   font-size: 18px;
   font-weight: bold;
 }
 
-.signup-action{
+.signup-action {
   display: flex;
   right: 30px;
-  position:absolute;
+  position: absolute;
 }
 
 /* .share{
@@ -398,7 +417,7 @@ h3 {
 
 .answer-actions > * {
   flex: 1;
-  color: #3C3C3E;
+  color: #3c3c3e;
   font-size: 14px;
   font-weight: bold;
   text-align: center;
@@ -429,11 +448,11 @@ h3 {
 }
 
 .space {
-  flex:1
+  flex: 1;
 }
 
 .actions > * {
-  color: #3C3C3E;
+  color: #3c3c3e;
   font-size: 14px;
   font-weight: bold;
 }
@@ -447,12 +466,12 @@ h3 {
 }
 
 .tags span {
-  background: #D0D0D0;
+  background: #d0d0d0;
   padding: 1px 8px;
   border-radius: 10px;
   margin-left: 5px;
   font-size: 10px;
-  color: #8D8D8E;
+  color: #8d8d8e;
 }
 
 .tags span:first-child {
@@ -462,7 +481,7 @@ h3 {
 .time-box {
   margin: 7px 0;
   font-size: 12px;
-  color: rgba(0,0,0, 60%);
+  color: rgba(0, 0, 0, 60%);
 }
 
 #app {
@@ -489,11 +508,10 @@ article {
 }
 
 .line-box {
-    /* padding: 16px 18px; */
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    border-bottom: 1px solid #E6E6E7;
+  /* padding: 16px 18px; */
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  border-bottom: 1px solid #e6e6e7;
 }
-
 </style>
