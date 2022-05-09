@@ -68,8 +68,11 @@
         <span class="sponsor">参与人</span>              
       </div>
       <div>
-<Avatar v-for="user in article.applyList" :key="user.uid"  :avatar="user.avatar" :role="user.role" :id="user.uid" />
- </div>
+        <span v-for="user in article.applyList" :key="user.uid">
+          <Avatar   :avatar="user.avatar" :role="user.role" :id="user.uid" />
+          <div><span class="certificate-info">{{ user.nickname }}</span></div>
+        </span>
+     </div>
     </section>
     <div id="activityCategory-section" class="activityCategory-section">
       <ActivityCategory
@@ -85,7 +88,7 @@
 <script>
 import ActivityTitle from "../components/ActivityTitle.vue";
 import ActivityAuthor from "../components/ActivityAuthor.vue";
-import ActivityCategory from "../components/ActivityCategory.vue";
+// import ActivityCategory from "../components/ActivityCategory.vue";
 import ActivityTime from "../components/ActivityTime.vue";
 import ActivityType from "../components/ActivityType.vue";
 // import AgreePerson from '../components/AgreePerson.vue'
@@ -101,7 +104,7 @@ export default {
     // eslint-disable-next-line
     ActivityTitle,
     ActivityAuthor,
-    ActivityCategory,
+    // ActivityCategory,
     ActivityTime,
     ActivityType,
     // Collapse,
