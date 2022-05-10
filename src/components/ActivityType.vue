@@ -5,12 +5,12 @@
       </div>
       <div class="type-info">
           <div><span class="title">{{isOnline?"线上活动":"活动地点"}}</span></div>
-          <abbr>
-            {{isOnline?"参与活动即可获得活动链接":activityLocation}}
-            <!-- {{id}} -->
-            <!-- {{isOnline}} 
-             {{currentIsOnline}} -->
+          <abbr v-if="isOnline">
+            {{isSignup?activityLocation:"参与活动即可获得活动链接"}}
           </abbr>
+          <abbr v-else>
+            {{activityLocation}}
+          </abbr>          
       </div>
     </section>
 </template>
@@ -24,6 +24,8 @@ export default {
   props: {
     id: Number,
     isOnline: Boolean,
+    isFree: Boolean,
+    isSignup: Boolean,
     activityLocation: String,
   },
   data() {
