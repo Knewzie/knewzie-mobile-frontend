@@ -69,6 +69,9 @@
         :isSignup="article.isApply"
         :price="article.cost?article.cost:0"
         :id="article.id"
+        :imageUrl="this.article.imageList[0]"
+        :title="article.title"
+        :article="article"
       />
     </div>
   </div>
