@@ -23,16 +23,7 @@
             <a v-on:click="sign_up_now">
               <img class="sign_up_now" src="/img/sign_up_now.png" />
             </a>
-          </div>
-           <!-- <div class="action-item">
-             <a class="action-item"
-         v-on:click="share">
-             <img class="share" src="/img/share.png" /> 
-             </a>            
-           </div>&nbsp;
-           <div class="action-item">
-             <span v-html="displayAction"></span>                
-            </div> -->
+          </div>           
         </div>      
     </div>
 </template>
@@ -59,9 +50,7 @@ export default {
       }
   },
   watch: {
-      // relationship(newV) {
-      //     this.currentRelationship = newV;
-      // }
+      
   },
   computed: {
     displayTitle() {
@@ -126,19 +115,22 @@ export default {
 <style>
 .signup-section {
   display: flex;
-  height: 60px;
+  width: 100%;
+  height: 40px;
   background: white;
   padding: 5px 10px;
   align-items: left;
+  margin-bottom: 10px;
 }
 
 .signup-section2 {
   width: 100%;
   display: flex;
-  height: 60px;
+  height: 40px;
   background: #8DCF44;
   padding: 5px 10px;
   align-items: left;
+  margin-bottom: 10px;
 }
 
 .signup_title{
