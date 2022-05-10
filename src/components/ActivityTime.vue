@@ -44,12 +44,14 @@ export default {
     },
     duration() {
       let begin = moment(this.activityTime*1000);
-      let end = moment(this.activityDuration*1000);
+      // let end = moment(this.activityDuration*1000);
       let _startAt = begin.format("YYYY-MM-DD HH:mm:ss");      
-      let _endAt = end.format("YYYY-MM-DD HH:mm:ss");
-      console.log(_startAt,'time');    
-      console.log(_endAt,'time');
-      return "10:00-12:00"
+      // let _endAt = end.format("YYYY-MM-DD HH:mm:ss");
+      let _startTime = _startAt.substring(10,16);
+      // console.log(_startTime,'_startTime');    
+      // console.log(_startAt,'_startAt');    
+      // console.log(_endAt,'_endAt');
+      return _startTime;
     }
   },
   methods: {

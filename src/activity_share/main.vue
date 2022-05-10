@@ -34,6 +34,8 @@
         <div class="line-box">
           <ActivityType
             :isOnline="article.addressType === 1 ? true : false"
+            :isFree="article.cost && article.cost !== 0? false : true"
+            :isSignup="article.isApply"
             :activityLocation='article.addressDetail'
           />
         </div>
@@ -59,15 +61,17 @@
       />
     </section>
     <section class="sponsor-section">
-      <div>
-        <span class="sponsor">参与人</span>              
+      <div class="avatar-box">
+        <div>
+          <span class="sponsor">参与人({{this.article.applyList?this.article.applyList.length:0}})</span>              
+        </div>
+        <div>
+          <span v-for="user in this.article.applyList" :key="user.uid">
+            <Avatar :avatar="user.avatar" :role="user.role" :id="user.uid" />
+            <div><span class="certificate-info">{{ user.nickname }}</span></div>
+          </span>
+        </div>
       </div>
-      <div>
-        <span v-for="user in this.article.applyList" :key="user.uid">
-          <Avatar   :avatar="user.avatar" :role="user.role" :id="user.uid" />
-          <div><span class="certificate-info">{{ user.nickname }}</span></div>
-        </span>
-     </div>
     </section>
     <div id="mask">
       <wx-open-launch-app
@@ -212,7 +216,7 @@ export default {
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
-    let list =[];
+    let list = [];
     // axios
     //   .post(`/activity/detail`, { id })
     // axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
@@ -236,12 +240,11 @@ export default {
     .then((response)=>{
        list = response.data.data.list;
         // this.article = response.data.data;
-        console.log(this.article,'article-1');
         // return  axios.post(`/activity/applyList`,{ "activityId": id , "page":1 });
         return  axios.post(`/activity/detail`,{ "id": id });
       }).then((response)=>{
         this.article = response.data.data;
-        this.article.applyList =list;
+        this.article.applyList = list;
         // this.article.applyList = response.data.data.list;
         console.log(this.article,'article-2');
       }) .then(() => {
@@ -404,7 +407,8 @@ export default {
       setTimeout(() => {
         window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
       }, 2000);
-    },},
+    },
+  },
 };
 </script>
 
@@ -417,6 +421,7 @@ export default {
   position: fixed;
   z-index: 10;
 }
+
 .topLogo {
   top: 10px;
   left: 30px;
@@ -524,6 +529,21 @@ h3 {
   margin-top: 10px;
   bottom: 0px;
   z-index: 10;
+}
+
+.avatar-box {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  border-bottom: 1px solid #E6E6E7;
+}
+
+.certificate-info {
+  display: inline-block;
+  margin-left: 0px;
+  color: rgba(0,0,0, 30%);
+  font-size: 12px;
 }
 
 .sponsor-section {
