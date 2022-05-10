@@ -179,7 +179,7 @@ export default {
     }
   },
   created() {
-     axios.defaults.baseURL = "https://api.knewzie.com";
+    //  axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
     let list =[];

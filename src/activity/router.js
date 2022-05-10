@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/activity_mobile/:id',
+    path: '/activity/:id',
     name: 'Activity',
     component: Activity
   }
