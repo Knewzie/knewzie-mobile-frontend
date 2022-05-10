@@ -63,7 +63,7 @@
         <span class="sponsor">参与人</span>              
       </div>
       <div>
-        <span v-for="user in article.applyList" :key="user.uid">
+        <span v-for="user in this.article.applyList" :key="user.uid">
           <Avatar   :avatar="user.avatar" :role="user.role" :id="user.uid" />
           <div><span class="certificate-info">{{ user.nickname }}</span></div>
         </span>
@@ -207,25 +207,74 @@ export default {
   created() {
     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
-    const { Page } = window;
+    // const { Page } = window;
+     const { wx } = window;
+    const timestamp = moment().unix();
+    const appId = "wxd6fe3b0d4e0030ac";
+    const nonceStr = "knewzie";
     let list =[];
     // axios
     //   .post(`/activity/detail`, { id })
-    axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
-    .then((response) => {
-      list = response.data.data.list;
-      axios.post(`/activity/detail`,{ "id": id })
-      .then( (response)=>{
+    // axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
+    // .then((response) => {
+    //   list = response.data.data.list;
+    //   axios.post(`/activity/detail`,{ "id": id })
+    //   .then( (response)=>{
+    //     this.article = response.data.data;
+    //     this.article.applyList = list;
+    //     const { data } = this.article;
+    //     Page &&
+    //       Page.postMessage(JSON.stringify({ event: "activityLoaded", data }))
+    //   })
+    //   .finally(() => {
+    //     Page && Page.postMessage(JSON.stringify({ event: "pageMounted" }));
+    //   });
+    // });
+
+    // axios.post(`/activity/detail`,{ "id": id })
+     axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
+    .then((response)=>{
+       list = response.data.data.list;
+        // this.article = response.data.data;
+        console.log(this.article,'article-1');
+        // return  axios.post(`/activity/applyList`,{ "activityId": id , "page":1 });
+        return  axios.post(`/activity/detail`,{ "id": id });
+      }).then((response)=>{
         this.article = response.data.data;
-        this.article.applyList = list;
-        const { data } = this.article;
-        Page &&
-          Page.postMessage(JSON.stringify({ event: "activityLoaded", data }))
+        this.article.applyList =list;
+        // this.article.applyList = response.data.data.list;
+        console.log(this.article,'article-2');
+      }) .then(() => {
+        let params = {
+          appId,
+          noncestr: nonceStr,
+          timestamp: timestamp,
+          url: window.location.href,
+        };
+        // alert(JSON.stringify(params));
+        return axios.post(`/config/mp/signature`, params)
       })
-      .finally(() => {
-        Page && Page.postMessage(JSON.stringify({ event: "pageMounted" }));
-      });
-    });
+      .then((response) => {
+        const { data: sign } = response.data;
+        // alert(sign);
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+          appId: appId, // 必填，公众号的唯一标识
+          timestamp: timestamp, // 必填，生成签名的时间戳
+          nonceStr: nonceStr, // 必填，生成签名的随机串
+          signature: sign, // 必填，签名
+          jsApiList: [
+            "updateAppMessageShareData",
+            "updateTimelineShareData",
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline",
+            "onMenuShareQQ",
+            "onMenuShareQZone",
+          ], // 必填，需要使用的JS接口列表
+          openTagList: ["wx-open-launch-app"], // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+        });
+      })
+
     window.addEventListener("scroll", this.handleScroll);
   },
   methods: {
@@ -334,7 +383,28 @@ export default {
         section.classList.remove("activityCategory-section2");
       }
     },
-  },
+  
+   download() {
+      var ua = navigator.userAgent;
+      //  var appVer = navigator.appVersion;
+      // console.log('appver='+appVer);
+      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
+      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      if (isIOS) {
+        url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
+      }
+      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
+      if (isAndroid) {
+        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
+        if (isHuawei) {
+          url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
+        }
+      }
+      window.location.href = url;
+      setTimeout(() => {
+        window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
+      }, 2000);
+    },},
 };
 </script>
 
