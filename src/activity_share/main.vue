@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <div class="topBar">
+      <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
+      <div class="topBtn">
+        <a v-on:click="download"><span class="topBtnText">下载App</span></a>
+      </div>
+    </div>
     <div class="article">
       <img
         :src="this.article.imageList[0]"
@@ -53,17 +59,6 @@
       />
     </section>
     <section class="sponsor-section">
-      <!-- <ActivityAuthor
-        :id="article.creator.uid"
-        :name="article.creator.nickname"
-        :avatar="article.creator.avatar"
-        :intro="article.creator.intro"
-        :role="article.creator.role"
-        title="参与人"
-        :showFollow="true"
-        :relationship="article.creator.relationship"
-        :duration="duration"
-      /> -->
       <div>
         <span class="sponsor">参与人</span>              
       </div>
@@ -74,13 +69,36 @@
         </span>
      </div>
     </section>
+    <div id="mask">
+      <wx-open-launch-app
+        class="view-in-app"
+        v-on:launch="launchApp"
+        v-on:error="launchError"
+        appid="wx4e61c8e6b7007cc8"
+        :extinfo="launchAppUrl"
+      >
+        <script type="text/wxtag-template">
+          <style>
+            .view-in-app {
+              border-radius: 100px;
+              padding: 8px 16px;
+              background-color: #3EB871;
+              color: white;
+              border: none;
+              font-size: 14px;
+            }
+          </style>
+          <button class="view-in-app">App内查看</button>
+        </script>
+      </wx-open-launch-app>
+    </div>
     <div id="activityCategory-section" class="activityCategory-section">
-      <ActivityCategory
+      <!-- <ActivityCategory
         :isFree="article.cost && article.cost !== 0? false : true"
         :isSignup="article.isApply"
         :price="article.cost?article.cost:0"
         :id="article.id"
-      />
+      /> -->
     </div>
   </div>
 </template>
@@ -147,6 +165,10 @@ export default {
     // activeNames: ['1']
   }),
   computed: {
+    launchAppUrl() {
+      const { id } = this.$router.currentRoute.params;
+      return `/activity/${id}`;
+    },
     likeIcon() {
       return "/img/btn_love_highlighted.png";
     },
@@ -192,10 +214,6 @@ export default {
     axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
     .then((response) => {
       list = response.data.data.list;
-      // const { data } = response.data;
-      // this.article = data;
-      // console.log(data, "data");
-      // console.log(this.article, "this.ariclte ");
       axios.post(`/activity/detail`,{ "id": id })
       .then( (response)=>{
         this.article = response.data.data;
@@ -216,6 +234,19 @@ export default {
     },
     switchToAnswer() {
       this.type = 1;
+    },
+    oia() {
+      const { id } = this.$router.currentRoute.params;
+      if (/MicroMessenger/i.test(window.navigator.userAgent)) {
+        alert("请在浏览器里打开");
+      } else {
+        window.location.assign(`zhixin:///activity/${id}`);
+      }
+    },
+    launchApp() {},
+    launchError() {
+      // alert(err.detail.errMsg);
+      this.oia();
     },
     like() {
       const { Page } = window;
@@ -308,6 +339,42 @@ export default {
 </script>
 
 <style>
+.topBar {
+  background-image: url("@/images/bg.png");
+  background-size: cover;
+  height: 60px;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+}
+.topLogo {
+  top: 10px;
+  left: 30px;
+  position: absolute;
+}
+
+.logo {
+  width: 100px;
+  object-fit: cover;
+  pointer-events: visible;
+}
+
+.topBtn {
+  border-radius: 100px;
+  padding: 4px 8px;
+  background-color: white;
+  position: absolute;
+  top: 12px;
+  right: 20px;
+}
+
+.topBtnText {
+  font-family: SourceHan Sans CN-Medium;
+  font-size: 14px;
+  font-weight: 500;
+  color: #8dce44;
+}
+
 body {
   margin: 0;
   -webkit-touch-callout: none;
