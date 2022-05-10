@@ -48,6 +48,9 @@ export default {
     isSignup: Boolean,
     isFree: Boolean,
     price: Number,
+    imageUrl: String,
+    title: String,
+    article: Object,
   },
   data() {
       return {
@@ -94,17 +97,17 @@ export default {
       const { Page } = window;
        Page && Page.postMessage(
         JSON.stringify(
-          {"event": "doShare", data: this.id}
+          {"event": "doShare", data: this.article}
         )
       )
     },
     sign_up_now() {
-      alert('sign_up_now goto doSignUpNow id:'+this.id)
+      // alert('sign_up_now goto doSignUpNow id:'+this.id)
       const { Page } = window;
       if (!Page) { return; }
       Page.postMessage(
         JSON.stringify(
-          {"event": "doSignUpNow", data: { id: this.id }}
+          {"event": "doSignUpNow", data: { id: this.id ,imageUrl:this.imageUrl,title: this.title}}
         )
       );
     },
