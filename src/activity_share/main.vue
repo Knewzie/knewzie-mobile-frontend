@@ -61,7 +61,7 @@
       />
     </section>
     <section class="sponsor-section">
-      <div class="avatar-box">
+      <div class="sponsor-info">
         <div>
           <span class="sponsor">参与人({{this.article.applyList?this.article.applyList.length:0}})</span>              
         </div>
@@ -531,7 +531,7 @@ h3 {
   z-index: 10;
 }
 
-.avatar-box {
+.sponsor-info {
   padding: 16px 18px;
   display: flex;
   flex-direction: column;

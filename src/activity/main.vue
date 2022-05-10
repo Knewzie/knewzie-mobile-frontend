@@ -54,8 +54,8 @@
         :duration="duration"
       />
     </section>
-    <section class="sponsor-section">
-      <div class="avatar-box">
+    <section id="sponsor-section2" class="sponsor-section2">
+      <div class="sponsor-info">
         <div>
           <span class="sponsor">参与人({{this.article.applyList?this.article.applyList.length:0}})</span>              
         </div>
@@ -179,7 +179,7 @@ export default {
     }
   },
   created() {
-    // axios.defaults.baseURL = "https://api.knewzie.com";
+     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
     let list =[];
@@ -365,23 +365,24 @@ h3 {
 }
 
 .activityCategory-section {
-  height: 60px;
+  height: 50px;
   width: 100%;
   position: absolute;
+  margin-top: 10px;
   bottom: 10px;
   z-index: 10;
 }
 
 .activityCategory-section2 {
-  height: 60px;
+  height: 50px;
   width: 100%;
   position: fixed;
   margin-top: 10px;
-  bottom: 0px;
+  bottom: 10px;
   z-index: 10;
 }
 
-.avatar-box {
+.sponsor-info {
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
@@ -401,6 +402,17 @@ h3 {
   flex-direction: column;
   background: white;
   margin-top: 10px;
+  /* margin-bottom: 10px; */
+  padding: 7px 28px;
+  align-items: left;
+}
+
+.sponsor-section2 {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  margin-top: 10px;
+  margin-bottom: 50px;
   padding: 7px 28px;
   align-items: left;
 }
