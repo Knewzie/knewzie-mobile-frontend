@@ -6,7 +6,7 @@
         <div class="signup_title" v-else>           
            <div v-if="isFree"><span :class="isFree?'price_title':'price_title2'">免费活动</span></div>
            <div v-else><span class="price_title">报名费用</span><br/>
-           <span class="price_title">${{this.price}}</span></div>
+           <span class="price_title">${{this.price *1.0/100}}</span></div>
         </div>
         <div class="signup-action">
           <div class="action-item" v-if="isSignup"> 
