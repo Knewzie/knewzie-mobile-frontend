@@ -8,7 +8,7 @@
     </div>
     <div class="article">
       <img
-        :src="this.article.imageList[0]"
+        :src="this.article.imageList && this.article.imageList.length > 0?this.article.imageList[0]:''"
         class="image"
         style="width: 100%; height: 150px"
       />
@@ -60,18 +60,11 @@
         :duration="duration"
       />
     </section>
-    <section class="sponsor-section">
-      <div class="sponsor-info">
-        <div>
-          <span class="sponsor">参与人({{this.article.applyList?this.article.applyList.length:0}})</span>              
-        </div>
-        <div>
-          <span v-for="user in this.article.applyList" :key="user.uid">
-            <Avatar :avatar="user.avatar" :role="user.role" :id="user.uid" />
-            <div><span class="certificate-info">{{ user.nickname }}</span></div>
-          </span>
-        </div>
-      </div>
+    <section class="participant-section">
+      <ActivityParticipant
+        title="参与人"        
+        :avatarArr="avatarArr" 
+      />
     </section>
     <div id="mask">
       <wx-open-launch-app
@@ -110,13 +103,13 @@
 <script>
 import ActivityTitle from "../components/ActivityTitle.vue";
 import ActivityAuthor from "../components/ActivityAuthor.vue";
+import ActivityParticipant from '../components/ActivityParticipant.vue'
 // import ActivityCategory from "../components/ActivityCategory.vue";
 import ActivityTime from "../components/ActivityTime.vue";
 import ActivityType from "../components/ActivityType.vue";
-// import AgreePerson from '../components/AgreePerson.vue'
 import moment from "moment";
 import axios from "axios";
-import Avatar from '../components/Avatar.vue'
+// import Avatar from '../components/Avatar.vue'
 // import { Collapse, CollapseItem } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -129,10 +122,11 @@ export default {
     // ActivityCategory,
     ActivityTime,
     ActivityType,
+    ActivityParticipant,
     // Collapse,
     // CollapseItem,
     // Answer, AgreePerson,
-    Avatar
+    // Avatar
   },
   data: () => ({
     article: {
@@ -206,17 +200,49 @@ export default {
       _startAt = _startAt.format("YYYY-MM-DD HH:mm:ss");      
       console.log(_startAt,'time');     
       return _startAt;
+    },
+    avatarArr(){
+      //获取到applyList
+      const {applyList} = this.article
+      //准备二维数组
+      const arr = [];
+      let minArr = [];
+      //遍历applyList
+      applyList.forEach(avatar => {
+        //如果小数组满了，创建一个新的小数组（所以上面创建minArr不用const而是用let）
+        if(minArr.length === 5){
+            minArr = [];
+        }
+        //如果minArr是空的,将小数组保存到大数组中
+        if(minArr.length === 0){
+            arr.push(minArr)
+        }
+        //将当前分类数据保存到小数组中
+        minArr.push(avatar)
+      });
+      return arr;
     }
   },
   created() {
     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     // const { Page } = window;
-     const { wx } = window;
+    const { wx } = window;
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
     let list = [];
+    // let list = [{uid:11498,role:1,relationship: 0,nickname:"小抄1",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:21498,role:1,relationship: 0,nickname:"小抄2",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:31498,role:1,relationship: 0,nickname:"小抄3",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:41498,role:1,relationship: 0,nickname:"小抄4",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:51498,role:1,relationship: 0,nickname:"小抄5",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:61498,role:1,relationship: 0,nickname:"小抄6",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:71498,role:1,relationship: 0,nickname:"小抄7",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:81498,role:1,relationship: 0,nickname:"小抄8",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:91498,role:1,relationship: 0,nickname:"小抄9",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
+    //   {uid:101498,role:1,relationship: 0,nickname:"小抄10",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"}];    
+
     // axios
     //   .post(`/activity/detail`, { id })
     // axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
@@ -238,13 +264,14 @@ export default {
     // axios.post(`/activity/detail`,{ "id": id })
      axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
     .then((response)=>{
-       list = response.data.data.list;
-        // this.article = response.data.data;
+        list = response.data.data.list;
+        this.article = response.data.data;
         // return  axios.post(`/activity/applyList`,{ "activityId": id , "page":1 });
         return  axios.post(`/activity/detail`,{ "id": id });
       }).then((response)=>{
         this.article = response.data.data;
         this.article.applyList = list;
+
         // this.article.applyList = response.data.data.list;
         console.log(this.article,'article-2');
       }) .then(() => {
@@ -531,21 +558,6 @@ h3 {
   z-index: 10;
 }
 
-.sponsor-info {
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  border-bottom: 1px solid #E6E6E7;
-}
-
-.certificate-info {
-  display: inline-block;
-  margin-left: 0px;
-  color: rgba(0,0,0, 30%);
-  font-size: 12px;
-}
-
 .sponsor-section {
   display: flex;
   flex-direction: column;
@@ -555,31 +567,20 @@ h3 {
   align-items: left;
 }
 
-.sponsor {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.signup-section {
+.participant-section{
   display: flex;
-  height: 40px;
+  flex-direction: column;
   background: white;
   margin-top: 10px;
   padding: 7px 28px;
   align-items: left;
 }
 
-.price_title {
-  color: #8dcf44;
-  font-size: 18px;
+.participant {
+  font-size: 16px;
   font-weight: bold;
 }
 
-.signup-action {
-  display: flex;
-  right: 30px;
-  position: absolute;
-}
 
 /* .share{
   object-fit: cover; 
@@ -622,11 +623,6 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.btn-prefix {
-  width: 18px;
-  margin-right: 5px;
 }
 
 .action-item > span {
