@@ -15,6 +15,8 @@
         :showFollow="true"
         :relationship="article.creator.relationship"
         :duration="duration"
+        :topicId="article.topicId"
+        :showReport="true"
       />
       <article>
         <div class="line-box">
@@ -514,7 +516,7 @@ h3 {
 }
 
 article {
-  padding: 14px 18px;
+  padding:  0px 20px 10px 20px;
 }
 
 .answer-item {
