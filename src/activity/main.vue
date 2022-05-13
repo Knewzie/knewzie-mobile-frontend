@@ -2,11 +2,9 @@
   <div id="app">
     <div class="article">
       <img
-        :src="this.article.imageList[0]"
-        class="image"
-        style="width: 100%; height: 150px"
+        :src="this.article.imageList[0]"      
+       style="width: 100%; height: 250px" 
       />
-
       <ActivityTitle
         :id="article.creator.uid"
         :name="article.creator.nickname"

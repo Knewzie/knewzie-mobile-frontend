@@ -118,7 +118,7 @@ export default {
   width: 100%;
   height: 40px;
   background: white;
-  padding: 5px 10px;
+  padding: 10px 20px;
   align-items: left;
   margin-bottom: 10px;
 }
@@ -128,7 +128,7 @@ export default {
   display: flex;
   height: 40px;
   background: #8DCF44;
-  padding: 5px 10px;
+  padding: 10px 20px;
   align-items: left;
   margin-bottom: 10px;
 }
@@ -164,6 +164,7 @@ export default {
   object-fit: cover; 
   width: 30px;
   height: 30px;
+  padding: 0px 5px;
 }
 
 .action-item {
@@ -177,6 +178,7 @@ export default {
   object-fit: cover; 
   width: 100%;
   height: 30px;
+  padding: 0px 5px;
 }
 
 .share_now{
