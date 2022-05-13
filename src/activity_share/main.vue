@@ -63,6 +63,7 @@
       <ActivityParticipant
         title="参与人"        
         :avatarArr="avatarArr" 
+        :avatarNum="applyNumber"
       />
     </section>
     <div id="mask">
@@ -209,7 +210,7 @@ export default {
       //遍历applyList
       applyList.forEach(avatar => {
         //如果小数组满了，创建一个新的小数组（所以上面创建minArr不用const而是用let）
-        if(minArr.length === 5){
+        if(minArr.length === 6){
             minArr = [];
         }
         //如果minArr是空的,将小数组保存到大数组中
@@ -270,7 +271,7 @@ export default {
       }).then((response)=>{
         this.article = response.data.data;
         this.article.applyList = list;
-
+        this.applyNumber = list.length;
         // this.article.applyList = response.data.data.list;
         console.log(this.article,'article-2');
       }) .then(() => {
