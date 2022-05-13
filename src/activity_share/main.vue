@@ -22,6 +22,8 @@
         :showFollow="true"
         :relationship="article.creator.relationship"
         :duration="duration"
+        :topicId="article.topicId"
+        :showReport="false"
       />
       <article>
         <div class="line-box">
@@ -89,14 +91,14 @@
         </script>
       </wx-open-launch-app>
     </div>
-    <!-- <div id="activityCategory-section" class="activityCategory-section">
-      <ActivityCategory
+    <div id="activityCategory-section" class="activityCategory-section">
+    <!--   <ActivityCategory
         :isFree="article.cost && article.cost !== 0? false : true"
         :isSignup="article.isApply"
         :price="article.cost?article.cost:0"
         :id="article.id"
-      />
-    </div> -->
+      /> -->
+    </div>
   </div>
 </template>
 
@@ -679,7 +681,7 @@ h3 {
 }
 
 article {
-  padding: 14px 18px;
+  padding: 0px 20px 10px 20px;
 }
 
 .answer-item {
