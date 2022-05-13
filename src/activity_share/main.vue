@@ -9,8 +9,7 @@
     <div class="article">
       <img
         :src="this.article.imageList && this.article.imageList.length > 0?this.article.imageList[0]:''"
-        class="image"
-        style="width: 100%; height: 150px"
+        style="width: 100%; height: 250px" 
       />
 
       <ActivityTitle
@@ -89,14 +88,14 @@
         </script>
       </wx-open-launch-app>
     </div>
-    <div id="activityCategory-section" class="activityCategory-section">
-      <!-- <ActivityCategory
+    <!-- <div id="activityCategory-section" class="activityCategory-section">
+      <ActivityCategory
         :isFree="article.cost && article.cost !== 0? false : true"
         :isSignup="article.isApply"
         :price="article.cost?article.cost:0"
         :id="article.id"
-      /> -->
-    </div>
+      />
+    </div> -->
   </div>
 </template>
 
@@ -545,7 +544,8 @@ h3 {
   height: 60px;
   width: 100%;
   position: absolute;
-  bottom: 10px;
+  margin-top: 10px;
+  bottom: 1px;
   z-index: 10;
 }
 
@@ -554,7 +554,7 @@ h3 {
   width: 100%;
   position: fixed;
   margin-top: 10px;
-  bottom: 0px;
+  /* bottom: 10px; */
   z-index: 10;
 }
 
