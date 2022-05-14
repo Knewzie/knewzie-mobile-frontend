@@ -16,7 +16,7 @@
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
     </div> -->
     <div  v-show="showReport">
-    <a v-on:click="report"><i class="btn-report" /></a>
+      <a v-on:click="report"><i class="btn-report" /></a>
     </div>
      <!-- <a v-on:click="report"><i class="btn-collect" /></a> -->
      <!-- <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a> -->

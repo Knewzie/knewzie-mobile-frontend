@@ -56,7 +56,7 @@ export default {
 .type-section {
   display: flex;
   background: white;
-  margin-top: 10px;
+  margin-top: 5px;
   padding: 7px 28px;
   align-items: center;
 }
