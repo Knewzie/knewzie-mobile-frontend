@@ -16,7 +16,7 @@
         :showFollow="true"        
         :duration="duration"
         :topicId="article?article.topicId:-1"
-        :showReport="false"
+        :showReport="true"
       />
       <article>
         <div class="line-box">
