@@ -13,16 +13,16 @@
       />
 
       <ActivityTitle
-        :id="article.creator.uid"
-        :name="article.creator.nickname"
-        :avatar="article.creator.avatar"
-        :intro="article.creator.intro"
-        :role="article.creator.role"
-        :title="article.title"
-        :showFollow="true"
-        :relationship="article.creator.relationship"
+        :id="article && article.creator?article.creator.uid:-1"
+        :name="article && article.creator?article.creator.nickname:''"
+        :avatar="article && article.creator?article.creator.avatar:''"
+        :intro="article && article.creator?article.creator.intro:''"
+        :role="article && article.creator?article.creator.role:0"
+        :relationship="article && article.creator?article.creator.relationship:0"
+        :title="article?article.title:''"
+        :showFollow="true"        
         :duration="duration"
-        :topicId="article.topicId"
+        :topicId="article?article.topicId:-1"
         :showReport="false"
       />
       <article>
@@ -50,14 +50,14 @@
     </div>
     <section class="sponsor-section">
       <ActivityAuthor
-        :id="article.creator.uid"
-        :name="article.creator.nickname"
-        :avatar="article.creator.avatar"
-        :intro="article.creator.intro"
-        :role="article.creator.role"
+        :id="article && article.creator?article.creator.uid:-1"
+        :name="article && article.creator?article.creator.nickname:''"
+        :avatar="article && article.creator?article.creator.avatar:''"
+        :intro="article && article.creator?article.creator.intro:''"
+        :role="article && article.creator?article.creator.role:0"
+        :relationship="article && article.creator?article.creator.relationship:0"
         title="发起人"
-        :showFollow="true"
-        :relationship="article.creator.relationship"
+        :showFollow="true"        
         :duration="duration"
       />
     </section>
@@ -65,7 +65,7 @@
       <ActivityParticipant
         title="参与人"        
         :avatarArr="avatarArr" 
-        :avatarNum="applyNumber"
+        :avatarNum="article?article.applyNumber:0"
       />
     </section>
     <div id="mask">
@@ -194,16 +194,10 @@ export default {
         return "刚刚";
       }
     },
-    activityTime(){
-      if (!this.article.startAt) {
-        return "加载中...";
-      }     
-      let _startAt = moment(this.article.startAt * 1000);
-      _startAt = _startAt.format("YYYY-MM-DD HH:mm:ss");      
-      console.log(_startAt,'time');     
-      return _startAt;
-    },
     avatarArr(){
+      if(this.article && !this.article.applyList){
+        return [];
+      }
       //获取到applyList
       const {applyList} = this.article
       //准备二维数组
@@ -245,37 +239,16 @@ export default {
     //   {uid:91498,role:1,relationship: 0,nickname:"小抄9",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
     //   {uid:101498,role:1,relationship: 0,nickname:"小抄10",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"}];    
 
-    // axios
-    //   .post(`/activity/detail`, { id })
-    // axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
-    // .then((response) => {
-    //   list = response.data.data.list;
-    //   axios.post(`/activity/detail`,{ "id": id })
-    //   .then( (response)=>{
-    //     this.article = response.data.data;
-    //     this.article.applyList = list;
-    //     const { data } = this.article;
-    //     Page &&
-    //       Page.postMessage(JSON.stringify({ event: "activityLoaded", data }))
-    //   })
-    //   .finally(() => {
-    //     Page && Page.postMessage(JSON.stringify({ event: "pageMounted" }));
-    //   });
-    // });
-
-    // axios.post(`/activity/detail`,{ "id": id })
      axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
     .then((response)=>{
         list = response.data.data.list;
-        this.article = response.data.data;
-        // return  axios.post(`/activity/applyList`,{ "activityId": id , "page":1 });
+        this.article = response.data.data;        
         return  axios.post(`/activity/detail`,{ "id": id });
       }).then((response)=>{
         this.article = response.data.data;
         this.article.applyList = list;
-        this.applyNumber = list.length;
-        // this.article.applyList = response.data.data.list;
-        console.log(this.article,'article-2');
+        this.article.applyNumber = list.length;
+        // console.log(this.article,'article-2');
       }) .then(() => {
         let params = {
           appId,

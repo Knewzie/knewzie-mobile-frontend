@@ -5,7 +5,7 @@
     </div>
     <div class="participant-avator-item">
       <div class="participant-avator" v-for="(users,index) in this.avatarArr" :key="index">   
-        <div class="participant-avator-item" v-for="user in users" :key="user.uid">         
+        <div class="participant-avator-item" v-for="(user,idx) in users" :key="idx">         
           <Avatar :avatar="user.avatar" :role="user.role" :id="user.uid" />
           <div><span class="certificate-info"></span></div>    
         </div>   
