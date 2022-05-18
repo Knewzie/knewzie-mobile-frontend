@@ -1,13 +1,13 @@
 <template>
   <div class="participant-info">
     <div>
-      <span class="participant">{{ title }}({{this.avatarArr && this.avatarArr.length > 0?this.avatarArr.length*this.avatarArr[0].length:0}})</span>              
+      <span class="participant">{{ title }}({{avatarNum}})</span>              
     </div>
     <div class="participant-avator-item">
       <div class="participant-avator" v-for="(users,index) in this.avatarArr" :key="index">   
-        <div class="participant-avator-item" v-for="user in users" :key="user.uid">         
+        <div class="participant-avator-item" v-for="(user,idx) in users" :key="idx">         
           <Avatar :avatar="user.avatar" :role="user.role" :id="user.uid" />
-          <div><span class="certificate-info">{{ user.nickname }}</span></div>    
+          <div><span class="certificate-info"></span></div>    
         </div>   
       </div>
     </div>
@@ -27,6 +27,7 @@ export default {
   props: {
     title: String,
     avatarArr:Array,
+    avatarNum: Number
   },
   data() {
       return {
