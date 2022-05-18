@@ -15,7 +15,9 @@
     <!-- <div class="loading-box"  v-show="loading">
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
     </div> -->
-    <a v-on:click="report"><i class="btn-report" /></a>
+    <div  v-show="showReport">
+      <a v-on:click="report"><i class="btn-report" /></a>
+    </div>
      <!-- <a v-on:click="report"><i class="btn-collect" /></a> -->
      <!-- <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a> -->
 </div>
@@ -41,6 +43,8 @@ export default {
     title: String,
     relationship: Number,
     duration: String,
+    topicId: Number,
+    showReport: Boolean,
   },
   data() {
       return {
@@ -101,7 +105,7 @@ export default {
       const { Page } = window;
       Page && Page.postMessage(
         JSON.stringify({
-          "event": "report", data: { topicId: this.article.id }
+          "event": "report", data: { topicId: this.topicId }
         })
       );
     },

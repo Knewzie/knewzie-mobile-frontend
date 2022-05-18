@@ -2,21 +2,21 @@
   <div id="app">
     <div class="article">
       <img
-        :src="this.article.imageList[0]"
-        class="image"
-        style="width: 100%; height: 150px"
+        :src="this.article.imageList[0]"      
+       style="width: 100%; height: 250px" 
       />
-
       <ActivityTitle
-        :id="article.creator.uid"
-        :name="article.creator.nickname"
-        :avatar="article.creator.avatar"
-        :intro="article.creator.intro"
-        :role="article.creator.role"
-        :title="article.title"
-        :showFollow="true"
-        :relationship="article.creator.relationship"
+        :id="article && article.creator?article.creator.uid:-1"
+        :name="article && article.creator?article.creator.nickname:''"
+        :avatar="article && article.creator?article.creator.avatar:''"
+        :intro="article && article.creator?article.creator.intro:''"
+        :role="article && article.creator?article.creator.role:0"
+        :relationship="article && article.creator?article.creator.relationship:0"
+        :title="article?article.title:''"
+        :showFollow="true"        
         :duration="duration"
+        :topicId="article?article.topicId:-1"
+        :showReport="true"
       />
       <article>
         <div class="line-box">
@@ -43,14 +43,14 @@
     </div>
     <section class="sponsor-section">
       <ActivityAuthor
-        :id="article.creator.uid"
-        :name="article.creator.nickname"
-        :avatar="article.creator.avatar"
-        :intro="article.creator.intro"
-        :role="article.creator.role"
+        :id="article && article.creator?article.creator.uid:-1"
+        :name="article && article.creator?article.creator.nickname:''"
+        :avatar="article && article.creator?article.creator.avatar:''"
+        :intro="article && article.creator?article.creator.intro:''"
+        :role="article && article.creator?article.creator.role:0"
+        :relationship="article && article.creator?article.creator.relationship:0"
         title="发起人"
-        :showFollow="true"
-        :relationship="article.creator.relationship"
+        :showFollow="true"        
         :duration="duration"
       />
     </section>
@@ -58,6 +58,7 @@
       <ActivityParticipant
         title="参与人"        
         :avatarArr="avatarArr" 
+        :avatarNum="article?article.applyNumber:0"
       />
     </section>
     <div id="activityCategory-section" class="activityCategory-section">
@@ -162,16 +163,10 @@ export default {
         return "刚刚";
       }
     },
-    activityTime(){
-      if (!this.article.startAt) {
-        return "加载中...";
-      }     
-      let _startAt = moment(this.article.startAt * 1000);
-      _startAt = _startAt.format("YYYY-MM-DD HH:mm:ss");      
-      console.log(_startAt,'time');     
-      return _startAt;
-    },
     avatarArr(){
+      if(this.article && !this.article.applyList){
+        return [];
+      }      
       //获取到applyList
       const {applyList} = this.article
       //准备二维数组
@@ -180,7 +175,7 @@ export default {
       //遍历applyList
       applyList.forEach(avatar => {
         //如果小数组满了，创建一个新的小数组（所以上面创建minArr不用const而是用let）
-        if(minArr.length === 5){
+        if(minArr.length === 6){
             minArr = [];
         }
         //如果minArr是空的,将小数组保存到大数组中
@@ -198,8 +193,6 @@ export default {
     const { id } = this.$router.currentRoute.params;
     const { Page } = window;
     let list = [];
-    // axios
-    //   .post(`/activity/detail`, { id })
     axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
     .then((response) => {
       list = response.data.data.list;
@@ -207,6 +200,7 @@ export default {
       .then( (response)=>{
         this.article = response.data.data;
         this.article.applyList = list;
+        this.article.applyNumber = list.length;
         const { data } = this.article;
         Page &&
           Page.postMessage(JSON.stringify({ event: "activityLoaded", data }))
@@ -514,7 +508,7 @@ h3 {
 }
 
 article {
-  padding: 14px 18px;
+  padding:  0px 20px 10px 20px;
 }
 
 .answer-item {
