@@ -91,14 +91,6 @@
         </script>
       </wx-open-launch-app>
     </div>
-    <div id="activityCategory-section" class="activityCategory-section">
-    <!--   <ActivityCategory
-        :isFree="article.cost && article.cost !== 0? false : true"
-        :isSignup="article.isApply"
-        :price="article.cost?article.cost:0"
-        :id="article.id"
-      /> -->
-    </div>
   </div>
 </template>
 
@@ -494,6 +486,13 @@ article {
 a {
   text-decoration: none;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0.6);
+}
+
+.view-in-app {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 </style>
 
