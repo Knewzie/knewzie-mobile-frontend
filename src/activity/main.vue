@@ -191,6 +191,7 @@ export default {
   created() {
     //  axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
+    console.log("ID====" + id);
     const { Page } = window;
     let list = [];
     axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
