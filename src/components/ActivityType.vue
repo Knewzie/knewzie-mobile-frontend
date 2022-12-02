@@ -1,14 +1,10 @@
 <template>
     <section class="type-section">
-      <div>
-        <img class="type-img" :src="isOnline?'/img/activity_video.png':'/img/location.png'" />
+      <div class="type">
+        <img class="type-img" :src="'/img/bx-map.png'" />
       </div>
       <div class="type-info">
-          <div><span class="title">{{isOnline?"线上活动":"活动地点"}}</span></div>
-          <abbr v-if="isOnline">
-            {{isSignup?activityLocation:"参与活动即可获得活动链接"}}
-          </abbr>
-          <abbr v-else>
+          <abbr>
             {{activityLocation}}
           </abbr>          
       </div>
@@ -56,21 +52,24 @@ export default {
 .type-section {
   display: flex;
   background: white;
-  margin-top: 5px;
-  padding: 7px 28px;
+  margin-top: 10px;
   align-items: center;
+  /* padding: 5px 0; */
 }
 
+.type {
+  display: flex;
+}
 .type-img {
   width: 18px;
-  margin-right: 5px;
+  margin-right: 0px;
 }
 
 .type-info {
   display: inline-block;
   flex-direction: column;
   margin-left: 6px;
-  color: black;
+  color: #616575;
 }
 
 .title {
