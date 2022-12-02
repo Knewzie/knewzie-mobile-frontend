@@ -1,7 +1,8 @@
 <template>
   <a class="avatar" v-on:click="showAuthor">
     <img :src="avatar" />
-    <div :class="certificatedClass"></div>
+    <!-- 用户等级 -->
+    <!-- <div :class="certificatedClass"></div> -->
   </a>
 </template>
 
@@ -90,14 +91,14 @@ export default {
 
 
 .avatar {
-  width: 40px;
-  height: 40px;
-  margin-right: 16px;
+  width: 30px;
+  height: 30px;
+  margin-right: 8px;
 }
 .avatar img {
   object-fit: cover; /* Do not scale the image */
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background-color: gray;
   border-radius: 20px;
 }
