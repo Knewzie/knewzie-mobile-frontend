@@ -35,6 +35,7 @@
           :relationship="article && article.creator?article.creator.relationship:0"
         ></EventAuthor>
         <article>
+          <div class="section-title">基础资料</div>
           <div class="line-box">
             <ActivityTime
               :activityTime="article.startAt"
@@ -52,13 +53,14 @@
 
           <!-- <Collapse>
             <CollapseItem title="展开详细"> -->
-          <div class="content" v-html="article.content"></div>
+          <div class="section-title">活动详情</div>
+          <div class="content event-detail" v-html="article.content"></div>
           <!-- </CollapseItem>
           </Collapse> -->
         </article>
       </div>
     </div>
-    <section class="sponsor-section">
+    <!-- <section class="sponsor-section">
       <ActivityAuthor
         :id="article && article.creator?article.creator.uid:-1"
         :name="article && article.creator?article.creator.nickname:''"
@@ -77,7 +79,7 @@
         :avatarArr="avatarArr" 
         :avatarNum="article?article.applyNumber:0"
       />
-    </section>
+    </section> -->
     <div id="mask">
       <wx-open-launch-app
         class="view-in-app"
@@ -106,8 +108,8 @@
 
 <script>
 import ActivityTitle from "../components/ActivityTitle.vue";
-import ActivityAuthor from "../components/ActivityAuthor.vue";
-import ActivityParticipant from '../components/ActivityParticipant.vue'
+// import ActivityAuthor from "../components/ActivityAuthor.vue";
+// import ActivityParticipant from '../components/ActivityParticipant.vue'
 // import ActivityCategory from "../components/ActivityCategory.vue";
 import ActivityTime from "../components/ActivityTime.vue";
 import ActivityType from "../components/ActivityType.vue";
@@ -124,11 +126,11 @@ export default {
   components: {
     // eslint-disable-next-line
     ActivityTitle,
-    ActivityAuthor,
+    // ActivityAuthor,
     // ActivityCategory,
     ActivityTime,
     ActivityType,
-    ActivityParticipant,
+    // ActivityParticipant,
     EventTags,
     EventAuthor,
     // Collapse,
@@ -687,11 +689,21 @@ article {
   margin: 0;
 }
 
+.section-title {
+  color: #051A37;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 25px;
+}
+
 .line-box {
   /* padding: 16px 18px; */
   display: flex;
   flex-direction: column;
   align-items: left;
-  border-bottom: 1px solid #e6e6e7;
+  /* border-bottom: 1px solid #e6e6e7; */
+}
+.event-detail {
+  margin-top: 10px;
 }
 </style>

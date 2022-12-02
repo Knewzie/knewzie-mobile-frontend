@@ -1,12 +1,15 @@
 <template>
   <section class="time-section">
-    <div>
-      <img class="time-img" src="/img/activity_time.png" />
+    <div class="time">
+      <img class="time-img" src="/img/bx-calendar-heart.png" />
     </div>
     <div class="time-info">
-        <div><span class="title" v-html="displayTime"></span></div>
+        <div>
+          <span class="title" v-html="displayTime"></span>
+          <abbr class="title" v-html="duration"></abbr>
+        </div>
         <!-- <abbr>{{this.currentActivityDuration}} (新西兰时间)</abbr> -->
-        <abbr v-html="duration"></abbr>
+        
     </div>
   </section> 
 </template>
@@ -81,18 +84,21 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 .time-section {
   display: flex;
   background: white;
   margin-top: 10px;
-  padding: 7px 28px;
   align-items: center;
+  padding: 5px 0;
 }
-
+.time {
+  display: flex;
+}
 .time-img {
   width: 18px;
-  margin-right: 5px;
+  margin-right: 0px;
+  
 }
 
 .time-info {
@@ -103,8 +109,9 @@ export default {
 }
 
 .title {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 400;
+  color: #616575;
 }
 
 .title2 {

@@ -7,7 +7,7 @@
         </div>
         <!-- <abbr>{{ duration || "ago"}}</abbr> -->
          <!-- <div class="abbr-box time-box"> -->
-          <abbr> {{ duration }}</abbr>
+        <abbr> {{ duration }}</abbr>
           <span style="flex: 1"></span>
           <!-- <a v-on:click="report"><i class="btn-report" /></a> -->
         <!-- </div> -->

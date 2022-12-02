@@ -109,7 +109,7 @@ export default {
 <style scoped>
 
 .avatar-box {
-    padding: 8px 18px;
+    padding: 0px 18px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -119,6 +119,7 @@ export default {
 .certificate-info {
   display: inline-block;
   margin-left: 0px;
+  margin-right: 5px;
   color: #051A37;
   font-size: 14px;
   font-weight: 400;
