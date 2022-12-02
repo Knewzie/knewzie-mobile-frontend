@@ -3,50 +3,60 @@
     <div class="topBar">
       <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
       <div class="topBtn">
-        <a v-on:click="download"><span class="topBtnText">下载App</span></a>
+        <a v-on:click="download"><span class="topBtnText">打开App</span></a>
       </div>
     </div>
+    <!-- 封面图、标题、详情内容 -->
     <div class="article">
       <img
         :src="this.article.imageList && this.article.imageList.length > 0?this.article.imageList[0]:''"
         style="width: 100%; height: 250px" 
       />
+      <div class="article-content">
+        <EventTags ></EventTags>
+        <ActivityTitle
+          :id="article && article.creator?article.creator.uid:-1"
+          :name="article && article.creator?article.creator.nickname:''"
+          :avatar="article && article.creator?article.creator.avatar:''"
+          :intro="article && article.creator?article.creator.intro:''"
+          :role="article && article.creator?article.creator.role:0"
+          :relationship="article && article.creator?article.creator.relationship:0"
+          :title="article?article.title:''"
+          :showFollow="true"        
+          :topicId="article?article.topicId:-1"
+          :showReport="false"
+        />
+        <EventAuthor
+          :id="article && article.creator?article.creator.uid:-1"
+          :name="article && article.creator?article.creator.nickname:''"
+          :avatar="article && article.creator?article.creator.avatar:''"
+          :showFollow="true"
+          :role="article && article.creator?article.creator.role:0"
+          :relationship="article && article.creator?article.creator.relationship:0"
+        ></EventAuthor>
+        <article>
+          <div class="line-box">
+            <ActivityTime
+              :activityTime="article.startAt"
+              :activityDuration="article.endAt"
+            />
+          </div>
+          <div class="line-box">
+            <ActivityType
+              :isOnline="article.addressType === 1 ? true : false"
+              :isFree="article.cost && article.cost !== 0? false : true"
+              :isSignup="article.isApply"
+              :activityLocation='article.addressDetail'
+            />
+          </div>
 
-      <ActivityTitle
-        :id="article && article.creator?article.creator.uid:-1"
-        :name="article && article.creator?article.creator.nickname:''"
-        :avatar="article && article.creator?article.creator.avatar:''"
-        :intro="article && article.creator?article.creator.intro:''"
-        :role="article && article.creator?article.creator.role:0"
-        :relationship="article && article.creator?article.creator.relationship:0"
-        :title="article?article.title:''"
-        :showFollow="true"        
-        :duration="duration"
-        :topicId="article?article.topicId:-1"
-        :showReport="false"
-      />
-      <article>
-        <div class="line-box">
-          <ActivityTime
-            :activityTime="article.startAt"
-            :activityDuration="article.endAt"
-          />
-        </div>
-        <div class="line-box">
-          <ActivityType
-            :isOnline="article.addressType === 1 ? true : false"
-            :isFree="article.cost && article.cost !== 0? false : true"
-            :isSignup="article.isApply"
-            :activityLocation='article.addressDetail'
-          />
-        </div>
-
-        <!-- <Collapse>
-          <CollapseItem title="展开详细"> -->
-        <div class="content" v-html="article.content"></div>
-        <!-- </CollapseItem>
-        </Collapse> -->
-      </article>
+          <!-- <Collapse>
+            <CollapseItem title="展开详细"> -->
+          <div class="content" v-html="article.content"></div>
+          <!-- </CollapseItem>
+          </Collapse> -->
+        </article>
+      </div>
     </div>
     <section class="sponsor-section">
       <ActivityAuthor
@@ -101,6 +111,8 @@ import ActivityParticipant from '../components/ActivityParticipant.vue'
 // import ActivityCategory from "../components/ActivityCategory.vue";
 import ActivityTime from "../components/ActivityTime.vue";
 import ActivityType from "../components/ActivityType.vue";
+import EventTags from "../components/EventTags.vue"
+import EventAuthor from "../components/EventAuthor.vue";
 import moment from "moment";
 import axios from "axios";
 // import Avatar from '../components/Avatar.vue'
@@ -117,6 +129,8 @@ export default {
     ActivityTime,
     ActivityType,
     ActivityParticipant,
+    EventTags,
+    EventAuthor,
     // Collapse,
     // CollapseItem,
     // Answer, AgreePerson,
@@ -219,7 +233,7 @@ export default {
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
-    let list = [];
+    // let list = [];
     // let list = [{uid:11498,role:1,relationship: 0,nickname:"小抄1",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
     //   {uid:21498,role:1,relationship: 0,nickname:"小抄2",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
     //   {uid:31498,role:1,relationship: 0,nickname:"小抄3",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
@@ -231,15 +245,17 @@ export default {
     //   {uid:91498,role:1,relationship: 0,nickname:"小抄9",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
     //   {uid:101498,role:1,relationship: 0,nickname:"小抄10",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"}];    
 
-     axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
-    .then((response)=>{
-        list = response.data.data.list;
-        this.article = response.data.data;        
-        return  axios.post(`/activity/detail`,{ "id": id });
-      }).then((response)=>{
+    // axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
+    // .then((response)=>{
+    //     list = response.data.data.list;
+    //     this.article = response.data.data;        
+    //     return  axios.post(`/v2/activity/detail`,{ "id": id });
+    //   })
+      
+    axios.post(`/v2/activity/detail`,{ "id": id }).then((response)=>{
         this.article = response.data.data;
-        this.article.applyList = list;
-        this.article.applyNumber = list.length;
+        // this.article.applyList = list;
+        // this.article.applyNumber = list.length;
         // console.log(this.article,'article-2');
       }) .then(() => {
         let params = {
@@ -408,8 +424,7 @@ export default {
 
 <style>
 .topBar {
-  background-image: url("@/images/bg.png");
-  background-size: cover;
+  background-color: #6599FF;
   height: 60px;
   width: 100%;
   position: fixed;
@@ -417,8 +432,8 @@ export default {
 }
 
 .topLogo {
-  top: 10px;
-  left: 30px;
+  top: 6px;
+  left: 17px;
   position: absolute;
 }
 
@@ -430,18 +445,18 @@ export default {
 
 .topBtn {
   border-radius: 100px;
-  padding: 4px 8px;
+  padding: 4px 12px;
   background-color: white;
   position: absolute;
-  top: 12px;
-  right: 20px;
+  top: 15px;
+  right: 28px;
 }
 
 .topBtnText {
   font-family: SourceHan Sans CN-Medium;
   font-size: 14px;
-  font-weight: 500;
-  color: #8dce44;
+  font-weight: 400;
+  color: #59A1FF;
 }
 
 body {
@@ -615,6 +630,14 @@ h3 {
 }
 
 .article {
+  background: white;
+}
+
+.article-content{
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  top: -30px;
+  position: relative;
   background: white;
 }
 

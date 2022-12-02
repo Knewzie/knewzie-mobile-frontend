@@ -1,25 +1,18 @@
 <template>
 <div class="avatar-box">
-    <!-- <Avatar :avatar="avatar" :role="role" :id="id" /> -->
-    <div class="info">
-        <div class="title">{{  this.title  }}
+    <!-- <div class="info"> -->
+        <!-- <div><h4>{{ title }}</h4> -->
         <!-- <span class="certificate-info">{{ this.title }}</span> -->
-        </div>
-        <!-- <abbr>{{ duration || "ago"}}</abbr> -->
-         <!-- <div class="abbr-box time-box"> -->
-          <abbr> {{ duration }}</abbr>
-          <span style="flex: 1"></span>
-          <!-- <a v-on:click="report"><i class="btn-report" /></a> -->
         <!-- </div> -->
-    </div>
-    <!-- <div class="loading-box"  v-show="loading">
+        <!-- <abbr>简介：{{ intro || "暂无简介"}}</abbr> -->
+    <!-- </div> -->
+    <Avatar :avatar="avatar" :role="role" :id="id" />
+    
+    <div v-show="loading">
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
-    </div> -->
-    <div  v-show="showReport">
-      <a v-on:click="report"><i class="btn-report" /></a>
     </div>
-     <!-- <a v-on:click="report"><i class="btn-collect" /></a> -->
-     <!-- <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a> -->
+    <div><span class="certificate-info">{{ this.name }}</span></div>
+     <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
 </div>
 </template>
 <script>
@@ -28,7 +21,7 @@ import RingLoader from 'vue-spinner/src/RingLoader.vue'
 import Avatar from './Avatar'
 
 export default {
-  name: 'Author',
+  name: 'EventAuthor',
    components: {
     // eslint-disable-next-line
     RingLoader, Avatar
@@ -42,9 +35,6 @@ export default {
     role: Number,
     title: String,
     relationship: Number,
-    duration: String,
-    topicId: Number,
-    showReport: Boolean,
   },
   data() {
       return {
@@ -100,15 +90,7 @@ export default {
           } finally {
             this.loading = false;
           }
-      },
-      report() {
-      const { Page } = window;
-      Page && Page.postMessage(
-        JSON.stringify({
-          "event": "report", data: { topicId: this.topicId }
-        })
-      );
-    },
+      }
   }
 }
 </script>
@@ -125,44 +107,26 @@ export default {
 </style>
 
 <style scoped>
-.btn-report {
-  width: 24px;
-  height: 24px;
-  display: inline-block;
-  background-image: url("@/images/ic_report.png");
-  background-size: contain;
-}
-
-/* .btn-collect {
-  width: 24px;
-  height: 24px;
-  display: inline-block;
-  background-image: url("@/images/ic_collect.png");
-  background-size: contain;
-} */
 
 .avatar-box {
     padding: 8px 18px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     /* border-bottom: 1px solid #E6E6E7; */
 }
 
 .certificate-info {
   display: inline-block;
-  margin-left: 6px;
-  color: rgba(0,0,0, 30%);
-  font-size: 12px;
+  margin-left: 0px;
+  color: #051A37;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .info {
   color: black;
   flex: 1;
-}
-.title {
-  color: #051A37;
-  font-size: 20px;
-  font-weight: 600;
 }
 
 .info h4 {
@@ -200,11 +164,14 @@ a.loading {
 }
 
 a.followed {
-    background-color: #8DCF44;
-    color: white;
+    border: 1px solid #0764DF;
+    color: #0764DF;
+    border-radius: 8px;
 }
 
 a.to-follow {
-    color: #8DCF44;
+    border: 1px solid #0764DF;
+    color: #0764DF;
+    border-radius: 8px;
 }
 </style>
