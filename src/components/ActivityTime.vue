@@ -37,6 +37,9 @@ export default {
   },
   computed: {
     displayTime() {
+      if (this.activityTime == 0) {
+        return "加载中...";
+      }
       let t = this.activityTime*1000;
       let day = moment(t).day();
       let date = moment(t).date();
@@ -46,6 +49,9 @@ export default {
       return week + "，" + month + '月' + date + '日，' + year;     
     },
     duration() {
+      if (this.activityTime == 0) {
+        return "";
+      }
       let begin = moment(this.activityTime*1000);
       // let end = moment(this.activityDuration*1000);
       let _startAt = begin.format("YYYY-MM-DD HH:mm:ss");      
