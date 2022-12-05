@@ -13,7 +13,14 @@
         style="width: 100%; height: 250px" 
       />
       <div class="article-content">
-        <EventTags ></EventTags>
+        <EventTags 
+          :id="article && article.creator?article.creator.uid:-1"
+          :weight="article && article.weight?article.weight:0"
+          :pv="article && article.pv?article.pv:0"
+          :endAt="article && article.endAt?article.endAt:0"
+          :planNumber="article && article.planNumber?article.planNumber:0"
+          :applyNumber="article && article.applyNumber?article.applyNumber:0"
+        ></EventTags>
         <ActivityTitle
           :id="article && article.creator?article.creator.uid:-1"
           :name="article && article.creator?article.creator.nickname:''"
@@ -54,32 +61,20 @@
           <!-- <Collapse>
             <CollapseItem title="展开详细"> -->
           <div class="section-title">活动详情</div>
+          <WaveMultiImage class="multi-image-wrapper" :mediaList="article.imageList"></WaveMultiImage>
           <div class="content event-detail" v-html="article.content"></div>
           <!-- </CollapseItem>
           </Collapse> -->
+          <div class="section-title">活动组织者</div>
+          <EventAuthorDetail
+            :id="article && article.creator?article.creator.uid:-1"
+            :name="article && article.creator?article.creator.nickname:''"
+            :avatar="article && article.creator?article.creator.avatar:''"
+            :followersCount="article && article.creator?article.creator.followersCount: 0"
+          ></EventAuthorDetail>
         </article>
       </div>
     </div>
-    <!-- <section class="sponsor-section">
-      <ActivityAuthor
-        :id="article && article.creator?article.creator.uid:-1"
-        :name="article && article.creator?article.creator.nickname:''"
-        :avatar="article && article.creator?article.creator.avatar:''"
-        :intro="article && article.creator?article.creator.intro:''"
-        :role="article && article.creator?article.creator.role:0"
-        :relationship="article && article.creator?article.creator.relationship:0"
-        title="发起人"
-        :showFollow="true"        
-        :duration="duration"
-      />
-    </section>
-    <section class="participant-section">
-      <ActivityParticipant
-        title="参与人"        
-        :avatarArr="avatarArr" 
-        :avatarNum="article?article.applyNumber:0"
-      />
-    </section> -->
     <div id="mask">
       <wx-open-launch-app
         class="view-in-app"
@@ -91,15 +86,19 @@
         <script type="text/wxtag-template">
           <style>
             .view-in-app {
-              border-radius: 100px;
-              padding: 8px 16px;
-              background-color: #3EB871;
-              color: white;
-              border: none;
-              font-size: 14px;
+                border-radius: 100px;
+                padding: 8px 16px;
+                background-color: #6599FF;
+                color: white;
+                border: none;
+                font-size: 14px;
+                width: 180px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
           </style>
-          <button class="view-in-app">App内查看</button>
+          <button class="view-in-app"><img class="logo-app-open" src="/img/logo.png" /><span>App内打开</span></button>
         </script>
       </wx-open-launch-app>
     </div>
@@ -115,6 +114,8 @@ import ActivityTime from "../components/ActivityTime.vue";
 import ActivityType from "../components/ActivityType.vue";
 import EventTags from "../components/EventTags.vue"
 import EventAuthor from "../components/EventAuthor.vue";
+import EventAuthorDetail from "../components/EventAuthorDetail.vue";
+import WaveMultiImage from "../components/WaveMultiImage.vue";
 import moment from "moment";
 import axios from "axios";
 // import Avatar from '../components/Avatar.vue'
@@ -133,6 +134,8 @@ export default {
     // ActivityParticipant,
     EventTags,
     EventAuthor,
+    EventAuthorDetail,
+    WaveMultiImage
     // Collapse,
     // CollapseItem,
     // Answer, AgreePerson,
@@ -163,6 +166,7 @@ export default {
         intro: "",
         role: 1,
         relationship: 0,
+        followersCount: 0
       },
       imageList: [],
       isApply: false,
@@ -256,6 +260,9 @@ export default {
       
     axios.post(`/v2/activity/detail`,{ "id": id }).then((response)=>{
         this.article = response.data.data;
+        if (response.data.data.creator.followersCount == null) {
+          this.article.creator.followersCount = 0;
+        }
         // this.article.applyList = list;
         // this.article.applyNumber = list.length;
         // console.log(this.article,'article-2');
@@ -703,7 +710,16 @@ article {
   align-items: left;
   /* border-bottom: 1px solid #e6e6e7; */
 }
+.multi-image-wrapper {
+  margin-top: 10px;
+}
 .event-detail {
   margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #616575;
+}
+.logo-app-open {
+  width: 70px;
 }
 </style>
