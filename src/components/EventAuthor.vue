@@ -12,11 +12,11 @@
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
     </div>
     <div><span class="certificate-info">{{ this.name }}</span></div>
-     <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{ currentRelationship === 0? "关注" : "已关注" }}</a>
+     <a :class="followedClass" v-if="showFollow" v-on:click="follow">关注</a>
 </div>
 </template>
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import RingLoader from 'vue-spinner/src/RingLoader.vue'
 import Avatar from './Avatar'
 
@@ -80,16 +80,17 @@ export default {
   },
   methods: {
       async follow () {
-          try {
-            this.loading = true;
-            await axios.post(`/user/follow`, { toUid: this.id });
-            let relationship = this.currentRelationship;
-            this.currentRelationship = relationship === 0 ? 1 : 0;
-          } catch(e) {
-            console.error(e);
-          } finally {
-            this.loading = false;
-          }
+        this.$emit('onClickCall');
+          // try {
+          //   this.loading = true;
+          //   await axios.post(`/user/follow`, { toUid: this.id });
+          //   let relationship = this.currentRelationship;
+          //   this.currentRelationship = relationship === 0 ? 1 : 0;
+          // } catch(e) {
+          //   console.error(e);
+          // } finally {
+          //   this.loading = false;
+          // }
       }
   }
 }

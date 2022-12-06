@@ -2,7 +2,7 @@
 
     <div class="image-wrapper">
       <div  v-for="(item,index) in dataList" :key="index">
-         <img :src="item"  />
+         <img :src="item" v-on:click="openApp" />
       </div>
       <!-- 图片超过4张 -->
       <div v-if="mediaList.length > 4" class="image-item-more-wrapper"> 
@@ -38,7 +38,9 @@ export default {
      }
   },
   methods: {
-      
+      openApp () {
+        this.$emit('onClickCall');
+      }
   }
 }
 </script>
@@ -76,7 +78,7 @@ export default {
   text-align: center;
   top: 28px;
   position: absolute;
-  left: 28px;
+  left: 24px;
   color: white;
 }
 </style>
