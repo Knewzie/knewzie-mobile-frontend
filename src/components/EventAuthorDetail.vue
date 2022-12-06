@@ -13,7 +13,6 @@
 </div>
 </template>
 <script>
-import axios from 'axios'
 
 import Avatar from './Avatar'
 
@@ -73,16 +72,7 @@ export default {
   },
   methods: {
       async follow () {
-          try {
-            this.loading = true;
-            await axios.post(`/user/follow`, { toUid: this.id });
-            let relationship = this.currentRelationship;
-            this.currentRelationship = relationship === 0 ? 1 : 0;
-          } catch(e) {
-            console.error(e);
-          } finally {
-            this.loading = false;
-          }
+          this.$emit('onClickCall');
       }
   }
 }

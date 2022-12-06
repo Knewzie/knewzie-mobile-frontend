@@ -2,9 +2,11 @@ import Vue from 'vue'
 import App from './main.vue'
 import router from './router'
 
-import { Tag } from 'element-ui';
+import { Dialog,Button,ButtonGroup } from 'element-ui';
 
-Vue.use(Tag);
+Vue.use(Dialog);
+Vue.use(Button);
+Vue.use(ButtonGroup);
 
 Vue.config.productionTip = false
 Vue.config.ignoredElements = ['wx-open-launch-app'];

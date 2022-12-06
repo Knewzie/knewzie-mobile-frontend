@@ -40,6 +40,7 @@
           :showFollow="true"
           :role="article && article.creator?article.creator.role:0"
           :relationship="article && article.creator?article.creator.relationship:0"
+          @onClickCall="oia"
         ></EventAuthor>
         <article>
           <div class="section-title">基础资料</div>
@@ -61,7 +62,7 @@
           <!-- <Collapse>
             <CollapseItem title="展开详细"> -->
           <div class="section-title">活动详情</div>
-          <WaveMultiImage class="multi-image-wrapper" :mediaList="article.imageList"></WaveMultiImage>
+          <WaveMultiImage @onClickCall="oia" class="multi-image-wrapper" :mediaList="article.imageList"></WaveMultiImage>
           <div class="content event-detail" v-html="article.content"></div>
           <!-- </CollapseItem>
           </Collapse> -->
@@ -71,6 +72,7 @@
             :name="article && article.creator?article.creator.nickname:''"
             :avatar="article && article.creator?article.creator.avatar:''"
             :followersCount="article && article.creator?article.creator.followersCount: 0"
+            @onClickCall="oia"
           ></EventAuthorDetail>
         </article>
       </div>
@@ -102,6 +104,23 @@
         </script>
       </wx-open-launch-app>
     </div>
+
+    <el-dialog
+      :visible.sync="dialogVisible"
+      width="50%"
+      center
+      :show-close="false"
+      custom-class="dialog-class"
+      >
+      <div slot="header" style="padding: 0px;"></div>
+      <span>是否打开去浪APP？</span>
+      <span  class="dialog-button-group">
+        <!-- <el-button-group> -->
+        <el-button style="color: gray;" type="text" @click="dialogVisible = false">取 消</el-button>
+        <el-button type="text" @click="dialogVisible = false">确 定</el-button>
+        <!-- </el-button-group> -->
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -172,6 +191,7 @@ export default {
       isApply: false,
       applyList: [],
     },
+    dialogVisible: false
     // type: 1,
     // likers: [],
     // activeNames: ['1']
@@ -307,7 +327,9 @@ export default {
       this.type = 1;
     },
     oia() {
+      
       const { id } = this.$router.currentRoute.params;
+      console.log("oia ....." + id);
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
         alert("请在浏览器里打开");
       } else {
@@ -722,5 +744,15 @@ article {
 }
 .logo-app-open {
   width: 70px;
+}
+.dialog-class {
+  border-radius: 10px;
+}
+.el-dialog__header{
+  padding: 0px !important;
+}
+.dialog-button-group{
+  display: flex;
+  justify-content: space-around;
 }
 </style>
