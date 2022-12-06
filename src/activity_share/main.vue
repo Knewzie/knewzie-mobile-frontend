@@ -718,6 +718,7 @@ article {
   font-size: 14px;
   font-weight: 400;
   color: #616575;
+  white-space: pre-wrap;
 }
 .logo-app-open {
   width: 70px;
