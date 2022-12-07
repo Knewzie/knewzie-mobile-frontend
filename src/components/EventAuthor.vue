@@ -38,6 +38,7 @@
             }
           </style>
         <a class="to-follow follow-box"  >关注</a>
+        <button class="to-follow follow-box"  >已关注</button>
       </script>
     </wx-open-launch-app>
 </div>
