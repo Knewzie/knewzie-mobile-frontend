@@ -42,17 +42,19 @@
           :relationship="article && article.creator?article.creator.relationship:0"
           @onClickCall="download"
         ></EventAuthor>
-        <wx-open-launch-app
-          v-on:launch="launchApp"
-          v-on:error="launchError"
-          appid="wx4e61c8e6b7007cc8"
-          :extinfo="launchAppUrl"
-        >
-          <template>
-            <style>.btn { padding: 12px }</style>
-            <button class="btn">测试关注点击<button>
-          </template>
-        </wx-open-launch-app>
+        <div>
+          <wx-open-launch-app
+            v-on:launch="launchApp"
+            v-on:error="launchError"
+            appid="wx4e61c8e6b7007cc8"
+            :extinfo="launchAppUrl"
+          >
+            <template>
+              <style>.btn { padding: 12px }</style>
+              <button >测试关注点击</button>
+            </template>
+          </wx-open-launch-app>
+        </div>
         <article>
           <div class="section-title">基础资料</div>
           <div class="line-box">
