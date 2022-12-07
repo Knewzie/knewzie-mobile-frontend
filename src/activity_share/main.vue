@@ -62,7 +62,7 @@
           <!-- <Collapse>
             <CollapseItem title="展开详细"> -->
           <div class="section-title">活动详情</div>
-          <WaveMultiImage @onClickCall="oia" class="multi-image-wrapper" :mediaList="article.imageList"></WaveMultiImage>
+          <WaveMultiImage @onClickCall="download" class="multi-image-wrapper" :mediaList="article.imageList"></WaveMultiImage>
           <div class="content event-detail" v-html="article.content"></div>
           <!-- </CollapseItem>
           </Collapse> -->
