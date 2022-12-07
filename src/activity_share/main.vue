@@ -40,7 +40,7 @@
           :showFollow="true"
           :role="article && article.creator?article.creator.role:0"
           :relationship="article && article.creator?article.creator.relationship:0"
-          @onClickCall="oia"
+          @onClickCall="download"
         ></EventAuthor>
         <article>
           <div class="section-title">基础资料</div>
@@ -72,7 +72,7 @@
             :name="article && article.creator?article.creator.nickname:''"
             :avatar="article && article.creator?article.creator.avatar:''"
             :followersCount="article && article.creator?article.creator.followersCount: 0"
-            @onClickCall="oia"
+            @onClickCall="download"
           ></EventAuthorDetail>
         </article>
       </div>
