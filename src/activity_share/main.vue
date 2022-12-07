@@ -679,6 +679,7 @@ h3 {
 
 .article {
   background: white;
+  padding-top: 60px;
 }
 
 .article-content{
