@@ -100,7 +100,7 @@
                 align-items: center;
             }
           </style>
-          <button class="view-in-app"><img class="logo-app-open" src="/img/logo.png" /><span>App内打开</span></button>
+          <button class="view-in-app"><img class="logo-app-open" src="https://h5.knewzie.com/img/logo.png" /><span>App内打开</span></button>
         </script>
       </wx-open-launch-app>
     </div>
