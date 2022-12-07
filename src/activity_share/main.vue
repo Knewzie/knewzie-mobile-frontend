@@ -87,7 +87,21 @@
       >
         <script type="text/wxtag-template">
           <style>
-            
+            .view-in-app {
+                border-radius: 100px;
+                padding: 8px 16px;
+                background-color: #6599FF;
+                color: white;
+                border: none;
+                font-size: 14px;
+                width: 180px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo-app-open {
+              width: 70px;
+            }
           </style>
           <button class="view-in-app"><img class="logo-app-open" src="https://h5.knewzie.com/img/logo.png" /><span>App内打开</span></button>
         </script>
@@ -732,9 +746,7 @@ article {
   color: #616575;
   white-space: pre-wrap;
 }
-.logo-app-open {
-  width: 70px;
-}
+
 .dialog-class {
   border-radius: 10px;
 }
@@ -745,16 +757,5 @@ article {
   display: flex;
   justify-content: space-around;
 }
-.view-in-app {
-    border-radius: 100px;
-    padding: 8px 16px;
-    background-color: #6599FF;
-    color: white;
-    border: none;
-    font-size: 14px;
-    width: 180px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+
 </style>
