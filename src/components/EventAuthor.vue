@@ -12,7 +12,34 @@
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
     </div>
     <div><span class="certificate-info">{{ this.name }}</span></div>
-     <a :class="followedClass" v-if="showFollow" v-on:click="follow">关注</a>
+    <wx-open-launch-app
+        class="view-in-app"
+        v-on:launch="launchApp"
+        v-on:error="launchError"
+        appid="wx4e61c8e6b7007cc8"
+        :extinfo="launchAppUrl"
+      >
+      <script type="text/wxtag-template">
+          <style>
+            a.to-follow {
+                border: 1px solid #0764DF;
+                color: #0764DF;
+                border-radius: 8px;
+            }
+            a.follow-box {
+                box-sizing: border-box;
+                width: 48px;
+                font-size: 12px;
+                padding: 3px 5px;
+                border-radius: 12px;
+                text-align: center;
+                margin-left: 5px;
+                border: 1px solid #8DCF44;
+            }
+          </style>
+        <a class="to-follow follow-box"  >关注</a>
+      </script>
+    </wx-open-launch-app>
 </div>
 </template>
 <script>
@@ -150,17 +177,6 @@ h4 {
     margin: 0;
 }
 
-a.follow-box {
-    box-sizing: border-box;
-    width: 48px;
-    font-size: 12px;
-    padding: 3px 5px;
-    border-radius: 12px;
-    text-align: center;
-    margin-left: 5px;
-    border: 1px solid #8DCF44;
-}
-
 a.loading {
     display: none;
 }
@@ -171,9 +187,5 @@ a.followed {
     border-radius: 8px;
 }
 
-a.to-follow {
-    border: 1px solid #0764DF;
-    color: #0764DF;
-    border-radius: 8px;
-}
+
 </style>
