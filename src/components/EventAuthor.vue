@@ -103,22 +103,21 @@ export default {
         }
       }
       return returnClass;
-    }
+    },
+    launchAppUrl() {
+      const { id } = this.$router.currentRoute.params;
+      return `/activity/${id}`;
+    },
   },
   methods: {
       async follow () {
         this.$emit('onClickCall');
-          // try {
-          //   this.loading = true;
-          //   await axios.post(`/user/follow`, { toUid: this.id });
-          //   let relationship = this.currentRelationship;
-          //   this.currentRelationship = relationship === 0 ? 1 : 0;
-          // } catch(e) {
-          //   console.error(e);
-          // } finally {
-          //   this.loading = false;
-          // }
-      }
+      },
+      launchApp() {},
+      launchError() {
+        // alert(err.detail.errMsg);
+        this.oia();
+      },
   }
 }
 </script>
