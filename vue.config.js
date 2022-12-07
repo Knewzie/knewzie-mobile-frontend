@@ -8,12 +8,13 @@ module.exports = {
   pages: {
     topic_mobile: {
       entry: "src/topic/main.js",
-      template: "public/index.html"
+      template: "public/index.html",
+      title: "The Waving"
     },
     topic: {
       entry: "src/topic_share/main.js",
       template: "public/index.html",
-      title: "答知新"
+      title: "The Waving"
     },
     editor: {
       entry: "src/editor/main.js",
@@ -23,24 +24,27 @@ module.exports = {
     reply: {
       entry: "src/answer_share/main.js",
       template: "public/answer.html",
-      title: "答知新"
+      title: "The Waving"
     },
     show: {
       entry: "src/show/main.js",
       template: "public/show.html",
-      title: "答知新 - 晒一晒"
+      title: "The Waving"
     },
     reply_mobile: {
       entry: "src/answer/main.js",
-      template: "public/answer.html"
+      template: "public/answer.html",
+      title: "The Waving"
     },
     activity_mobile: {
       entry: "src/activity/main.js",
-      template: "public/index.html"
+      template: "public/index.html",
+      title: "The Waving"
     },
     activity: {
       entry: "src/activity_share/main.js",
-      template: "public/index.html"
+      template: "public/index.html",
+      title: "The Waving"
     },
   },
   // chainWebpack: config => config.optimization.minimize(false),
