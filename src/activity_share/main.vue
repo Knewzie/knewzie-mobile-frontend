@@ -42,7 +42,7 @@
           :relationship="article && article.creator?article.creator.relationship:0"
           @onClickCall="download"
         ></EventAuthor>
-        <div>
+        <!-- <div>
           <wx-open-launch-app
             v-on:launch="launchApp"
             v-on:error="launchError"
@@ -54,7 +54,7 @@
               <button >测试关注点击</button>
             </template>
           </wx-open-launch-app>
-        </div>
+        </div> -->
         <article>
           <div class="section-title">基础资料</div>
           <div class="line-box">
