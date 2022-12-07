@@ -3,11 +3,11 @@
     <div class="topBar">
       <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
       <div class="topBtn">
-        <a v-on:click="download"><span class="topBtnText">下载App</span></a>
+        <a v-on:click="download"><span class="topBtnText">打开App</span></a>
       </div>
     </div>
     <div class="article">
-      <Author
+      <!-- <Author
         :id="article.creator.uid"
         :name="article.creator.nickname"
         :avatar="article.creator.avatar"
@@ -16,19 +16,33 @@
         :title="article.creator.title"
         :showFollow="false"
         :relationship="article.creator.relationship"
-      />
+      /> -->
       <article>
-        <h3>{{ article.title }}</h3>
-        <div class="abbr-box tags" v-if="article.categories.length > 0">
+        <div class="article-title">{{ article.title }}</div>
+
+        <EventAuthor
+          :id="article && article.creator?article.creator.uid:-1"
+          :name="article && article.creator?article.creator.nickname:''"
+          :avatar="article && article.creator?article.creator.avatar:''"
+          :showFollow="true"
+          :role="article && article.creator?article.creator.role:0"
+          :relationship="article && article.creator?article.creator.relationship:0"
+          @onClickCall="oia"
+        ></EventAuthor>
+
+        <!-- <div class="abbr-box tags" v-if="article.categories.length > 0">
           <span v-for="category in article.categories" :key="category.id">
             {{ category.name }}
           </span>
-        </div>
-        <div class="content" v-html="article.content"></div>
-        <div class="abbr-box time-box">
+        </div> -->
+        <div class="content article-content" v-html="article.content"></div>
+        <!-- <div class="abbr-box time-box">
           <time>发布于 {{ duration }}</time>
-        </div>
+        </div> -->
       </article>
+    </div>
+    <div class="article-intro">
+
     </div>
 
     <div v-if="type === 0">
@@ -73,14 +87,18 @@
           <style>
             .view-in-app {
               border-radius: 100px;
-              padding: 8px 16px;
-              background-color: #3EB871;
-              color: white;
-              border: none;
-              font-size: 14px;
+                padding: 8px 16px;
+                background-color: #6599FF;
+                color: white;
+                border: none;
+                font-size: 14px;
+                width: 180px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
           </style>
-          <button class="view-in-app">App内查看</button>
+          <button class="view-in-app"><img class="logo-app-open" src="/img/logo.png" /><span>App内打开</span></button>
         </script>
       </wx-open-launch-app>
     </div>
@@ -88,6 +106,7 @@
 </template>
 
 <script>
+import EventAuthor from "../components/EventAuthor.vue";
 import Author from "../components/Author.vue";
 import Answer from "../components/Answer.vue";
 import AgreePerson from "../components/AgreePerson.vue";
@@ -101,6 +120,7 @@ export default {
     Author,
     Answer,
     AgreePerson,
+    EventAuthor
   },
   data: () => ({
     article: {
@@ -347,8 +367,7 @@ export default {
 
 <style>
 .topBar {
-  background-image: url("@/images/bg.png");
-  background-size: cover;
+  background-color: #6599FF;
   height: 60px;
   width: 100%;
   position: fixed;
@@ -356,8 +375,8 @@ export default {
 }
 
 .topLogo {
-  top: 10px;
-  left: 30px;
+  top: 6px;
+  left: 17px;
   position: absolute;
 }
 
@@ -369,18 +388,18 @@ export default {
 
 .topBtn {
   border-radius: 100px;
-  padding: 4px 8px;
+  padding: 4px 12px;
   background-color: white;
   position: absolute;
-  top: 12px;
-  right: 20px;
+  top: 15px;
+  right: 28px;
 }
 
 .topBtnText {
   font-family: SourceHan Sans CN-Medium;
   font-size: 14px;
-  font-weight: 500;
-  color: #8dce44;
+  font-weight: 400;
+  color: #59A1FF;
 }
 
 body {
@@ -535,9 +554,6 @@ h3 {
   display: flex;
 }
 
-article {
-  padding: 14px 18px;
-}
 
 .answer-item {
   margin-top: 16px;
@@ -545,5 +561,23 @@ article {
 
 .answer-item:first-child {
   margin: 0;
+}
+/* new clas */
+.article-title {
+  padding: 30px 18px 10px 18px;
+  color: #051A37;
+  font-size: 20px;
+  font-weight: 600;
+}
+.article-content {
+  margin-top: 10px;
+  padding: 0px 18px 10px 18px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #616575;
+  white-space: pre-wrap;
+}
+.logo-app-open {
+  width: 70px;
 }
 </style>
