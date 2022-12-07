@@ -12,35 +12,7 @@
         <RingLoader v-if="showFollow" :loading="loading" size="25px"/>
     </div>
     <div><span class="certificate-info">{{ this.name }}</span></div>
-    <wx-open-launch-app
-        class="view-in-app"
-        v-on:launch="launchApp"
-        v-on:error="launchError"
-        appid="wx4e61c8e6b7007cc8"
-        :extinfo="launchAppUrl"
-      >
-      <script type="text/wxtag-template">
-          <style>
-            a.to-follow {
-                border: 1px solid #0764DF;
-                color: #0764DF;
-                border-radius: 8px;
-            }
-            a.follow-box {
-                box-sizing: border-box;
-                width: 48px;
-                font-size: 12px;
-                padding: 3px 5px;
-                border-radius: 12px;
-                text-align: center;
-                margin-left: 5px;
-                border: 1px solid #8DCF44;
-            }
-          </style>
-        <a class="to-follow follow-box"  >关注</a>
-        <button class="to-follow follow-box"  >已关注</button>
-      </script>
-    </wx-open-launch-app>
+     <a :class="followedClass" v-if="showFollow" v-on:click="follow">关注</a>
 </div>
 </template>
 <script>
@@ -104,21 +76,22 @@ export default {
         }
       }
       return returnClass;
-    },
-    launchAppUrl() {
-      const { id } = this.$router.currentRoute.params;
-      return `/activity/${id}`;
-    },
+    }
   },
   methods: {
       async follow () {
         this.$emit('onClickCall');
-      },
-      launchApp() {},
-      launchError() {
-        // alert(err.detail.errMsg);
-        this.oia();
-      },
+          // try {
+          //   this.loading = true;
+          //   await axios.post(`/user/follow`, { toUid: this.id });
+          //   let relationship = this.currentRelationship;
+          //   this.currentRelationship = relationship === 0 ? 1 : 0;
+          // } catch(e) {
+          //   console.error(e);
+          // } finally {
+          //   this.loading = false;
+          // }
+      }
   }
 }
 </script>
@@ -177,6 +150,17 @@ h4 {
     margin: 0;
 }
 
+a.follow-box {
+    box-sizing: border-box;
+    width: 48px;
+    font-size: 12px;
+    padding: 3px 5px;
+    border-radius: 12px;
+    text-align: center;
+    margin-left: 5px;
+    border: 1px solid #8DCF44;
+}
+
 a.loading {
     display: none;
 }
@@ -187,5 +171,9 @@ a.followed {
     border-radius: 8px;
 }
 
-
+a.to-follow {
+    border: 1px solid #0764DF;
+    color: #0764DF;
+    border-radius: 8px;
+}
 </style>
