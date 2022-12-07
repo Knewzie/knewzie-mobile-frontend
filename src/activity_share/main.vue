@@ -78,7 +78,7 @@
       </div>
     </div>
     <div id="mask">
-      <!-- <wx-open-launch-app
+      <wx-open-launch-app
         class="view-in-app"
         v-on:launch="launchApp"
         v-on:error="launchError"
@@ -87,22 +87,11 @@
       >
         <script type="text/wxtag-template">
           <style>
-            .view-in-app {
-                border-radius: 100px;
-                padding: 8px 16px;
-                background-color: #6599FF;
-                color: white;
-                border: none;
-                font-size: 14px;
-                width: 180px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-          </style> -->
+            
+          </style>
           <button class="view-in-app"><img class="logo-app-open" src="https://h5.knewzie.com/img/logo.png" /><span>App内打开</span></button>
-        <!-- </script>
-      </wx-open-launch-app> -->
+        </script>
+      </wx-open-launch-app>
     </div>
 
     <el-dialog
@@ -757,15 +746,15 @@ article {
   justify-content: space-around;
 }
 .view-in-app {
-                border-radius: 100px;
-                padding: 8px 16px;
-                background-color: #6599FF;
-                color: white;
-                border: none;
-                font-size: 14px;
-                width: 180px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
+    border-radius: 100px;
+    padding: 8px 16px;
+    background-color: #6599FF;
+    color: white;
+    border: none;
+    font-size: 14px;
+    width: 180px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 </style>
