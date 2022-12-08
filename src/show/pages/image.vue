@@ -16,6 +16,7 @@
           :role="article.creator.role"
           :title="article.creator.title"
           :showFollow="false"
+          :dialog="true"
           :relationship="article.creator.relationship"/>
       <!-- <swiper class="swiper">
         <swiper-slide class="slider" v-for="image in article.imageList" :key="image">
@@ -117,7 +118,6 @@ import moment from "moment";
 
 import {Carousel,CarouselItem} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
- 
 
 export default {
   name: "ShowImage",

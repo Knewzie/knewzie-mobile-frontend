@@ -2,6 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import ShowImage from './pages/image'
 import ShowVideo from './pages/video'
+import { Dialog,Button,ButtonGroup } from 'element-ui';
+
+Vue.use(Dialog);
+Vue.use(Button);
+Vue.use(ButtonGroup);
 
 Vue.use(VueRouter)
 
