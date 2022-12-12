@@ -39,14 +39,11 @@
         <!-- <div class="abbr-box time-box">
           <time>发布于 {{ duration }}</time>
         </div> -->
-        <ArticleTailInfro
-        :pv="100"
-        :like="203"
-        :createdAt="123939210"
-        ></ArticleTailInfro>
       </article>
     </div>
-      
+    <div class="article-intro">
+
+    </div>
 
     <div v-if="type === 0">
       <AgreePerson
@@ -113,7 +110,6 @@ import EventAuthor from "../components/EventAuthor.vue";
 import Author from "../components/Author.vue";
 import Answer from "../components/Answer.vue";
 import AgreePerson from "../components/AgreePerson.vue";
-import ArticleTailInfro from "../components/ArticleTailInfro.vue"
 import moment from "moment";
 import axios from "axios";
 
@@ -124,8 +120,7 @@ export default {
     Author,
     Answer,
     AgreePerson,
-    EventAuthor,
-    ArticleTailInfro
+    EventAuthor
   },
   data: () => ({
     article: {
