@@ -211,7 +211,7 @@ a.followed {
 a.to-follow {
   color: #8dcf44;
 }
-
+/* 弹窗 */
 ::v-deep .dialog-class {
   height: 171px;
   width: 295px;

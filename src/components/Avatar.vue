@@ -1,5 +1,9 @@
 <template>
-  <a class="avatar" v-on:click="showAuthor">
+  <a
+    class="avatar"
+    v-on:click="showAuthor"
+    :style="'width:' + width + ';' + 'height:' + height"
+  >
     <img :src="avatar" />
     <!-- 用户等级 -->
     <!-- <div :class="certificatedClass"></div> -->
@@ -13,48 +17,56 @@ export default {
     avatar: String,
     role: Number,
     id: Number,
+    width: {
+      type: String,
+      default: "30px",
+    },
+    height: {
+      type: String,
+      default: "30px",
+    },
   },
   computed: {
-    certificatedClass () {
+    certificatedClass() {
       let returnClass = "certificate-box";
       switch (this.role) {
         case 2: {
-          returnClass += " enterprise"
+          returnClass += " enterprise";
           break;
         }
         case 3: {
-          returnClass += " organization"
+          returnClass += " organization";
           break;
         }
         case 4: {
-          returnClass += " vip"
+          returnClass += " vip";
           break;
         }
         case 5: {
-          returnClass += " certificated"
+          returnClass += " certificated";
           break;
         }
       }
       return returnClass;
-    }
+    },
   },
   methods: {
     showAuthor() {
       const { Page } = window;
-      Page && Page.postMessage(JSON.stringify(
-          { "event": "showAuthor", data: { id: this.id } }
-      ));
+      Page &&
+        Page.postMessage(
+          JSON.stringify({ event: "showAuthor", data: { id: this.id } })
+        );
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
-
 .certificate-info {
   display: inline-block;
   margin-left: 6px;
-  color: rgba(0,0,0, 30%);
+  color: rgba(0, 0, 0, 30%);
   font-size: 12px;
 }
 
@@ -89,16 +101,13 @@ export default {
   background-image: url("./images/ic_certificated.png");
 }
 
-
 .avatar {
-  width: 30px;
-  height: 30px;
   margin-right: 8px;
 }
 .avatar img {
+  width: 100%;
+  height: 100%;
   object-fit: cover; /* Do not scale the image */
-  width: 30px;
-  height: 30px;
   background-color: gray;
   border-radius: 20px;
 }

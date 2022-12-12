@@ -62,7 +62,7 @@
 <script>
 import axios from "axios";
 import moment from "moment";
-import Author from "../../components/Author";
+import Author from "../../components/ShowImageAuthor";
 
 export default {
   name: "ShowImage",
