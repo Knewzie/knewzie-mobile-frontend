@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <div class="topBar">
-      <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
-      <div class="topBtn">
-        <a v-on:click="download"><span class="topBtnText">打开App</span></a>
+    <div class="topBarImage">
+      <div class="topLogoImage"><img class="logo" src="/img/logo.png" /></div>
+      <div class="topBtnImage">
+        <a v-on:click="download"><span class="topBtnTextImage">打开App</span></a>
       </div>
     </div>
     <div class="article">
@@ -137,15 +137,22 @@
         <script type="text/wxtag-template">
           <style>
             .view-in-app {
-              border-radius: 100px;
-              padding: 8px 16px;
-              background-color: #3EB871;
-              color: white;
-              border: none;
-              font-size: 14px;
+                border-radius: 100px;
+                padding: 8px 16px;
+                background-color: #6599FF;
+                color: white;
+                border: none;
+                font-size: 14px;
+                width: 180px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo-app-open {
+              width: 70px;
             }
           </style>
-          <button class="view-in-app">App内查看</button>
+          <button class="view-in-app"><img class="logo-app-open" src="https://h5.knewzie.com/img/logo.png" /><span>App内打开</span></button>
         </script>
       </wx-open-launch-app>
     </div>
@@ -556,43 +563,42 @@ body {
 </style>
 
 <style scoped>
-.topBar {
-  background-image: url("@/images/bg.png");
-  background-size: cover;
+.topBarImage {
+  background-color: #6599FF;
   height: 60px;
   width: 100%;
   position: fixed;
   z-index: 10;
 }
 
-.topLogo {
-  top: 10px;
-  left: 30px;
+.topLogoImage {
+  top: 6px;
+  left: 17px;
   position: absolute;
 }
 
-.logo {
+.logoImage {
   width: 100px;
   object-fit: cover;
   pointer-events: visible;
 }
 
-.topBtn {
+.topBtnImage {
   border-radius: 100px;
-  padding: 4px 8px;
+  padding: 4px 12px;
   background-color: white;
   position: absolute;
-  top: 12px;
-  right: 20px;
+  top: 15px;
+  right: 28px;
 }
 
-.topBtnText {
+.topBtnTextImage {
   font-family: SourceHan Sans CN-Medium;
   font-size: 14px;
-  font-weight: 500;
-  color: #8dce44;
+  font-weight: 400;
+  color: #59A1FF;
 }
-
+/* 以上为头部 */
 .article {
   background: white;
   top: 60px;
