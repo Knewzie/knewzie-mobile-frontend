@@ -709,16 +709,10 @@ article {
   color: #051a37;
 }
 /* 走马灯改样式 */
-::v-deep .el-carousel__item img {
-  /* width: 335px;
-  height: 416px; */
-  /* width: 100%;
-  height: auto; */
+::v-deep .el-carousel__container {
+  overflow: hidden;
   border-radius: 20px;
 }
-/* ::v-deep .el-carousel {
-  position: relative;
-} */
 ::v-deep .el-carousel__button {
   background: #adbbce;
   width: 4px;
