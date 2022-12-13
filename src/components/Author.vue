@@ -113,6 +113,7 @@ export default {
   methods: {
     async follow () {
         this.$emit('onClickCall');
+        this.dialogVisible = false
     },
     async toapp() {
       try {
