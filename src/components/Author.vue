@@ -34,7 +34,7 @@
         <el-button class="dialogc" type="text" @click="dialogVisible = false"
           >取消</el-button
         >
-        <el-button class="dialogm" type="text" @click="dialogVisible = false"
+        <el-button class="dialogm" type="text" @click="follow"
           >打开App</el-button
         >
       </span>
@@ -111,17 +111,8 @@ export default {
     },
   },
   methods: {
-    async follow() {
-      try {
-        this.loading = true;
-        await axios.post(`/user/follow`, { toUid: this.id });
-        let relationship = this.currentRelationship;
-        this.currentRelationship = relationship === 0 ? 1 : 0;
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
+    async follow () {
+        this.$emit('onClickCall');
     },
     async toapp() {
       try {
