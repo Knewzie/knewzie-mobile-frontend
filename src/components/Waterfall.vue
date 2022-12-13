@@ -1,49 +1,54 @@
 <template>
   <div class="Waterfall-box">
-    <div class="Waterfall-beader">{{ title }}</div>
-    <el-row :gutter="20">
-      <el-col
-        :span="12"
-        v-for="(item, index) in list"
-        :key="'Waterfall' + item + index"
+    <div class="Waterfall-beader">{{ name }}还在哪浪...</div>
+    <div class="v-waterfall-content" id="v-waterfall">
+      <div
+        class="v-waterfall-item"
+        v-for="(img, index) in waterfallList"
+        :key="'Waterfall' + img + index"
+        :style="{
+          top: img.top + 'px',
+          left: img.left + 'px',
+          width: waterfallImgWidth + 'px',
+          height: img.height,
+        }"
         v-on:click="dialogVisible = true"
       >
         <el-image
           style="width: 100%; height: 100%; border-radius: 20px"
-          :src="src"
+          :src="img.src"
           v-on:click="dialogVisible = true"
           fit="contain"
         ></el-image>
         <div class="Waterfall-like">
-          <!-- v-on:click="showAuthor" -->
           <img class="Waterfall-image" src="../../src/images/bx-heart.png" />
         </div>
         <div class="avatar-box">
           <Avatar
             height="20px"
             width="20px"
-            :avatar="avatar"
+            :avatar="img.avatar"
             :role="role"
             :id="id"
           />
           <div class="info">
-            <span v-if="title" class="certificate-info">{{ title }}</span>
+            <span class="certificate-info">{{ img.nickname }}</span>
           </div>
         </div>
         <div class="header4">
-          <p class="header4_span">{{ name }}</p>
+          <p class="header4_span">{{ img.title }}</p>
         </div>
-      </el-col>
-      <ToDialog :show="dialogVisible" @submit="dialogVisible = false" />
-    </el-row>
+      </div>
+    </div>
+    <ToDialog :show="dialogVisible" @submit="dialogVisible = false" />
   </div>
 </template>
   <script>
 import axios from "axios";
+import moment from "moment";
 import RingLoader from "vue-spinner/src/RingLoader.vue";
 import Avatar from "./Avatar";
 import ToDialog from "./ToDialog.vue";
-
 export default {
   name: "Waterfall",
   components: {
@@ -62,14 +67,23 @@ export default {
     role: Number,
     title: String,
     relationship: Number,
+    uid: Number,
   },
   data() {
     return {
       dialogVisible: false,
       currentRelationship: this.relationship,
       loading: false,
-      list: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      article: [],
       src: "https://img.knewzie.com/image/11708/1670383817090.png",
+      waterfallList: [],
+      // waterfallImgWidth: 100,
+      waterfallImgWidth: 170, // 每个盒子的宽度
+      // waterfallImgCol: 5,// 瀑布流的列数
+      waterfallImgCol: 2, // 瀑布流的列数
+      waterfallImgRight: 10, // 每个盒子的右padding
+      waterfallImgBottom: 10, // 每个盒子的下padding
+      waterfallDeviationHeight: [],
     };
   },
   watch: {
@@ -111,6 +125,80 @@ export default {
       return returnClass;
     },
   },
+  created() {
+    axios.defaults.baseURL = "https://api.knewzie.com";
+
+    const { wx } = window;
+
+    wx.error(function (res) {
+      alert(JSON.stringify(res));
+    });
+
+    wx.ready(() => {
+      this.wxReady = true;
+
+      let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
+      if (this.article.imageList && this.article.imageList.length > 0) {
+        imgUrlThis = this.article.imageList[0];
+      }
+
+      wx.onMenuShareAppMessage({
+        title: this.article.title,
+        desc: `${this.article.replies} 人回答, ${this.article.pv} 人查看`,
+        link: window.location.href,
+        // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        imgUrl: imgUrlThis,
+        success: function () {},
+      });
+
+      wx.onMenuShareTimeline({
+        title: this.article.title,
+        link: window.location.href,
+        // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+        imgUrl: imgUrlThis,
+        success: function () {},
+      });
+    });
+
+    const timestamp = moment().unix();
+    const appId = "wxd6fe3b0d4e0030ac";
+    const nonceStr = "knewzie";
+
+    axios
+      .post(`/topic/list`, { type: 4, queryUserId: this.uid, page: 1 })
+      .then((response) => {
+        const { data } = response.data;
+        this.article = data.list;
+        this.calculationWidth();
+      })
+      .then(() =>
+        axios.post(`/config/mp/signature`, {
+          appId,
+          noncestr: nonceStr,
+          timestamp: timestamp,
+          url: window.location.href,
+        })
+      )
+      .then((response) => {
+        const { data: sign } = response.data;
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+          appId: appId, // 必填，公众号的唯一标识
+          timestamp: timestamp, // 必填，生成签名的时间戳
+          nonceStr: nonceStr, // 必填，生成签名的随机串
+          signature: sign, // 必填，签名
+          jsApiList: [
+            "updateAppMessageShareData",
+            "updateTimelineShareData",
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline",
+            "onMenuShareQQ",
+            "onMenuShareQZone",
+          ], // 必填，需要使用的JS接口列表
+          openTagList: ["wx-open-launch-app"], // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+        });
+      });
+  },
   methods: {
     dialogV(e) {
       this.dialogVisible = e;
@@ -138,6 +226,72 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    //计算每个图片的宽度或者是列数
+    calculationWidth() {
+      let domWidth = document.getElementById("v-waterfall").offsetWidth;
+      if (!this.waterfallImgWidth && this.waterfallImgCol) {
+        this.waterfallImgWidth =
+          (domWidth - this.waterfallImgRight * this.waterfallImgCol) /
+          this.waterfallImgCol;
+      } else if (this.waterfallImgWidth && !this.waterfallImgCol) {
+        this.waterfallImgCol = Math.floor(
+          domWidth / (this.waterfallImgWidth + this.waterfallImgRight)
+        );
+      }
+      //初始化偏移高度数组
+      this.waterfallDeviationHeight = new Array(this.waterfallImgCol);
+      for (let i = 0; i < this.waterfallDeviationHeight.length; i++) {
+        this.waterfallDeviationHeight[i] = 0;
+      }
+      this.imgPreloading();
+    },
+    //图片预加载
+    imgPreloading() {
+      for (let i = 0; i < this.article.length; i++) {
+        let aImg = new Image();
+        aImg.src = this.article[i].imageList[0]
+          ? this.article[i].imageList[0]
+          : this.article[i].extend.videoThumbnail;
+        aImg.onload = aImg.onerror = (e) => {
+          let imgData = {};
+          imgData.height = (this.waterfallImgWidth / aImg.width) * aImg.height;
+          imgData.src = this.article[i].imageList[0]
+            ? this.article[i].imageList[0]
+            : this.article[i].extend.videoThumbnail;
+          imgData.nickname = this.article[i].creator.nickname; // 说明文字（也可以自己写数组，或者封装json数据，都可以，但是前提是你会相关操作，这里不赘述）
+          imgData.title = this.article[i].title; // 说明文字
+          imgData.avatar = this.article[i].creator.avatar; // 说明文字
+          this.waterfallList.push(imgData);
+          this.rankImg(imgData);
+          console.log(e);
+        };
+      }
+    },
+    //瀑布流布局
+    rankImg(imgData) {
+      let {
+        waterfallImgWidth,
+        waterfallImgRight,
+        waterfallImgBottom,
+        waterfallDeviationHeight,
+        // waterfallImgCol
+      } = this;
+      let minIndex = this.filterMin();
+      imgData.top = waterfallDeviationHeight[minIndex];
+      imgData.left = minIndex * (waterfallImgRight + waterfallImgWidth);
+      // waterfallDeviationHeight[minIndex] += imgData.height + waterfallImgBottom;// 不加文字的盒子高度
+      waterfallDeviationHeight[minIndex] +=
+        imgData.height + waterfallImgBottom + 120; // 加了文字的盒子高度，留出文字的地方（这里设置56px）
+      // console.log(imgData);
+    },
+    /**
+     * 找到最短的列并返回下标
+     * @returns {number} 下标
+     */
+    filterMin() {
+      const min = Math.min.apply(null, this.waterfallDeviationHeight);
+      return this.waterfallDeviationHeight.indexOf(min);
     },
   },
 };
@@ -263,10 +417,22 @@ export default {
   overflow: hidden;
 }
 
-/* Waterfall-like */
-.el-col {
+/* .w-conter {
+  width: 100%;
+  column-count: 2;
+  counter-reset: count;
+  margin: 0 auto;
+} */
+.v-waterfall-content {
+  width: 100%;
+  height: 100%;
   position: relative;
 }
+.v-waterfall-item {
+  float: left;
+  position: absolute;
+}
+/* Waterfall-like */
 .Waterfall-like {
   position: absolute;
   width: 26px;

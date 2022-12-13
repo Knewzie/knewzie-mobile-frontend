@@ -2,7 +2,7 @@
   <div class="avatar-box">
     <Avatar width="40px" height="40px" :avatar="avatar" :role="role" :id="id" />
     <div class="info">
-      <span v-if="this.title" class="certificate-info">{{ this.title }}</span>
+      <span v-if="this.name" class="certificate-info">{{ this.name }}</span>
       <abbr v-if="this.intro">简介：{{ intro || "暂无简介" }}</abbr>
     </div>
     <!--  -->
@@ -16,7 +16,7 @@
       :class="followedClass"
       v-if="!showFollow && dialog"
       v-on:click="dialogVisible = true"
-      >Follow</a
+      >关注</a
     >
     <ToDialog :show="dialogVisible" @submit="dialogVisible = false" />
   </div>
