@@ -42,20 +42,20 @@
           <el-col :span="12">
             <div class="fIcon">
               <div class="fIcon_item">
-                <img src="../../images/bx-eye-show.png" />11k
+                <img src="../../images/bx-eye-show.png" />{{article.pv}}
               </div>
               <div class="fIcon_item">
-                <img src="../../images/bx-heart2.png" />2k
+                <img src="../../images/bx-heart2.png" />{{article.likes}}
               </div>
               <div class="fIcon_item">
-                <img src="../../images/bx-comment.png" />123
+                <img src="../../images/bx-comment.png" />{{article.replies}}
               </div>
             </div>
           </el-col>
         </el-row>
         <div class="address">
           <img src="../../images/bx-map.png" />
-          <span>Spaceship, Hastings, Gisborne</span>
+          <span>{{article.locationName}}</span>
         </div>
         <span class="imageTitle">{{ article.title }}</span>
         <div class="abbr-box tags" v-if="article.categories.length > 0">
@@ -71,6 +71,7 @@
           :intro="article.creator.intro"
           :role="article.creator.role"
           :title="article.creator.title"
+          :uid="article.creator.uid"
           :showFollow="false"
           :dialog="true"
           :relationship="article.creator.relationship"
@@ -353,167 +354,7 @@ export default {
       .post(`/topic/details`, { id })
       .then((response) => {
         const { data } = response.data;
-        console.log(JSON.stringify(data));
-        var obj = {
-          id: 13919,
-          type: 4,
-          title: "Federal Delicatessen又获奖啦！奥克兰必尝的鸡肉三明治🥪",
-          content:
-            "Federal Delicatessen今年再次当选奥克兰标志性菜肴提名Auckland Iconic Eats👉🏻必尝的鸡肉三明治你一定不能错过！快来探索Federal的美味佳肴吧🤩",
-          contentStruct: null,
-          imageList: [
-            "https://img.knewzie.com/image/11708/1670383817090.png",
-            "https://img.knewzie.com/image/11708/1670383817090.png",
-          ],
-          videoList: [],
-          extend: {
-            videoThumbnail: null,
-            activityStartAt: null,
-            activityAddress: null,
-            activityApplyPrice: null,
-            activityApplyTotal: null,
-            activityCover: null,
-            assetDataVO: { imageWidth: 1080, imageHigh: 1080 },
-            officialGuideUserList: null,
-          },
-          categories: [],
-          issues: [
-            {
-              id: 395,
-              name: "获奖",
-              icon: "https://img.knewzie.com/image/917/79b1520b-2d4a-4a1e-8aac-0fc0cb5a9cec.png",
-              desc: "暂时没有简介",
-              categories: [],
-              creator: null,
-              createdAt: 1670378066,
-              replyCount: null,
-              pvCount: null,
-            },
-            {
-              id: 301,
-              name: "探店",
-              icon: "https://img.knewzie.com/image/917/79b1520b-2d4a-4a1e-8aac-0fc0cb5a9cec.png",
-              desc: "暂时没有简介",
-              categories: [],
-              creator: null,
-              createdAt: 1669687031,
-              replyCount: null,
-              pvCount: null,
-            },
-            {
-              id: 67,
-              name: "美食",
-              icon: "https://img.knewzie.com/image/917/79b1520b-2d4a-4a1e-8aac-0fc0cb5a9cec.png",
-              desc: "暂时没有简介",
-              categories: [],
-              creator: null,
-              createdAt: 1646033225,
-              replyCount: null,
-              pvCount: null,
-            },
-            {
-              id: 32,
-              name: "奥克兰",
-              icon: "https://img.knewzie.com/image/917/79b1520b-2d4a-4a1e-8aac-0fc0cb5a9cec.png",
-              desc: "暂时没有简介",
-              categories: [],
-              creator: null,
-              createdAt: 1644998418,
-              replyCount: null,
-              pvCount: null,
-            },
-          ],
-          likes: 0,
-          replies: 0,
-          creator: {
-            uid: 11708,
-            role: 2,
-            relationship: 0,
-            name: "",
-            nickname: "SkyCity天空城",
-            title: "天空城娱乐集团",
-            avatar:
-              "https://knewzie.s3.ap-southeast-2.amazonaws.com/image/11708/1669770919973.png",
-            intro: "",
-            level: 1,
-            experience: 80,
-            integral: 10,
-            medals: [
-              {
-                id: 12,
-                name: "金色浪花",
-                nameEn: null,
-                icon: "https://img.knewzie.com/image/899/a1c5d343-7400-44a2-a90d-6a7f4a346b0e.png",
-                condition: null,
-                description:
-                  "“金色浪花”，不只是一个特别设计的徽章，更是去浪App平台上首批用户身份的象征。其中灌注着平台创立初期的辛劳与汗水，同时融聚了小浪花们的信任与支持。拥有它即代表拥有了无上的特权：从参与平台抽奖到享受品牌优惠，从线上优先推送到线下抢先入场，没有“享”不到。该徽章限量发行，过后不补。",
-                descriptionEn: null,
-                createdAt: 1670459876,
-                userHad: false,
-              },
-              {
-                id: 4,
-                name: "深度认可",
-                nameEn: null,
-                icon: "https://img.knewzie.com/image/899/072fc409-6468-4246-9576-c98ff39d76de.png",
-                condition: null,
-                description: "深度认可其他用户",
-                descriptionEn: null,
-                createdAt: 1670294082,
-                userHad: true,
-              },
-              {
-                id: 8,
-                name: "声名大噪",
-                nameEn: null,
-                icon: "https://img.knewzie.com/image/899/c9ae63b6-aad4-4efc-8d6d-a0c6b5518be3.png",
-                condition: null,
-                description: "你远近驰名啊！",
-                descriptionEn: null,
-                createdAt: 1670200415,
-                userHad: false,
-              },
-              {
-                id: 9,
-                name: "享有盛誉",
-                nameEn: null,
-                icon: "https://img.knewzie.com/image/899/15d048f0-48a4-4119-9127-63f9860d861f.png",
-                condition: null,
-                description: "你的名声真好！感谢你的付出",
-                descriptionEn: null,
-                createdAt: 1670200415,
-                userHad: false,
-              },
-            ],
-            birthday: "",
-            ageRange: "",
-            gender: 0,
-            followersCount: 45,
-            followingCount: 1,
-            topicCount: null,
-            likedCategories: [],
-            platforms: null,
-            location: "",
-            email: "",
-            createdAt: 1652155310,
-            updatedAt: 1669770939,
-            deletedAt: 0,
-          },
-          createdAt: 1670383955,
-          replyList: [],
-          isLike: false,
-          isCollect: false,
-          pv: 460,
-          latitude: "-36.848917258903384",
-          longitude: "174.76255958899856",
-          locationName:
-            "86 Federal Street, Auckland City, Auckland 1010, New Zealand",
-          anonymous: null,
-          officialGuideUserList: null,
-          startedAt: 0,
-          expiredAt: 4070908800,
-        };
-        this.article = obj;
+        this.article = data;
       })
       .then(() =>
         axios.post(`/config/mp/signature`, {
