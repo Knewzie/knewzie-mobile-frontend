@@ -395,7 +395,9 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
   background: #f6f6f6;
 }
-
+#mask {
+  z-index: 100;
+}
 .view-in-app {
   position: fixed;
   bottom: 20px;
