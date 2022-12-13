@@ -18,6 +18,7 @@
           :showFollow="false"
           :dialog="true"
           :relationship="article.creator.relationship"
+          @onClickCall="download"
         />
         <!--  -->
         <Carousel
@@ -148,7 +149,6 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                z-index: 100;
             }
             .logo-app-open {
               width: 70px;
@@ -394,9 +394,6 @@ body {
   -webkit-touch-callout: none;
   padding-bottom: env(safe-area-inset-bottom);
   background: #f6f6f6;
-}
-#mask {
-  z-index: 100;
 }
 .view-in-app {
   position: fixed;
