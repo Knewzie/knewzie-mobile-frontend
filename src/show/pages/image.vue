@@ -12,7 +12,6 @@
           :id="article.creator.uid"
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
-          :intro="article.creator.intro"
           :role="article.creator.role"
           :title="article.creator.title"
           :showFollow="false"
@@ -76,6 +75,7 @@
           :showFollow="false"
           :dialog="true"
           :relationship="article.creator.relationship"
+          @onClickCall="download"
         />
       </article>
     </div>
@@ -289,6 +289,7 @@ export default {
       this.oia();
     },
     download() {
+      console.log("goto download");
       var ua = navigator.userAgent;
       //  var appVer = navigator.appVersion;
       // console.log('appver='+appVer);

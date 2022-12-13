@@ -3,26 +3,23 @@
     <Avatar width="40px" height="40px" :avatar="avatar" :role="role" :id="id" />
     <div class="info">
       <span v-if="this.name" class="certificate-info">{{ this.name }}</span>
-      <abbr v-if="this.intro">简介：{{ intro || "暂无简介" }}</abbr>
+      <!-- <abbr v-if="this.intro">简介：{{ intro || "暂无简介" }}</abbr> -->
     </div>
     <!--  -->
     <div class="loading-box" v-show="loading">
       <RingLoader v-if="showFollow" :loading="loading" size="25px" />
     </div>
-    <a :class="followedClass" v-if="showFollow" v-on:click="follow">{{
-      currentRelationship === 0 ? "关注" : "已关注"
-    }}</a>
+    
     <a
       :class="followedClass"
       v-if="!showFollow && dialog"
       v-on:click="dialogVisible = true"
       >关注</a
     >
-    <ToDialog :show="dialogVisible" @submit="dialogVisible = false" />
+    <ToDialog :show="dialogVisible" @submit="gotoDownload" />
   </div>
 </template>
 <script>
-import axios from "axios";
 import RingLoader from "vue-spinner/src/RingLoader.vue";
 import Avatar from "./Avatar";
 import ToDialog from "./ToDialog.vue";
@@ -38,7 +35,6 @@ export default {
     id: Number,
     name: String,
     avatar: String,
-    intro: String,
     showFollow: Boolean,
     dialog: Boolean,
     role: Number,
@@ -92,29 +88,9 @@ export default {
     },
   },
   methods: {
-    async follow() {
-      try {
-        this.loading = true;
-        await axios.post(`/user/follow`, { toUid: this.id });
-        let relationship = this.currentRelationship;
-        this.currentRelationship = relationship === 0 ? 1 : 0;
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    async toapp() {
-      try {
-        this.loading = true;
-        await axios.post(`/user/follow`, { toUid: this.id });
-        let relationship = this.currentRelationship;
-        this.currentRelationship = relationship === 0 ? 1 : 0;
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
+    gotoDownload () {
+        this.$emit('onClickCall');
+        this.dialogVisible = false
     },
   },
 };

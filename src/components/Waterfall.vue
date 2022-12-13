@@ -40,7 +40,7 @@
         </div>
       </div>
     </div>
-    <ToDialog :show="dialogVisible" @submit="dialogVisible = false" />
+    <ToDialog :show="dialogVisible" @submit="gotoDownload" />
   </div>
 </template>
   <script>
@@ -203,30 +203,11 @@ export default {
     dialogV(e) {
       this.dialogVisible = e;
     },
-    async follow() {
-      try {
-        this.loading = true;
-        await axios.post(`/user/follow`, { toUid: this.id });
-        let relationship = this.currentRelationship;
-        this.currentRelationship = relationship === 0 ? 1 : 0;
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
+    gotoDownload () {
+        this.$emit('onClickCall');
+        this.dialogVisible = false
     },
-    async toapp() {
-      try {
-        this.loading = true;
-        await axios.post(`/user/follow`, { toUid: this.id });
-        let relationship = this.currentRelationship;
-        this.currentRelationship = relationship === 0 ? 1 : 0;
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
-      }
-    },
+    
     //计算每个图片的宽度或者是列数
     calculationWidth() {
       let domWidth = document.getElementById("v-waterfall").offsetWidth;
@@ -253,7 +234,7 @@ export default {
         aImg.src = this.article[i].imageList[0]
           ? this.article[i].imageList[0]
           : this.article[i].extend.videoThumbnail;
-        aImg.onload = aImg.onerror = (e) => {
+        aImg.onload = aImg.onerror = () => {
           let imgData = {};
           imgData.height = (this.waterfallImgWidth / aImg.width) * aImg.height;
           imgData.src = this.article[i].imageList[0]
@@ -264,7 +245,6 @@ export default {
           imgData.avatar = this.article[i].creator.avatar; // 说明文字
           this.waterfallList.push(imgData);
           this.rankImg(imgData);
-          console.log(e);
         };
       }
     },
