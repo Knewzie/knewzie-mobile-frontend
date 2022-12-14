@@ -231,7 +231,6 @@ export default {
       playIcon.style.display = "none";
     },
     myVideo() {
-      console.log(document.getElementById("myVideo"));
       document.getElementById("myVideo").pause();
       var playIcon = document.getElementById("play_icon");
       // var pauseIcon = document.getElementById("pause_icon");
