@@ -3,7 +3,9 @@
     <div class="topBarImage">
       <div class="topLogoImage"><img class="logo" src="/img/logo.png" /></div>
       <div class="topBtnImage">
-        <a v-on:click="download"><span class="topBtnTextImage">打开App</span></a>
+        <a v-on:click="download"
+          ><span class="topBtnTextImage">打开App</span></a
+        >
       </div>
     </div>
     <div class="article">
@@ -12,12 +14,12 @@
           :id="article.creator.uid"
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
+          :intro="article.creator.intro"
           :role="article.creator.role"
           :title="article.creator.title"
           :showFollow="false"
           :dialog="true"
           :relationship="article.creator.relationship"
-          @onClickCall="download"
         />
         <!--  -->
         <Carousel
@@ -42,20 +44,20 @@
           <el-col :span="12">
             <div class="fIcon">
               <div class="fIcon_item">
-                <img src="../../images/bx-eye-show.png" />{{article.pv}}
+                <img src="../../images/bx-eye-show.png" />{{ article.pv }}
               </div>
               <div class="fIcon_item">
-                <img src="../../images/bx-heart2.png" />{{article.likes}}
+                <img src="../../images/bx-heart2.png" />{{ article.likes }}
               </div>
               <div class="fIcon_item">
-                <img src="../../images/bx-comment.png" />{{article.replies}}
+                <img src="../../images/bx-comment.png" />{{ article.replies }}
               </div>
             </div>
           </el-col>
         </el-row>
         <div class="address">
           <img src="../../images/bx-map.png" />
-          <span>{{article.locationName}}</span>
+          <span>{{ article.locationName }}</span>
         </div>
         <span class="imageTitle">{{ article.title }}</span>
         <div class="abbr-box tags" v-if="article.categories.length > 0">
@@ -75,7 +77,6 @@
           :showFollow="false"
           :dialog="true"
           :relationship="article.creator.relationship"
-          @onClickCall="download"
         />
       </article>
     </div>
@@ -162,9 +163,9 @@
 </template>
 
 <script>
-import Waterfall from "../../components/Waterfall.vue";
 import Author from "../../components/ShowImageAuthor.vue";
 import Answer from "../../components/Answer.vue";
+import Waterfall from "../../components/Waterfall.vue";
 // import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import "swiper/css/bundle";
 import axios from "axios";
@@ -289,7 +290,6 @@ export default {
       this.oia();
     },
     download() {
-      console.log("goto download");
       var ua = navigator.userAgent;
       //  var appVer = navigator.appVersion;
       // console.log('appver='+appVer);
@@ -396,18 +396,18 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
   background: #f6f6f6;
 }
+
 .view-in-app {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 100;
 }
 </style>
 
 <style scoped>
 .topBarImage {
-  background-color: #6599FF;
+  background-color: #6599ff;
   height: 60px;
   width: 100%;
   position: fixed;
@@ -439,7 +439,7 @@ body {
   font-family: SourceHan Sans CN-Medium;
   font-size: 14px;
   font-weight: 400;
-  color: #59A1FF;
+  color: #59a1ff;
 }
 /* 以上为头部 */
 .article {

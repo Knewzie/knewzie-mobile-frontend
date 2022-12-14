@@ -6,69 +6,83 @@
         <a v-on:click="download"><span class="topBtnText">下载App</span></a>
       </div>
     </div>
-    <div class="article">
+    <div class="video_content">
       <div class="video-container">
-        <video class="video" :src="article.videoList[0]" controls playsinline />
+        <img
+          src="../../images/Play=On.png"
+          id="play_icon"
+          @mouseover="playOver"
+          @click="playIcon"
+        />
+        <img
+          src="../../images/Play=Off.png"
+          id="pause_icon"
+          @mouseover="pauseOver"
+          @click="pauseIcon"
+        />
+        <video
+          class="video"
+          id="myVideo"
+          @mouseover="videoOver"
+          @mouseout="videoOut"
+          @click="myVideo"
+          :src="article.videoList[0]"
+          playsinline
+        />
+        <!-- autoplay="autoplay" -->
       </div>
-      <article>
-        <Author
-            :id="article.creator.uid"
-            :name="article.creator.nickname"
-            :avatar="article.creator.avatar"
-            :intro="article.creator.intro"
-            :role="article.creator.role"
-            :title="article.creator.title"
-            :showFollow="false"
-            :relationship="article.creator.relationship"/>
-        <h3 >{{ article.title }}</h3>
-        <div class="abbr-box tags" v-if="article.categories.length > 0">
-          <span v-for="category in article.categories" :key="category.id">
-            {{ category.name }}
-          </span>
-        </div>
-        <div class="abbr-box time-box">
-          <time>发布于 {{ duration }}</time>
-        </div>
-        <div class="content">{{ article.content }}</div>
-      </article>
+
+      <Article
+        :avatar="article.creator.avatar"
+        :nickname="article.creator.nickname"
+        :pv="article.pv"
+        :likes="article.likes"
+        :title="article.title"
+        :replies="article.replies"
+      />
     </div>
-
-
     <div id="mask">
-      <wx-open-launch-app class="view-in-app"
-                          v-on:launch="launchApp"
-                          v-on:error="launchError"
-                          appid="wx4e61c8e6b7007cc8"
-                          :extinfo="launchAppUrl">
+      <wx-open-launch-app
+        class="view-in-app"
+        v-on:launch="launchApp"
+        v-on:error="launchError"
+        appid="wx4e61c8e6b7007cc8"
+        :extinfo="launchAppUrl"
+      >
         <script type="text/wxtag-template">
           <style>
             .view-in-app {
-              border-radius: 100px;
-              padding: 8px 16px;
-              background-color: #3EB871;
-              color: white;
-              border: none;
-              font-size: 14px;
+                border-radius: 100px;
+                padding: 8px 16px;
+                background-color: #6599FF;
+                color: white;
+                border: none;
+                font-size: 14px;
+                width: 180px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo-app-open {
+              width: 70px;
             }
           </style>
-          <button class="view-in-app">App内查看</button>
+          <button class="view-in-app"><img class="logo-app-open" src="https://h5.knewzie.com/img/logo.png" /><span>App内打开</span></button>
         </script>
       </wx-open-launch-app>
     </div>
   </div>
-
 </template>
 
 <script>
 import axios from "axios";
 import moment from "moment";
-import Author from "../../components/ShowImageAuthor";
-
+import Article from "../../components/ShowVideo.vue";
+// import Avatar from "../../components/Avatar.vue";
+// import  "./play";
 export default {
   name: "ShowImage",
-  components: {
-    Author
-  },
+  components: { Article },
 
   data: () => ({
     article: {
@@ -91,85 +105,86 @@ export default {
       },
       // imageList: [],
       videoList: [],
-      extend:{
+      extend: {
         videoThumbnail: "",
       },
-      replyList: []
+      replyList: [],
     },
     type: 1,
-    likers: []
+    likers: [],
   }),
 
   computed: {
     launchAppUrl() {
-      const {id} = this.$router.currentRoute.params;
+      const { id } = this.$router.currentRoute.params;
       return `/show/video/${id}`;
     },
     duration() {
       if (!this.article.createdAt) {
-        return "加载中..."
+        return "加载中...";
       }
 
       let now = moment();
       let createdAt = moment(this.article.createdAt * 1000);
       let diff = moment.duration(now.diff(createdAt));
       if (diff.asDays() > 10) {
-        return createdAt.format('YYYY-MM-DD')
+        return createdAt.format("YYYY-MM-DD");
       } else if (diff.asHours() >= 24) {
-        return `${Math.floor(diff.asDays())} 天前`
+        return `${Math.floor(diff.asDays())} 天前`;
       } else if (diff.asMinutes() >= 60) {
-        return `${Math.floor(diff.asHours())} 小时前`
+        return `${Math.floor(diff.asHours())} 小时前`;
       } else if (diff.asSeconds() >= 60) {
-        return `${Math.floor(diff.asMinutes())} 分钟前`
+        return `${Math.floor(diff.asMinutes())} 分钟前`;
       } else if (diff.asSeconds() > 0) {
-        return `${Math.floor(diff.asSeconds())} 秒前`
+        return `${Math.floor(diff.asSeconds())} 秒前`;
       } else {
         return "刚刚";
       }
     },
   },
-
   methods: {
     switchToAnswer() {
       this.type = 1;
     },
 
     switchToLike() {
-      const {Page} = window;
-      const {id} = this.$router.currentRoute.params;
+      const { Page } = window;
+      const { id } = this.$router.currentRoute.params;
       this.type = 0;
 
-      Page && Page.postMessage(
+      Page &&
+        Page.postMessage(
           JSON.stringify({
-            "event": "showProgress"
+            event: "showProgress",
           })
-      )
+        );
 
-      axios.post(`/user/topic/likedUser`, {topicId: id, page: 1})
-          .then((response) => {
-            const {data} = response.data
-            const {list} = data;
-            this.likers = list;
-            this.type = 0;
-          }).finally(() => {
-        Page && Page.postMessage(
-            JSON.stringify({
-              "event": "dismissProgress"
-            })
-        )
-      })
+      axios
+        .post(`/user/topic/likedUser`, { topicId: id, page: 1 })
+        .then((response) => {
+          const { data } = response.data;
+          const { list } = data;
+          this.likers = list;
+          this.type = 0;
+        })
+        .finally(() => {
+          Page &&
+            Page.postMessage(
+              JSON.stringify({
+                event: "dismissProgress",
+              })
+            );
+        });
     },
     oia() {
-      const {id} = this.$router.currentRoute.params;
+      const { id } = this.$router.currentRoute.params;
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
-        alert("请在浏览器里打开")
+        alert("请在浏览器里打开");
       } else {
         window.location.assign(`zhixin:///topic/${id}`);
       }
     },
-    launchApp() {
-
-    },
+    launchApp() {},
     launchError() {
       // alert(err.detail.errMsg);
       this.oia();
@@ -195,14 +210,93 @@ export default {
         window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
       }, 2000);
     },
+    video() {
+      var playIcon = document.getElementById("play_icon");
+      var pauseIcon = document.getElementById("pause_icon");
+      console.log(pauseIcon.style.display);
+      if (pauseIcon.style.display == "none" || pauseIcon.style.display == "") {
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+        // pauseIcon.style.opacity = 1;
+      } else {
+        pauseIcon.style.display = "none";
+        playIcon.style.display = "block";
+      }
+    },
+    playIcon() {
+      document.getElementById("myVideo").play();
+      var playIcon = document.getElementById("play_icon");
+      var pauseIcon = document.getElementById("pause_icon");
+      pauseIcon.style.display = "block";
+      playIcon.style.display = "none";
+    },
+    myVideo() {
+      console.log(document.getElementById("myVideo"));
+      document.getElementById("myVideo").pause();
+      var playIcon = document.getElementById("play_icon");
+      // var pauseIcon = document.getElementById("pause_icon");
+      // pauseIcon.style.display = "none";
+      playIcon.style.display = "block";
+    },
+    pauseIcon() {
+      document.getElementById("myVideo").pause();
+      var playIcon = document.getElementById("play_icon");
+      var pauseIcon = document.getElementById("pause_icon");
+      pauseIcon.style.display = "none";
+      playIcon.style.display = "block";
+    },
+    videoOver() {
+      // var myVideo = document.getElementById("myVideo");
+      // myVideo.controls = "controls";
+      var playIcon = document.getElementById("play_icon");
+      var pauseIcon = document.getElementById("pause_icon");
+      if (pauseIcon.style.display == "block") {
+        // pauseIcon.style.opacity = 1;
+      }
+      if (playIcon.style.display == "block") {
+        // playIcon.style.opacity = 1;
+      }
+    },
+    pauseOver() {
+      // var myVideo = document.getElementById("myVideo");
+      // myVideo.controls = "controls";
+      var pauseIcon = document.getElementById("pause_icon");
+      if (pauseIcon.style.display == "block") {
+        // pauseIcon.style.opacity = 1;
+      }
+    },
+    videoOut() {
+      // var myVideo = document.getElementById("myVideo");
+      // myVideo.controls = false;
+      var playIcon = document.getElementById("play_icon");
+      var pauseIcon = document.getElementById("pause_icon");
+      if (pauseIcon.style.display == "block") {
+        pauseIcon.style.opacity = 0;
+      }
+      if (playIcon.style.display == "block") {
+        playIcon.style.opacity = 0;
+      }
+    },
+    playOver() {
+      // var myVideo = document.getElementById("myVideo");
+      // myVideo.controls = "controls";
+      var playIcon = document.getElementById("play_icon");
+      if (playIcon.style.display == "block") {
+        // playIcon.style.opacity = 1;
+      }
+    },
+    gotoDownload() {
+      this.$emit("onClickCall");
+      this.dialogVisible = false;
+    },
   },
 
   created() {
-    axios.defaults.baseURL = "https://api.knewzie.com"
+    axios.defaults.baseURL = "https://api.knewzie.com";
 
-    const {wx} = window
+    const { wx } = window;
 
-    wx.error(function(res){
+    wx.error(function (res) {
       alert(JSON.stringify(res));
     });
 
@@ -220,8 +314,7 @@ export default {
         link: window.location.href,
         // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         imgUrl: imgUrlThis,
-        success: function () {
-        }
+        success: function () {},
       });
 
       wx.onMenuShareTimeline({
@@ -229,48 +322,55 @@ export default {
         link: window.location.href,
         // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
         imgUrl: imgUrlThis,
-        success: function () {
-        }
+        success: function () {},
       });
-    })
-
+    });
 
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
-    const {id} = this.$router.currentRoute.params;
+    const { id } = this.$router.currentRoute.params;
 
-    axios.post(`/topic/details`, {id})
-        .then((response) => {
-          const {data} = response.data
-          this.article = data;
-        }).then(() => axios.post(`/config/mp/signature`,
-        {
+    axios
+      .post(`/topic/details`, { id })
+      .then((response) => {
+        const { data } = response.data;
+        this.article = data;
+      })
+      .then(() =>
+        axios.post(`/config/mp/signature`, {
           appId,
-          "noncestr": nonceStr,
-          "timestamp": timestamp,
-          url: window.location.href
-        }
-    )).then((response) => {
-      const {data: sign} = response.data;
-      wx.config({
-        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
-        appId: appId, // 必填，公众号的唯一标识
-        timestamp: timestamp, // 必填，生成签名的时间戳
-        nonceStr: nonceStr, // 必填，生成签名的随机串
-        signature: sign,// 必填，签名
-        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline', 'onMenuShareQQ', 'onMenuShareQZone'], // 必填，需要使用的JS接口列表
-        openTagList: ['wx-open-launch-app'] // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+          noncestr: nonceStr,
+          timestamp: timestamp,
+          url: window.location.href,
+        })
+      )
+      .then((response) => {
+        const { data: sign } = response.data;
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+          appId: appId, // 必填，公众号的唯一标识
+          timestamp: timestamp, // 必填，生成签名的时间戳
+          nonceStr: nonceStr, // 必填，生成签名的随机串
+          signature: sign, // 必填，签名
+          jsApiList: [
+            "updateAppMessageShareData",
+            "updateTimelineShareData",
+            "onMenuShareAppMessage",
+            "onMenuShareTimeline",
+            "onMenuShareQQ",
+            "onMenuShareQZone",
+          ], // 必填，需要使用的JS接口列表
+          openTagList: ["wx-open-launch-app"], // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+        });
       });
-    });
   },
-}
+};
 </script>
 
 <style>
 .topBar {
-  background-image: url("@/images/bg.png");
-  background-size: cover;
+  background-color: #6599ff;
   height: 60px;
   width: 100%;
   position: fixed;
@@ -278,8 +378,8 @@ export default {
 }
 
 .topLogo {
-  top: 10px;
-  left: 30px;
+  top: 6px;
+  left: 17px;
   position: absolute;
 }
 
@@ -291,32 +391,20 @@ export default {
 
 .topBtn {
   border-radius: 100px;
-  padding: 4px 8px;
+  padding: 4px 12px;
   background-color: white;
   position: absolute;
-  top: 12px;
-  right: 20px;
+  top: 15px;
+  right: 28px;
 }
 
-.topBtnText {
+.topBtnTextImage {
   font-family: SourceHan Sans CN-Medium;
   font-size: 14px;
-  font-weight: 500;
-  color: #8dce44;
+  font-weight: 400;
+  color: #59a1ff;
 }
-body {
-  margin: 0;
-  -webkit-touch-callout: none;
-  padding-bottom: env(safe-area-inset-bottom);
-  background: #F6F6F6;
-}
-
-.view-in-app {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
+/* 以上为头部 */
 </style>
 
 <style scoped>
@@ -330,74 +418,8 @@ article {
   color: black;
   padding: 14px 18px;
 }
-
-
-.tags {
-  margin: 10px 0;
-}
-
-.tags span {
-  background: #D0D0D0;
-  padding: 1px 8px;
-  border-radius: 10px;
-  margin-left: 5px;
-  font-size: 10px;
-  color: #8D8D8E;
-}
-
-.tags span:first-child {
-  margin: 0px;
-}
-
-.time-box {
-  margin: 7px 0;
-  font-size: 12px;
-  color: rgba(0, 0, 0, 60%);
-}
-
-.abbr-box {
-  display: flex;
-}
-
-.actions {
-  display: flex;
-  background: white;
-  margin: 10px 0;
-  padding: 0px 28px;
-  align-items: center;
-}
-
-.space {
-  flex: 1
-}
-
-.action-item {
-  padding: 7px 0;
-  display: flex;
-  align-items: center;
-
-}
-
-.action-item > img {
-  width: 18px;
-  margin-right: 5px;
-}
-
-.action-item > span {
-  line-height: normal;
-}
-
-.space {
-  flex: 1
-}
-
-.actions > * {
-  color: #3C3C3E;
-  font-size: 14px;
-  font-weight: bold;
-}
-
 .video-container {
+  position: relative;
   text-align: center;
   background: black;
 }
@@ -408,6 +430,42 @@ article {
   max-width: 100%;
 }
 
+/* 播放图标 */
+#play_icon {
+  display: block;
+  position: absolute;
+  top: 267px;
+  left: 135px;
+  width: 105px;
+  height: 100px;
+  z-index: 3;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+#play_icon:hover {
+  cursor: pointer;
+  -webkit-filter: drop-shadow(0px 0px 10px white);
+}
+/* 暂停图标 */
+#pause_icon {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  /* top: 285px;
+  left: 160px;
+  width: 60px;
+  height: 58px; */
+  z-index: 3;
+  border-radius: 50%;
+  opacity: 0;
+}
+#pause_icon:hover {
+  cursor: pointer;
+  -webkit-filter: drop-shadow(0px 0px 5px white);
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -415,4 +473,46 @@ article {
   color: #2c3e50;
 }
 
+/* // 播放按钮 */
+video::-webkit-media-controls-play-button {
+  display: none !important;
+}
+/* // 当前播放时间 */
+video::-webkit-media-controls-current-time-display {
+  display: none !important;
+}
+/* // 剩余时间 */
+video::-webkit-media-controls-time-remaining-display {
+  display: none !important;
+}
+/* // 音量按钮 */
+video::-webkit-media-controls-volume-control-container {
+  display: none !important;
+}
+/* // 全屏 */
+video::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+}
+/* // 时间轴 */
+video::-webkit-media-controls-timeline {
+  display: none !important;
+}
+/* // 更多选项 */
+#myVideo::-internal-media-controls-overflow-menu-list {
+  display: none !important;
+}
+
+#myVideo::-internal-media-controls-button-panel {
+  display: none !important;
+}
+#myVideo::-internal-media-controls-overflow-button {
+  display: none !important;
+}
+
+.view-in-app {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
 </style>
