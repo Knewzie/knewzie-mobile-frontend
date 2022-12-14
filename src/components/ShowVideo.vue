@@ -144,6 +144,7 @@ export default {
 }
 /* 一键三连 */
 .companies {
+  display: none;
   margin-top: 10px;
 }
 .fIcon {
