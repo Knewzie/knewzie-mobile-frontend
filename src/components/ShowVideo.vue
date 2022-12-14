@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ToDialog :show="dialogVisible" @submit="follow" />
+    <ToDialog :show="dialogVisible" @submit="gotoDownload" />
     <div class="float">
       <div class="video_a">
         <div class="video_a_top">
@@ -15,13 +15,13 @@
           <el-col :span="10">
             <div class="fIcon">
               <div class="fIcon_item">
-                <img src="../images/bx-eye-show.png" />{{ pv }}
+                <img src="../images/bx-eye.png" />&nbsp;&nbsp;{{ pv }}
               </div>
               <div class="fIcon_item">
-                <img src="../images/bx-heart2.png" />{{ likes }}
+                <img src="../images/bx-heart2.png" />&nbsp;&nbsp;{{ likes }}
               </div>
               <div class="fIcon_item">
-                <img src="../images/bx-comment.png" />{{ replies }}
+                <img src="../images/bx-comment.png" />&nbsp;&nbsp;{{ replies }}
               </div>
             </div>
           </el-col>
@@ -74,9 +74,9 @@ export default {
   },
   computed: {},
   methods: {
-    async follow() {
-      this.$emit("onClickCall");
-      this.dialogVisible = false;
+    gotoDownload () {
+        this.$emit('onClickCall');
+        this.dialogVisible = false
     },
   },
 };
@@ -146,7 +146,7 @@ export default {
 }
 /* 一键三连 */
 .companies {
-  display: none;
+  /* display: none; */
   margin-top: 10px;
 }
 .fIcon {
@@ -157,6 +157,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 8px;
 }
 .fIcon img {
   width: 20px;
