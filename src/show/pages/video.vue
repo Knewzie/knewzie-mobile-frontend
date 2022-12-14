@@ -271,10 +271,10 @@ export default {
       var playIcon = document.getElementById("play_icon");
       var pauseIcon = document.getElementById("pause_icon");
       if (pauseIcon.style.display == "block") {
-        pauseIcon.style.opacity = 0;
+        // pauseIcon.style.opacity = 0;
       }
       if (playIcon.style.display == "block") {
-        playIcon.style.opacity = 0;
+        // playIcon.style.opacity = 0;
       }
     },
     playOver() {
