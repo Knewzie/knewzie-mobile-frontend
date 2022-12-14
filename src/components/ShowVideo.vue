@@ -90,7 +90,7 @@ export default {
   /* height: 150px; */
   background-color: rgba(0, 0, 0, 0%);
   color: #f6f6f6;
-  z-index: 2;
+  z-index: 9;
 }
 .video_a {
   padding: 15px;
