@@ -79,7 +79,6 @@ import axios from "axios";
 import moment from "moment";
 import Article from "../../components/ShowVideo.vue";
 // import Avatar from "../../components/Avatar.vue";
-// import  "./play";
 export default {
   name: "ShowImage",
   components: { Article },
@@ -425,7 +424,7 @@ article {
 
 .video {
   margin: 0 auto;
-  min-height: 648px;
+  min-height: 100vh;
   max-width: 100%;
 }
 
@@ -433,10 +432,12 @@ article {
 #play_icon {
   display: block;
   position: absolute;
-  top: 267px;
-  left: 135px;
-  width: 105px;
-  height: 100px;
+  top: 50%;
+  left: 50%;
+  margin-top: -10vw;
+  margin-left: -10vw;
+  width: 20vw;
+  height: 20vw;
   z-index: 3;
   border-radius: 50%;
   opacity: 0.8;

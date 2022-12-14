@@ -85,15 +85,17 @@ export default {
   <style>
 .float {
   position: fixed;
+  width: 100vw;
   left: 0px;
   bottom: 2px;
-  /* height: 150px; */
   background-color: rgba(0, 0, 0, 0%);
   color: #f6f6f6;
   z-index: 9;
 }
 .video_a {
-  padding: 15px;
+  margin: 0px auto;
+  width: 90%;
+  /* padding: 20px; */
 }
 .video_a_top {
   height: 26px;
@@ -161,19 +163,19 @@ export default {
   height: 20px;
 }
 .video_input {
-  margin-top: 10px;
+  margin: 10px 0px;
+  padding: auto;
   border: 1px solid #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* padding: 10px; */
-  height: 48px;
-  width: 305px;
+  /* width: 100%; */
   padding: 0px 15px;
   border-radius: 50px;
   /* padding: 12px 16px 12px 16px; */
 }
 .video_input img {
+  margin: 10px 0px;
   height: 18px;
   width: 19px;
 }
