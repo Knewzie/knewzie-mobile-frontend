@@ -28,7 +28,7 @@
           :autoplay="false"
           arrow="always"
         >
-          <CarouselItem v-for="image in article.imageList" :key="image">
+          <CarouselItem class="CarouselItem" v-for="image in article.imageList" :key="image">
             <el-image
               className="image"
               style="height: 100%"
@@ -558,6 +558,11 @@ article {
   color: #051a37;
 }
 /* 走马灯改样式 */
+.el-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 ::v-deep .el-carousel__container {
   overflow: hidden;
   border-radius: 20px;
