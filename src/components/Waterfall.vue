@@ -45,6 +45,7 @@
 </template>
   <script>
 import axios from "axios";
+// import { validateHeaderName } from "http";
 import moment from "moment";
 import RingLoader from "vue-spinner/src/RingLoader.vue";
 import Avatar from "./Avatar";
@@ -78,7 +79,7 @@ export default {
       src: "https://img.knewzie.com/image/11708/1670383817090.png",
       waterfallList: [],
       // waterfallImgWidth: 100,
-      waterfallImgWidth: 165, // 每个盒子的宽度
+      // waterfallImgWidth: this.scrollerWidth, // 每个盒子的宽度
       // waterfallImgCol: 5,// 瀑布流的列数
       waterfallImgCol: 2, // 瀑布流的列数
       waterfallImgRight: 10, // 每个盒子的右padding
@@ -124,6 +125,9 @@ export default {
       }
       return returnClass;
     },
+    waterfallImgWidth: function() {
+      return (window.innerWidth/2  - 21);
+    }
   },
   created() {
     axios.defaults.baseURL = "https://api.knewzie.com";
@@ -431,7 +435,6 @@ export default {
   margin: 2px;
   width: 18px;
   height: 18px;
-  background-color: gray;
   border-radius: 20px;
 }
 </style>
