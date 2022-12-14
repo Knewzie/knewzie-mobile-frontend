@@ -9,13 +9,14 @@
     <div class="video_content">
       <div class="video-container">
         <img
-          src="../../images/Play=On.png"
+          src="../../images/play-on.png"
+          class="video-control-btn"
           id="play_icon"
           @mouseover="playOver"
           @click="playIcon"
         />
         <img
-          src="../../images/Play=Off.png"
+          src="../../images/play-off.png"
           id="pause_icon"
           @mouseover="pauseOver"
           @click="pauseIcon"
@@ -39,6 +40,7 @@
         :likes="article.likes"
         :title="article.title"
         :replies="article.replies"
+        @onClickCall="download"
       />
     </div>
     <div id="mask">
@@ -421,7 +423,9 @@ article {
   text-align: center;
   background: black;
 }
-
+.video-control-btn {
+  object-fit: cover;
+}
 .video {
   margin: 0 auto;
   min-height: 100vh;
