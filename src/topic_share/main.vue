@@ -477,6 +477,7 @@ article {
 
 .content img {
  max-width: 100%;
+ height: auto;
 }
 .content video {
   width: 100%;
