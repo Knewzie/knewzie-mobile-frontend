@@ -207,8 +207,10 @@ export default {
     dialogV(e) {
       this.dialogVisible = e;
     },
-    gotoDownload () {
-        this.$emit('onClickCall');
+    gotoDownload (e) {
+      if (e) {
+        this.$emit("onClickCall");
+      }
         this.dialogVisible = false
     },
     

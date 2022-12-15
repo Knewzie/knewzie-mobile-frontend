@@ -66,8 +66,8 @@ export default {
     },
   },
   methods: {
-    submit() {
-      this.$emit("submit", false);
+    submit(e) {
+      this.$emit("submit", e);
     },
   },
 };
