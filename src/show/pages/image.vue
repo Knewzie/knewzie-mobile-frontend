@@ -28,7 +28,11 @@
           :autoplay="false"
           arrow="always"
         >
-          <CarouselItem class="CarouselItem" v-for="image in article.imageList" :key="image">
+          <CarouselItem
+            class="CarouselItem"
+            v-for="image in article.imageList"
+            :key="image"
+          >
             <el-image
               className="image"
               style="height: 100%"
@@ -66,14 +70,15 @@
           </span>
         </div>
         <div class="contenthtml">{{ article.content }}</div>
+        <!-- v-if="article.creator.uid" -->
         <Waterfall
+          v-if="article.creator.uid"
           :id="article.creator.uid"
           :name="article.creator.nickname"
           :avatar="article.creator.avatar"
           :intro="article.creator.intro"
           :role="article.creator.role"
           :title="article.creator.title"
-          :uid="article.creator.uid"
           :showFollow="false"
           :dialog="true"
           :relationship="article.creator.relationship"
@@ -399,6 +404,7 @@ body {
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
+  z-index: 100;
 }
 </style>
 
@@ -537,7 +543,7 @@ article {
   margin: auto;
 }
 .contenthtml {
-  margin-top: 8px;
+  margin-top: 1em;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
@@ -546,7 +552,7 @@ article {
   color: #6a7292;
 }
 .imageTitle {
-  margin-top: 8px;
+  margin-top: 1em;
   font-size: 20px;
   font-weight: 600;
   line-height: 26px;
@@ -555,7 +561,7 @@ article {
   color: #051a37;
 }
 /* 走马灯改样式 */
-.el-image{
+.el-image {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -603,7 +609,7 @@ article {
 }
 /* 地址 */
 .address {
-  margin: 9px 1px;
+  margin: 1em 1px;
   display: flex;
   align-items: center;
   justify-items: center;
