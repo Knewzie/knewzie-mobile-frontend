@@ -8,12 +8,12 @@
     <div slot="header"></div>
     <span class="dialogh">是否打开去浪APP ？</span>
     <span slot="footer" class="dialog-footer">
-      <el-button class="dialogc" type="text" @click="submit(false)"
-        >取消</el-button
-      >
-      <el-button class="dialogm" type="text" @click="submit(true)"
-        >打开App</el-button
-      >
+      <div class="dialog-footer_item">
+        <span class="dialogc" type="text" @click="submit(false)">取消</span>
+      </div>
+      <div class="dialog-footer_item">
+        <span class="dialogm" type="text" @click="submit(true)">打开App</span>
+      </div>
     </span>
   </el-dialog>
 </template>
@@ -80,7 +80,11 @@ export default {
   width: 295px;
   border-radius: 20px;
 }
-.dialog-class ::v-deep .el-dialog__header {
+::v-deep .dialog-class ::v-deep .el-dialog__header {
+  padding: 0px !important;
+}
+::v-deep .el-dialog__footer {
+  margin: 0px !important;
   padding: 0px !important;
 }
 .dialog-button-group {
@@ -123,9 +127,23 @@ export default {
   color: #6599ff;
 }
 .dialog-footer {
+  border-top: 0.5px solid #dadada;
   display: flex;
   justify-content: space-around;
-  margin: 0px 9px;
+  margin: 0px;
+}
+.dialog-footer_item {
+  width: 50%;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dialog-footer_item:last-child {
+  border-left: 0.5px solid #dadada;
+}
+.el-button {
+  padding: 10px;
 }
 </style>
   
