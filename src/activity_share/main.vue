@@ -354,8 +354,8 @@ export default {
       }
     },
     launchApp() {},
-    launchError(err) {
-      alert(err.detail.errMsg);
+    launchError() {
+      // alert(err.detail.errMsg);
       this.oia();
     },
     like() {
