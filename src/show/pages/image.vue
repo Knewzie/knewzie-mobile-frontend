@@ -221,7 +221,7 @@ export default {
   computed: {
     launchAppUrl() {
       const { id } = this.$router.currentRoute.params;
-      return `/show/image/${id}`;
+      return `/journal/image/${id}`;
     },
     duration() {
       if (!this.article.createdAt) {
@@ -286,7 +286,7 @@ export default {
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
         alert("请在浏览器里打开");
       } else {
-        window.location.assign(`zhixin:///topic/${id}`);
+        window.location.assign(`zhixin:///journal/image/${id}`);
       }
     },
     launchApp() {},
