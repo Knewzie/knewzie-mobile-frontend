@@ -129,7 +129,7 @@ export default {
   border: 1px solid #fff;
 }
 .video_title {
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: 15px;
   font-weight: 500;
   line-height: 20px;
