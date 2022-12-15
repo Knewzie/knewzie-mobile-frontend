@@ -4,9 +4,10 @@
         <img class="type-img" :src="'/img/bx-map.png'" />
       </div>
       <div class="type-info">
-          <abbr>
+          <abbr v-if="isOnline == false">
             {{activityLocation}}
           </abbr>          
+          <abbr v-else>报名获取活动链接</abbr>
       </div>
     </section>
 </template>
