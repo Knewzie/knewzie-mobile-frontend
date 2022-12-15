@@ -207,9 +207,6 @@ export default {
         }
       }
       window.location.href = url;
-      setTimeout(() => {
-        window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
-      }, 2000);
     },
     video() {
       var playIcon = document.getElementById("play_icon");
