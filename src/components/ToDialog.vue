@@ -79,6 +79,7 @@ export default {
   height: 171px;
   width: 295px;
   border-radius: 20px;
+  overflow: hidden;
 }
 ::v-deep .dialog-class ::v-deep .el-dialog__header {
   padding: 0px !important;

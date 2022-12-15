@@ -68,7 +68,6 @@ export default {
     role: Number,
     title: String,
     relationship: Number,
-    uid: Number,
   },
   data() {
     return {
@@ -125,9 +124,9 @@ export default {
       }
       return returnClass;
     },
-    waterfallImgWidth: function() {
-      return (window.innerWidth/2  - 21);
-    }
+    waterfallImgWidth: function () {
+      return window.innerWidth / 2 - 21;
+    },
   },
   created() {
     axios.defaults.baseURL = "https://api.knewzie.com";
@@ -169,7 +168,7 @@ export default {
     const nonceStr = "knewzie";
 
     axios
-      .post(`/topic/list`, { type: 4, queryUserId: this.uid, page: 1 })
+      .post(`/topic/list`, { type: 4, queryUserId: this.id, page: 1 })
       .then((response) => {
         const { data } = response.data;
         this.article = data.list;
@@ -207,13 +206,13 @@ export default {
     dialogV(e) {
       this.dialogVisible = e;
     },
-    gotoDownload (e) {
+    gotoDownload(e) {
       if (e) {
         this.$emit("onClickCall");
       }
-        this.dialogVisible = false
+      this.dialogVisible = false;
     },
-    
+
     //计算每个图片的宽度或者是列数
     calculationWidth() {
       let domWidth = document.getElementById("v-waterfall").offsetWidth;
