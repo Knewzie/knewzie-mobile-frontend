@@ -1,7 +1,7 @@
 <template>
   <div class="Waterfall-box">
-    <div class="Waterfall-beader">{{ name }}还在哪浪...</div>
-    <div class="v-waterfall-content" id="v-waterfall">
+    <div class="Waterfall-beader">{{ name }}<span v-if="name">还在哪浪...</span></div>
+    <div v-show="waterfallShow" class="v-waterfall-content" id="v-waterfall">
       <div
         class="v-waterfall-item"
         v-for="(img, index) in waterfallList"
@@ -15,6 +15,7 @@
         v-on:click="dialogVisible = true"
       >
         <el-image
+          lazy
           style="width: 100%; height: 100%; border-radius: 20px"
           :src="img.src"
           v-on:click="dialogVisible = true"
@@ -40,6 +41,7 @@
         </div>
       </div>
     </div>
+    <div v-show="!waterfallShow">加载中...</div>
     <ToDialog :show="dialogVisible" @submit="gotoDownload" />
   </div>
 </template>
@@ -71,6 +73,7 @@ export default {
   },
   data() {
     return {
+      waterfallShow:false,
       dialogVisible: false,
       currentRelationship: this.relationship,
       loading: false,
@@ -170,6 +173,7 @@ export default {
     axios
       .post(`/topic/list`, { type: 4, queryUserId: this.id, page: 1 })
       .then((response) => {
+        this.waterfallShow = true;
         const { data } = response.data;
         this.article = data.list;
         this.calculationWidth();
