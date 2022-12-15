@@ -9,7 +9,7 @@
     <div class="loading-box" v-show="loading">
       <RingLoader v-if="showFollow" :loading="loading" size="25px" />
     </div>
-    
+
     <a
       :class="followedClass"
       v-if="!showFollow && dialog"
@@ -88,9 +88,11 @@ export default {
     },
   },
   methods: {
-    gotoDownload () {
-        this.$emit('onClickCall');
-        this.dialogVisible = false
+    gotoDownload(e) {
+      if (e) {
+        this.$emit("onClickCall");
+      }
+      this.dialogVisible = false;
     },
   },
 };
@@ -115,11 +117,11 @@ export default {
 }
 
 .certificate-info {
-  font-family: 'Poppins';
-font-style: normal;
+  font-family: "Poppins";
+  font-style: normal;
   display: inline-block;
   margin-left: 6px;
-  color: #051A37;
+  color: #051a37;
   font-weight: 400;
   font-size: 14px;
 }

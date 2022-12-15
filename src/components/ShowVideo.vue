@@ -74,9 +74,11 @@ export default {
   },
   computed: {},
   methods: {
-    gotoDownload () {
-        this.$emit('onClickCall');
-        this.dialogVisible = false
+    gotoDownload(e) {
+      if (e) {
+        this.$emit("onClickCall");
+      }
+      this.dialogVisible = false;
     },
   },
 };

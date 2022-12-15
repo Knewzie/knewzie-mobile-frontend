@@ -21,29 +21,57 @@
         <div class="article-title">{{ article.title }}</div>
 
         <EventAuthor
-          :id="article && article.creator?article.creator.uid:-1"
-          :name="article && article.creator?article.creator.nickname:''"
-          :avatar="article && article.creator?article.creator.avatar:''"
+          :id="article && article.creator ? article.creator.uid : -1"
+          :name="article && article.creator ? article.creator.nickname : ''"
+          :avatar="article && article.creator ? article.creator.avatar : ''"
           :showFollow="true"
-          :role="article && article.creator?article.creator.role:0"
-          :relationship="article && article.creator?article.creator.relationship:0"
+          :role="article && article.creator ? article.creator.role : 0"
+          :relationship="
+            article && article.creator ? article.creator.relationship : 0
+          "
           @onClickCall="oia"
         ></EventAuthor>
-
-        <!-- <div class="abbr-box tags" v-if="article.categories.length > 0">
-          <span v-for="category in article.categories" :key="category.id">
-            {{ category.name }}
-          </span>
-        </div> -->
+        <!-- <el-image
+          v-for="(img, index) in article.imageList"
+          :src="img"
+          :key="img + index"
+          fit="fit"
+        ></el-image> -->
         <div class="content article-content" v-html="article.content"></div>
-        <!-- <div class="abbr-box time-box">
-          <time>发布于 {{ duration }}</time>
-        </div> -->
+        <div class="likesDiv">
+          <div class="likesItem">
+            <img src="../images/bx-eye-show.png" alt="" /> {{ article.pv }}
+          </div>
+          <div class="likesItem">
+            <img src="../images/bx-heart2.png" alt="" /> {{ article.likes }}
+          </div>
+          <div class="likesTime">{{ formatDate(article.createdAt) }}</div>
+        </div>
+        <div v-if="article.officialGuideUserList" class="suggestion">
+          <div class="suggestionTitle">推荐</div>
+          <div
+            class="suggestionContent"
+            v-for="(item, index) in article.officialGuideUserList"
+            :key="item + index"
+          >
+            <div class="sCleft">
+              <img :src="item.avatar" alt="" srcset="" />
+              <div>
+                <div class="sCname">{{ item.nickname }}</div>
+                <div class="sCtitle">
+                  {{ item.topicCount ? item.topicCount : "暂无简介" }}
+                </div>
+              </div>
+            </div>
+
+            <div v-on:click="dialogVisible = true">
+              <button type="submit" class="sCButton">私信</button>
+            </div>
+          </div>
+        </div>
       </article>
     </div>
-    <div class="article-intro">
-
-    </div>
+    <div class="article-intro"></div>
 
     <div v-if="type === 0">
       <AgreePerson
@@ -102,10 +130,12 @@
         </script>
       </wx-open-launch-app>
     </div>
+    <ToDialog :show="dialogVisible" @submit="gotoDownload" />
   </div>
 </template>
 
 <script>
+import ToDialog from "../components/ToDialog.vue";
 import EventAuthor from "../components/EventAuthor.vue";
 import Author from "../components/Author.vue";
 import Answer from "../components/Answer.vue";
@@ -120,7 +150,8 @@ export default {
     Author,
     Answer,
     AgreePerson,
-    EventAuthor
+    EventAuthor,
+    ToDialog,
   },
   data: () => ({
     article: {
@@ -148,6 +179,7 @@ export default {
     type: 1,
     wxReady: false,
     likers: [],
+    dialogVisible: false,
   }),
   computed: {
     launchAppUrl() {
@@ -190,10 +222,9 @@ export default {
 
     const { wx } = window;
 
-    wx.error(function(res){
+    wx.error(function (res) {
       alert(JSON.stringify(res));
     });
-
 
     wx.ready(() => {
       this.wxReady = true;
@@ -230,6 +261,10 @@ export default {
       .then((response) => {
         const { data } = response.data;
         this.article = data;
+        setTimeout(function () {
+          let image = document.querySelector("img");
+          console.log(image);
+        }, 100);
       })
       .then(() => {
         let params = {
@@ -239,9 +274,8 @@ export default {
           url: window.location.href,
         };
         // alert(JSON.stringify(params));
-        return axios.post(`/config/mp/signature`, params)
-      }
-      )
+        return axios.post(`/config/mp/signature`, params);
+      })
       .then((response) => {
         const { data: sign } = response.data;
         // alert(sign);
@@ -264,6 +298,29 @@ export default {
       });
   },
   methods: {
+    formatDate(time, format = "YY-MM-DD hh:mm:ss") {
+      var date = new Date(time * 1000);
+      var year = date.getFullYear(),
+        month = date.getMonth() + 1, //月份是从0开始的
+        day = date.getDate(),
+        hour = date.getHours(),
+        min = date.getMinutes(),
+        sec = date.getSeconds();
+      var preArr = Array.apply(null, Array(10)).map(function (elem, index) {
+        return "0" + index;
+      });
+      // 开个长度为10的数组 格式为 00 01 02 03
+
+      var newTime = format
+        .replace(/YY/g, year)
+        .replace(/MM/g, preArr[month] || month)
+        .replace(/DD/g, preArr[day] || day)
+        .replace(/hh/g, preArr[hour] || hour)
+        .replace(/mm/g, preArr[min] || min)
+        .replace(/ss/g, preArr[sec] || sec);
+
+      return newTime;
+    },
     switchToAnswer() {
       this.type = 1;
     },
@@ -339,7 +396,12 @@ export default {
       }
       Page.postMessage(JSON.stringify({ event: "doAnswer" }));
     },
-
+    gotoDownload(e) {
+      if (e) {
+        this.$emit("onClickCall");
+      }
+      this.dialogVisible = false;
+    },
     download() {
       var ua = navigator.userAgent;
       //  var appVer = navigator.appVersion;
@@ -367,7 +429,7 @@ export default {
 
 <style>
 .topBar {
-  background-color: #6599FF;
+  background-color: #6599ff;
   height: 60px;
   width: 100%;
   position: fixed;
@@ -399,7 +461,7 @@ export default {
   font-family: SourceHan Sans CN-Medium;
   font-size: 14px;
   font-weight: 400;
-  color: #59A1FF;
+  color: #59a1ff;
 }
 
 body {
@@ -414,7 +476,7 @@ article {
 }
 
 .content img {
-  width: 100%;
+ max-width: 100%;
 }
 .content video {
   width: 100%;
@@ -520,40 +582,12 @@ h3 {
   position: relative;
 }
 
-.tags {
-  margin: 10px 0;
-}
-
-.tags span {
-  background: #d0d0d0;
-  padding: 1px 8px;
-  border-radius: 10px;
-  margin-left: 5px;
-  font-size: 10px;
-  color: #8d8d8e;
-}
-
-.tags span:first-child {
-  margin: 0px;
-}
-
-.time-box {
-  margin: 7px 0;
-  font-size: 12px;
-  color: rgba(0, 0, 0, 60%);
-}
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
-.abbr-box {
-  display: flex;
-}
-
 
 .answer-item {
   margin-top: 16px;
@@ -565,19 +599,114 @@ h3 {
 /* new clas */
 .article-title {
   padding: 30px 18px 10px 18px;
-  color: #051A37;
+  color: #051a37;
   font-size: 20px;
   font-weight: 600;
 }
+
+.logo-app-open {
+  width: 70px;
+}
+/* lin */
 .article-content {
   margin-top: 10px;
   padding: 0px 18px 10px 18px;
   font-size: 14px;
   font-weight: 400;
-  color: #616575;
-  white-space: pre-wrap;
+  line-height: 20px;
+  color: #6a7292;
 }
-.logo-app-open {
-  width: 70px;
+.el-image {
+  display: flex;
+  justify-content: center;
+  width: 90%;
+  height: 90%;
+  margin: 15px auto;
+  border-radius: 20px;
+}
+.likesDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  height: 90%;
+  margin: 15px auto;
+  padding-bottom: 15px;
+}
+.likesItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.likesItem img {
+  width: 20px;
+  height: 20px;
+}
+.likesTime {
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-align: right;
+  font-size: 11px;
+  color: #6a7292;
+}
+.suggestion {
+  width: 90%;
+  height: 90%;
+  margin: 20px auto;
+}
+.suggestionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.suggestionContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px;
+}
+.sCleft {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.sCleft img {
+  border-radius: 50%;
+  margin-right: 12px;
+  width: 40px;
+  height: 40px;
+}
+.sCButton {
+  border-radius: 8px;
+  padding: 4px 8px 4px 8px;
+  border: 1px solid rgba(7, 100, 223, 1);
+  background-color: #ffffff;
+  color: #0764df;
+}
+.sCname {
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #051a37;
+}
+.sCtitle {
+  font-size: 13px;
+  font-weight: 400;
+  color: #6a7292;
+  width: 100%;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+  /* autoprefixer: on */
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+img {
+  object-fit: cover;
 }
 </style>

@@ -439,8 +439,8 @@ article {
   top: 50%;
   left: 50%;
   margin-top: -10vw;
-  margin-left: -10vw;
-  width: 20vw;
+  margin-left: -11vw;
+  width: 22vw;
   height: 20vw;
   z-index: 3;
   border-radius: 50%;
