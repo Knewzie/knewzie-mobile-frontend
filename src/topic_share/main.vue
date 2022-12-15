@@ -125,6 +125,9 @@
                 justify-content: space-between;
                 align-items: center;
             }
+            .logo-app-open {
+              width: 70px;
+            }
           </style>
           <button class="view-in-app"><img class="logo-app-open" src="https://h5.thewavingapp.com/img/logo.png" /><span>App内打开</span></button>
         </script>
