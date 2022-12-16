@@ -10,7 +10,7 @@
     <div class="article">
       <img
         :src="this.article.imageList && this.article.imageList.length > 0?this.article.imageList[0]:''"
-        style="width: 100%; height: 250px" 
+        style="width: 100%; height: auto;" 
       />
       <div class="article-content">
         <EventTags 
