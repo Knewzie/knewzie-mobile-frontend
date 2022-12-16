@@ -6,7 +6,7 @@
       </div>
       <!-- 图片超过4张 -->
       <div v-if="mediaList.length > 4" class="image-item-more-wrapper"> 
-        <img :src="mediaList[3]"  />
+        <img :src="mediaList[3]"   />
         <div class="image-item-more" >+3</div>
       </div>
     </div>
@@ -57,6 +57,7 @@ export default {
   width: 77px;
   height: 77px;
   border-radius: 15px;
+  object-fit: cover;
 }
 .image-wrapper div {
   margin-left: 5px;
