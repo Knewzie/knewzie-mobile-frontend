@@ -55,9 +55,39 @@
             :key="item + index"
           >
             <div class="sCleft">
-              <img :src="item.avatar" alt="" srcset="" />
+              <img class="sCTimg" :src="item.avatar" alt="" srcset="" />
               <div>
-                <div class="sCname">{{ item.nickname }}</div>
+                <div class="sCname">
+                  {{ item.nickname }}
+                  <img
+                    class="sCimg"
+                    v-if="item.role == 1 || item.role == 2"
+                    src="../images/sign.png"
+                    alt=""
+                    srcset=""
+                  />
+                  <img
+                    class="sCimg"
+                    v-if="item.role == 4"
+                    src="../images/sign4.png"
+                    alt=""
+                    srcset=""
+                  />
+                  <img
+                    class="sCimg"
+                    v-if="item.role == 5"
+                    src="../images/sign5.png"
+                    alt=""
+                    srcset=""
+                  />
+                  <img
+                    class="sCimg"
+                    v-if="item.role == 6"
+                    src="../images/sign6.png"
+                    alt=""
+                    srcset=""
+                  />
+                </div>
                 <div class="sCtitle">
                   {{ item.topicCount ? item.topicCount : "暂无简介" }}
                 </div>
@@ -476,8 +506,8 @@ article {
 }
 
 .content img {
- max-width: 100%;
- height: auto;
+  max-width: 100%;
+  height: auto;
 }
 .content video {
   width: 100%;
@@ -667,14 +697,15 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0px;
+  padding-top: 10px;
+  padding-bottom: 15px;
 }
 .sCleft {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
-.sCleft img {
+.sCTimg {
   border-radius: 50%;
   margin-right: 12px;
   width: 40px;
@@ -688,10 +719,21 @@ h3 {
   color: #0764df;
 }
 .sCname {
-  margin-bottom: 6px;
+  height: 19px;
+  margin-bottom: 5px;
+  overflow: hidden;
   font-size: 14px;
   font-weight: 400;
   color: #051a37;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sCimg {
+  width: 40px;
+  height: 40px;
+  margin: 0px;
+  padding: 0px;
 }
 .sCtitle {
   font-size: 13px;
