@@ -683,9 +683,9 @@ h3 {
 }
 
 .article-content{
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-  top: -30px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  top: -24px;
   position: relative;
   background: white;
 }
