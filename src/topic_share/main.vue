@@ -697,7 +697,8 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0px;
+  padding-top: 10px;
+  padding-bottom: 15px;
 }
 .sCleft {
   display: flex;
@@ -718,8 +719,8 @@ h3 {
   color: #0764df;
 }
 .sCname {
-  height: 15px;
-  margin-bottom: 9px;
+  height: 19px;
+  margin-bottom: 5px;
   overflow: hidden;
   font-size: 14px;
   font-weight: 400;
