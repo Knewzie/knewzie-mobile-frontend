@@ -282,8 +282,11 @@ export default {
         // playIcon.style.opacity = 1;
       }
     },
-    gotoDownload() {
-      this.$emit("onClickCall");
+    gotoDownload(e) {
+      if (e) {
+        this.$emit("onClickCall");
+        this.download();
+      }
       this.dialogVisible = false;
     },
   },
