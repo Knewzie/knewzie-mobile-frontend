@@ -172,6 +172,8 @@ h4 {
 a.follow-box {
   box-sizing: border-box;
   /* width: 48px; */
+  font-weight: 400;
+  font-size: 13px;
   padding: 5px 10px;
   border-radius: 12px;
   text-align: center;
