@@ -9,37 +9,47 @@
     <!-- 封面图、标题、详情内容 -->
     <div class="article">
       <img
-        :src="this.article.imageList && this.article.imageList.length > 0?this.article.imageList[0]:''"
-        style="width: 100%; height: auto;" 
+        :src="
+          this.article.imageList && this.article.imageList.length > 0
+            ? this.article.imageList[0]
+            : ''
+        "
+        style="width: 100%; height: auto"
       />
       <div class="article-content">
-        <EventTags 
-          :id="article && article.creator?article.creator.uid:-1"
-          :weight="article && article.weight?article.weight:0"
-          :pv="article && article.pv?article.pv:0"
-          :endAt="article && article.endAt?article.endAt:0"
-          :planNumber="article && article.planNumber?article.planNumber:0"
-          :applyNumber="article && article.applyNumber?article.applyNumber:0"
+        <EventTags
+          :id="article && article.creator ? article.creator.uid : -1"
+          :weight="article && article.weight ? article.weight : 0"
+          :pv="article && article.pv ? article.pv : 0"
+          :endAt="article && article.endAt ? article.endAt : 0"
+          :planNumber="article && article.planNumber ? article.planNumber : 0"
+          :applyNumber="
+            article && article.applyNumber ? article.applyNumber : 0
+          "
         ></EventTags>
         <ActivityTitle
-          :id="article && article.creator?article.creator.uid:-1"
-          :name="article && article.creator?article.creator.nickname:''"
-          :avatar="article && article.creator?article.creator.avatar:''"
-          :intro="article && article.creator?article.creator.intro:''"
-          :role="article && article.creator?article.creator.role:0"
-          :relationship="article && article.creator?article.creator.relationship:0"
-          :title="article?article.title:''"
-          :showFollow="true"        
-          :topicId="article?article.topicId:-1"
+          :id="article && article.creator ? article.creator.uid : -1"
+          :name="article && article.creator ? article.creator.nickname : ''"
+          :avatar="article && article.creator ? article.creator.avatar : ''"
+          :intro="article && article.creator ? article.creator.intro : ''"
+          :role="article && article.creator ? article.creator.role : 0"
+          :relationship="
+            article && article.creator ? article.creator.relationship : 0
+          "
+          :title="article ? article.title : ''"
+          :showFollow="true"
+          :topicId="article ? article.topicId : -1"
           :showReport="false"
         />
         <EventAuthor
-          :id="article && article.creator?article.creator.uid:-1"
-          :name="article && article.creator?article.creator.nickname:''"
-          :avatar="article && article.creator?article.creator.avatar:''"
+          :id="article && article.creator ? article.creator.uid : -1"
+          :name="article && article.creator ? article.creator.nickname : ''"
+          :avatar="article && article.creator ? article.creator.avatar : ''"
           :showFollow="true"
-          :role="article && article.creator?article.creator.role:0"
-          :relationship="article && article.creator?article.creator.relationship:0"
+          :role="article && article.creator ? article.creator.role : 0"
+          :relationship="
+            article && article.creator ? article.creator.relationship : 0
+          "
           @onClickCall="download"
         ></EventAuthor>
         <!-- <div>
@@ -66,26 +76,32 @@
           <div class="line-box">
             <ActivityType
               :isOnline="article.addressType === 1 ? true : false"
-              :isFree="article.cost && article.cost !== 0? false : true"
+              :isFree="article.cost && article.cost !== 0 ? false : true"
               :isSignup="article.isApply"
-              :activityLocation='article.addressDetail'
+              :activityLocation="article.addressDetail"
             />
           </div>
 
           <!-- <Collapse>
             <CollapseItem title="展开详细"> -->
           <div class="section-title">活动详情</div>
-          <WaveMultiImage @onClickCall="download" class="multi-image-wrapper" :mediaList="article.imageList"></WaveMultiImage>
+          <WaveMultiImage
+            @onClickCall="dialogVisible = true"
+            class="multi-image-wrapper"
+            :mediaList="article.imageList"
+          ></WaveMultiImage>
           <div class="content event-detail" v-html="article.content"></div>
           <!-- </CollapseItem>
           </Collapse> -->
           <div class="section-title">活动组织者</div>
           <EventAuthorDetail
-            :id="article && article.creator?article.creator.uid:-1"
-            :name="article && article.creator?article.creator.nickname:''"
-            :avatar="article && article.creator?article.creator.avatar:''"
-            :followersCount="article && article.creator?article.creator.followersCount: 0"
-            @onClickCall="download"
+            :id="article && article.creator ? article.creator.uid : -1"
+            :name="article && article.creator ? article.creator.nickname : ''"
+            :avatar="article && article.creator ? article.creator.avatar : ''"
+            :followersCount="
+              article && article.creator ? article.creator.followersCount : 0
+            "
+            @onClickCall="dialogVisible = true"
           ></EventAuthorDetail>
         </article>
       </div>
@@ -120,24 +136,7 @@
         </script>
       </wx-open-launch-app>
     </div>
-
-    <el-dialog
-      :visible.sync="dialogVisible"
-      width="50%"
-      center
-      :show-close="false"
-      custom-class="dialog-class"
-      >
-      <div slot="header" style="padding: 0px;"></div>
-      <span>是否打开去浪APP？</span>
-      <span  class="dialog-button-group">
-        <!-- <el-button-group> -->
-        <el-button style="color: gray;" type="text" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="text" @click="dialogVisible = false">确 定</el-button>
-        <!-- </el-button-group> -->
-      </span>
-    </el-dialog>
-
+    <ToDialog :show="dialogVisible" @submit="gotoDownload" />
   </div>
 </template>
 
@@ -148,13 +147,13 @@ import ActivityTitle from "../components/ActivityTitle.vue";
 // import ActivityCategory from "../components/ActivityCategory.vue";
 import ActivityTime from "../components/ActivityTime.vue";
 import ActivityType from "../components/ActivityType.vue";
-import EventTags from "../components/EventTags.vue"
+import EventTags from "../components/EventTags.vue";
 import EventAuthor from "../components/EventAuthor.vue";
 import EventAuthorDetail from "../components/EventAuthorDetail.vue";
 import WaveMultiImage from "../components/WaveMultiImage.vue";
 import moment from "moment";
 import axios from "axios";
-// import Avatar from '../components/Avatar.vue'
+import ToDialog from "../components/ToDialog.vue";
 // import { Collapse, CollapseItem } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -171,7 +170,8 @@ export default {
     EventTags,
     EventAuthor,
     EventAuthorDetail,
-    WaveMultiImage
+    WaveMultiImage,
+    ToDialog,
     // Collapse,
     // CollapseItem,
     // Answer, AgreePerson,
@@ -202,13 +202,13 @@ export default {
         intro: "",
         role: 1,
         relationship: 0,
-        followersCount: 0
+        followersCount: 0,
       },
       imageList: [],
       isApply: false,
       applyList: [],
     },
-    dialogVisible: false
+    dialogVisible: false,
     // type: 1,
     // likers: [],
     // activeNames: ['1']
@@ -243,30 +243,30 @@ export default {
         return "刚刚";
       }
     },
-    avatarArr(){
-      if(this.article && !this.article.applyList){
+    avatarArr() {
+      if (this.article && !this.article.applyList) {
         return [];
       }
       //获取到applyList
-      const {applyList} = this.article
+      const { applyList } = this.article;
       //准备二维数组
       const arr = [];
       let minArr = [];
       //遍历applyList
-      applyList.forEach(avatar => {
+      applyList.forEach((avatar) => {
         //如果小数组满了，创建一个新的小数组（所以上面创建minArr不用const而是用let）
-        if(minArr.length === 6){
-            minArr = [];
+        if (minArr.length === 6) {
+          minArr = [];
         }
         //如果minArr是空的,将小数组保存到大数组中
-        if(minArr.length === 0){
-            arr.push(minArr)
+        if (minArr.length === 0) {
+          arr.push(minArr);
         }
         //将当前分类数据保存到小数组中
-        minArr.push(avatar)
+        minArr.push(avatar);
       });
       return arr;
-    }
+    },
   },
   created() {
     axios.defaults.baseURL = "https://api.knewzie.com";
@@ -286,16 +286,18 @@ export default {
     //   {uid:71498,role:1,relationship: 0,nickname:"小抄7",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
     //   {uid:81498,role:1,relationship: 0,nickname:"小抄8",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
     //   {uid:91498,role:1,relationship: 0,nickname:"小抄9",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"},
-    //   {uid:101498,role:1,relationship: 0,nickname:"小抄10",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"}];    
+    //   {uid:101498,role:1,relationship: 0,nickname:"小抄10",avatar:"https://img.knewzie.com/image/admin/352b89d6-010b-41f7-b288-ef1991547482.gif"}];
 
     // axios.post(`/activity/applyList`,{ "activityId": id , "page":1 })
     // .then((response)=>{
     //     list = response.data.data.list;
-    //     this.article = response.data.data;        
+    //     this.article = response.data.data;
     //     return  axios.post(`/v2/activity/detail`,{ "id": id });
     //   })
-      
-    axios.post(`/v2/activity/detail`,{ "id": id }).then((response)=>{
+
+    axios
+      .post(`/v2/activity/detail`, { id: id })
+      .then((response) => {
         this.article = response.data.data;
         if (response.data.data.creator.followersCount == null) {
           this.article.creator.followersCount = 0;
@@ -303,7 +305,8 @@ export default {
         // this.article.applyList = list;
         // this.article.applyNumber = list.length;
         // console.log(this.article,'article-2');
-      }) .then(() => {
+      })
+      .then(() => {
         let params = {
           appId,
           noncestr: nonceStr,
@@ -311,7 +314,7 @@ export default {
           url: window.location.href,
         };
         // alert(JSON.stringify(params));
-        return axios.post(`/config/mp/signature`, params)
+        return axios.post(`/config/mp/signature`, params);
       })
       .then((response) => {
         const { data: sign } = response.data;
@@ -332,7 +335,7 @@ export default {
           ], // 必填，需要使用的JS接口列表
           openTagList: ["wx-open-launch-app"], // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
         });
-      })
+      });
 
     window.addEventListener("scroll", this.handleScroll);
   },
@@ -344,7 +347,6 @@ export default {
       this.type = 1;
     },
     oia() {
-      
       const { id } = this.$router.currentRoute.params;
       console.log("oia ....." + id);
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
@@ -444,8 +446,14 @@ export default {
         section.classList.remove("activityCategory-section2");
       }
     },
-  
-   download() {
+    gotoDownload(e) {
+      if (e) {
+        this.$emit("onClickCall");
+        this.download();
+      }
+      this.dialogVisible = false;
+    },
+    download() {
       var ua = navigator.userAgent;
       //  var appVer = navigator.appVersion;
       // console.log('appver='+appVer);
@@ -472,7 +480,7 @@ export default {
 
 <style>
 .topBar {
-  background-color: #6599FF;
+  background-color: #6599ff;
   height: 60px;
   width: 100%;
   position: fixed;
@@ -504,7 +512,7 @@ export default {
   font-family: SourceHan Sans CN-Medium;
   font-size: 14px;
   font-weight: 400;
-  color: #59A1FF;
+  color: #59a1ff;
 }
 
 body {
@@ -605,7 +613,7 @@ h3 {
   align-items: left;
 }
 
-.participant-section{
+.participant-section {
   display: flex;
   flex-direction: column;
   background: white;
@@ -618,7 +626,6 @@ h3 {
   font-size: 16px;
   font-weight: bold;
 }
-
 
 /* .share{
   object-fit: cover; 
@@ -682,7 +689,7 @@ h3 {
   padding-top: 60px;
 }
 
-.article-content{
+.article-content {
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
   top: -24px;
@@ -737,7 +744,7 @@ article {
 }
 
 .section-title {
-  color: #051A37;
+  color: #051a37;
   font-weight: 600;
   font-size: 16px;
   margin-top: 25px;
@@ -764,12 +771,11 @@ article {
 .dialog-class {
   border-radius: 10px;
 }
-.el-dialog__header{
+.el-dialog__header {
   padding: 0px !important;
 }
-.dialog-button-group{
+.dialog-button-group {
   display: flex;
   justify-content: space-around;
 }
-
 </style>
