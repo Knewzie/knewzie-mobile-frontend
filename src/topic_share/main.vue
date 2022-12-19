@@ -432,6 +432,7 @@ export default {
     gotoDownload(e) {
       if (e) {
         this.$emit("onClickCall");
+        this.download();
       }
       this.dialogVisible = false;
     },
