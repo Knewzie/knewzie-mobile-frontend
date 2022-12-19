@@ -376,7 +376,11 @@ export default {
 .avatar-box {
   padding: 10px 0 8px;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
+}
+.avatar-box img {
+  padding: 0px ;
 }
 
 .certificate-info {
