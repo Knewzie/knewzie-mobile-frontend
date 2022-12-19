@@ -69,7 +69,7 @@
             {{ category.name }}
           </span>
         </div>
-        <div class="contenthtml">{{ article.content }}</div>
+        <div class="contenthtml" v-html="article.content"></div>
         <!-- v-if="article.creator.uid" -->
         <Waterfall
           v-if="article.creator.uid"
@@ -406,6 +406,17 @@ body {
   transform: translate(-50%, 0);
   z-index: 100;
 }
+img {
+  display: block;
+  width: 90vw;
+  margin: 10px auto;
+  padding: 0px;
+  height: auto;
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 </style>
 
 <style scoped>
@@ -546,10 +557,14 @@ article {
   margin-top: 1em;
   font-size: 14px;
   font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0em;
-  text-align: left;
+  /* line-height: 20px; */
   color: #6a7292;
+  /* 
+  padding: 0px 18px 10px 18px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #6a7292; */
 }
 .imageTitle {
   margin-top: 1em;
