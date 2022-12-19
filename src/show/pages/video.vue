@@ -402,6 +402,10 @@ export default {
   color: #59a1ff;
 }
 /* 以上为头部 */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 </style>
 
 <style scoped>
