@@ -565,6 +565,10 @@ a {
   left: 50%;
   transform: translate(-50%, 0);
 }
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 </style>
 
 <style scoped>
