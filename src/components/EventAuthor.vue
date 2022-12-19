@@ -16,43 +16,50 @@
         >{{ this.name }}
         <span class="cIimg">
           <img
-          class="sCimg"
-          v-if="this.role == 1 || this.role == 2"
-          src="../images/sign.png"
-          alt=""
-          srcset=""
-        />
-        <img
-          class="sCimg"
-          v-if="this.role == 4"
-          src="../images/sign4.png"
-          alt=""
-          srcset=""
-        />
-        <img
-          class="sCimg"
-          v-if="this.role == 5"
-          src="../images/sign5.png"
-          alt=""
-          srcset=""
-        />
-        <img
-          class="sCimg"
-          v-if="this.role == 6"
-          src="../images/sign6.png"
-          alt=""
-          srcset=""
-        />
+            class="sCimg"
+            v-if="this.role == 1 || this.role == 2"
+            src="../images/sign.png"
+            alt=""
+            srcset=""
+          />
+          <img
+            class="sCimg"
+            v-if="this.role == 4"
+            src="../images/sign4.png"
+            alt=""
+            srcset=""
+          />
+          <img
+            class="sCimg"
+            v-if="this.role == 5"
+            src="../images/sign5.png"
+            alt=""
+            srcset=""
+          />
+          <img
+            class="sCimg"
+            v-if="this.role == 6"
+            src="../images/sign6.png"
+            alt=""
+            srcset=""
+          />
         </span>
       </span>
     </div>
-    <a :class="followedClass" v-if="showFollow" v-on:click="follow">关注</a>
+    <ToDialog :show="dialogVisible" @submit="gotoDownload" />
+    <a
+      :class="followedClass"
+      v-if="showFollow"
+      v-on:click="dialogVisible = true"
+      >关注</a
+    >
   </div>
 </template>
 <script>
 // import axios from 'axios'
 import RingLoader from "vue-spinner/src/RingLoader.vue";
 import Avatar from "./Avatar";
+import ToDialog from "./ToDialog.vue";
 
 export default {
   name: "EventAuthor",
@@ -60,6 +67,7 @@ export default {
     // eslint-disable-next-line
     RingLoader,
     Avatar,
+    ToDialog,
   },
   props: {
     id: Number,
@@ -75,6 +83,7 @@ export default {
     return {
       currentRelationship: this.relationship,
       loading: false,
+      dialogVisible: false,
     };
   },
   watch: {
@@ -117,8 +126,30 @@ export default {
     },
   },
   methods: {
-    async follow() {
-      this.$emit("onClickCall");
+    async gotoDownload(e) {
+      if (e) {
+        this.$emit("onClickCall");
+        this.download();
+      }
+      this.dialogVisible = false;
+    },
+    download() {
+      var ua = navigator.userAgent;
+      //  var appVer = navigator.appVersion;
+      // console.log('appver='+appVer);
+      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
+      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      if (isIOS) {
+        url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
+      }
+      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
+      if (isAndroid) {
+        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
+        if (isHuawei) {
+          url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
+        }
+      }
+      window.location.href = url;
     },
   },
 };
@@ -153,7 +184,7 @@ export default {
   font-weight: 400;
 }
 
-.cIimg{
+.cIimg {
   overflow: hidden;
   display: flex;
   justify-content: center;
