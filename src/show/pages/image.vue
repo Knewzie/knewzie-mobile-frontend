@@ -406,7 +406,7 @@ body {
   transform: translate(-50%, 0);
   z-index: 100;
 }
-img {
+.contenthtml img {
   display: block;
   width: 90vw;
   margin: 10px auto;
