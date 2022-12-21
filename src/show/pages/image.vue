@@ -331,14 +331,14 @@ export default {
         imgUrlThis = this.article.imageList[0];
       }
 
-      wx.onMenuShareAppMessage({
-        title: this.article.title,
-        desc: `${this.article.replies} 人回答, ${this.article.pv} 人查看`,
-        link: window.location.href,
-        // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
-        imgUrl: imgUrlThis,
-        success: function () {},
-      });
+      // wx.onMenuShareAppMessage({
+      //   title: this.article.title,
+      //   desc: `${this.article.replies} 人回答, ${this.article.pv} 人查看`,
+      //   link: window.location.href,
+      //   // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+      //   imgUrl: imgUrlThis,
+      //   success: function () {},
+      // });
 
       wx.onMenuShareTimeline({
         title: this.article.title,
@@ -347,6 +347,17 @@ export default {
         imgUrl: imgUrlThis,
         success: function () {},
       });
+
+      //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+      wx.updateAppMessageShareData({
+        title: this.article.title, // 分享标题
+        desc: '世界那么大，我想去看看-微信test', // 分享描述
+        link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: imgUrlThis, // 分享图标
+        success: () => {
+        }
+      })
+  
     });
 
     const timestamp = moment().unix();
