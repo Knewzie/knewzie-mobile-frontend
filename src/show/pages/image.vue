@@ -319,46 +319,7 @@ export default {
 
     const { wx } = window;
 
-    wx.error(function (res) {
-      alert(JSON.stringify(res));
-    });
-
-    wx.ready(() => {
-      this.wxReady = true;
-
-      let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
-      if (this.article.imageList && this.article.imageList.length > 0) {
-        imgUrlThis = this.article.imageList[0];
-      }
-
-      // wx.onMenuShareAppMessage({
-      //   title: this.article.title,
-      //   desc: `${this.article.replies} 人回答, ${this.article.pv} 人查看`,
-      //   link: window.location.href,
-      //   // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
-      //   imgUrl: imgUrlThis,
-      //   success: function () {},
-      // });
-
-      wx.onMenuShareTimeline({
-        title: this.article.title,
-        link: window.location.href,
-        // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
-        imgUrl: imgUrlThis,
-        success: function () {},
-      });
-
-      //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
-      wx.updateAppMessageShareData({
-        title: this.article.title, // 分享标题
-        desc: '世界那么大，我想去看看-微信test', // 分享描述
-        link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: 'https://img.knewzie.com/image/12240/1671524118872.jpg', // 分享图标
-        success: () => {
-        }
-      })
-  
-    });
+    
 
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
@@ -396,6 +357,47 @@ export default {
             "onMenuShareQZone",
           ], // 必填，需要使用的JS接口列表
           openTagList: ["wx-open-launch-app"], // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
+        });
+
+        wx.error(function (res) {
+          alert(JSON.stringify(res));
+        });
+
+        wx.ready(() => {
+          // this.wxReady = true;
+
+          let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
+          if (this.article.imageList && this.article.imageList.length > 0) {
+            imgUrlThis = this.article.imageList[0];
+          }
+
+          // wx.onMenuShareAppMessage({
+          //   title: this.article.title,
+          //   desc: `${this.article.replies} 人回答, ${this.article.pv} 人查看`,
+          //   link: window.location.href,
+          //   // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+          //   imgUrl: imgUrlThis,
+          //   success: function () {},
+          // });
+
+          wx.onMenuShareTimeline({
+            title: this.article.title,
+            link: window.location.href,
+            // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+            imgUrl: imgUrlThis,
+            success: function () {},
+          });
+
+          //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+          wx.updateAppMessageShareData({
+            title: this.article.title, // 分享标题
+            desc: '世界那么大，我想去看看-微信test', // 分享描述
+            link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: imgUrlThis, // 分享图标
+            success: () => {
+            }
+          })
+      
         });
       });
   },
