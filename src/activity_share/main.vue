@@ -156,6 +156,7 @@ import axios from "axios";
 import ToDialog from "../components/ToDialog.vue";
 // import { Collapse, CollapseItem } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+import HtmlFilter from 'html-filter';
 
 export default {
   name: "App",
@@ -319,6 +320,9 @@ export default {
       .then((response) => {
         const { data: sign } = response.data;
 
+        const htmlFilter = new HtmlFilter();
+        var filterContent = htmlFilter.filter(this.article.content);
+
         let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
         if (this.article.imageList && this.article.imageList.length > 0) {
           imgUrlThis = this.article.imageList[0];
@@ -344,7 +348,7 @@ export default {
         //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
         wx.updateTimelineShareData({
           title: this.article.title,
-          desc: this.article.content, // 分享描述
+          desc: filterContent, // 分享描述
           link: window.location.href,
           // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
           imgUrl: imgUrlThis,
@@ -354,7 +358,7 @@ export default {
         //自定义“分享给朋友”及“分享到QQ”按钮的分享内容
         wx.updateAppMessageShareData({
           title: this.article.title, // 分享标题
-          desc: this.article.content, // 分享描述
+          desc: filterContent, // 分享描述
           link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: imgUrlThis, // 分享图标
           success: () => {
