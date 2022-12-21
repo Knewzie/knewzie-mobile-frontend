@@ -353,7 +353,7 @@ export default {
         title: this.article.title, // 分享标题
         desc: '世界那么大，我想去看看-微信test', // 分享描述
         link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: imgUrlThis, // 分享图标
+        imgUrl: 'https://img.knewzie.com/image/12240/1671524118872.jpg', // 分享图标
         success: () => {
         }
       })
