@@ -175,6 +175,7 @@ import Answer from "../components/Answer.vue";
 import AgreePerson from "../components/AgreePerson.vue";
 import moment from "moment";
 import axios from "axios";
+import HtmlFilter from 'html-filter';
 
 export default {
   name: "App",
@@ -265,6 +266,8 @@ export default {
       .then((response) => {
         const { data } = response.data;
         this.article = data;
+        const htmlFilter = new HtmlFilter();
+        console.log("过滤html ===" + htmlFilter.filter(this.article.content))
         setTimeout(function () {
           let image = document.querySelector("img");
           console.log(image);
@@ -458,6 +461,12 @@ export default {
       }
       window.location.href = url;
     },
+
+    filterStr(str) {
+      var re = /<[^>]+>/gi;
+      str = str.replace(re, '');
+      return str;
+    }
   },
 };
 </script>
