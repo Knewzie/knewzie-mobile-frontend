@@ -290,8 +290,8 @@ export default {
       }
     },
     launchApp() {},
-    launchError(err) {
-      alert(err.detail.errMsg);
+    launchError() {
+      // alert(err.detail.errMsg);
       this.oia();
     },
     download() {
@@ -343,7 +343,7 @@ export default {
       .then((response) => {
         const { data: sign } = response.data;
         wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
           appId: appId, // 必填，公众号的唯一标识
           timestamp: timestamp, // 必填，生成签名的时间戳
           nonceStr: nonceStr, // 必填，生成签名的随机串
@@ -380,8 +380,9 @@ export default {
           //   success: function () {},
           // });
 
-          wx.onMenuShareTimeline({
+          wx.updateTimelineShareData({
             title: this.article.title,
+            desc: this.article.content, // 分享描述
             link: window.location.href,
             // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
             imgUrl: imgUrlThis,
@@ -391,7 +392,7 @@ export default {
           //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
           wx.updateAppMessageShareData({
             title: this.article.title, // 分享标题
-            desc: '世界那么大，我想去看看-微信test', // 分享描述
+            desc: this.article.content, // 分享描述
             link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: imgUrlThis, // 分享图标
             success: () => {
