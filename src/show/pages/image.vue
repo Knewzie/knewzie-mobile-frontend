@@ -319,8 +319,6 @@ export default {
 
     const { wx } = window;
 
-    
-
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
@@ -379,7 +377,7 @@ export default {
           //   imgUrl: imgUrlThis,
           //   success: function () {},
           // });
-
+          //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
           wx.updateTimelineShareData({
             title: this.article.title,
             desc: this.article.content, // 分享描述
@@ -389,7 +387,7 @@ export default {
             success: function () {},
           });
 
-          //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+          //自定义“分享给朋友”及“分享到QQ”按钮的分享内容
           wx.updateAppMessageShareData({
             title: this.article.title, // 分享标题
             desc: this.article.content, // 分享描述
@@ -397,7 +395,7 @@ export default {
             imgUrl: imgUrlThis, // 分享图标
             success: () => {
             }
-          })
+          });
       
         });
       });
