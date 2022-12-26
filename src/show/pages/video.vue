@@ -376,6 +376,9 @@ export default {
 </script>
 
 <style>
+body {
+  background: black;
+}
 .topBar {
   background-color: #6599ff;
   height: 60px;
