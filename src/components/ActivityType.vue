@@ -9,7 +9,46 @@
             <abbr v-if="cost == 0">
               免费
             </abbr>          
-            <abbr v-else>常规售价：${{(cost / 100).toFixed(2)}} NZD</abbr>
+            <div class="multi-price-item" v-else><span class="price-main-name">常规售价: </span><span class="price-main-price">${{(cost / 100).toFixed(2)}} NZD</span></div>
+            <!-- 早鸟票 -->
+            <div  v-if="cost > 0">
+              <div class="multi-price-item" v-for="item,index in priceEarlyBird" :key="index">
+                <div class="price-main-info">
+                  <span class="price-main-name">{{item.name}}: </span>
+                  <span class="price-main-price">${{discountPrice(item.discount)}} NZD </span>
+                  <span class="price-main-discount"> -{{item.discount}}%</span>
+                </div>
+                <div class="price-sub-info">
+                  {{displayTime(item.startAt)}} - {{displayTime(item.endAt)}}
+                </div>
+              </div>
+            </div>
+            <!-- 家庭组合票 -->
+            <div  v-if="cost > 0">
+              <div class="multi-price-item" v-for="item,index in priceFamily" :key="index">
+                <div class="price-main-info">
+                  <span class="price-main-name">{{item.name}}: </span>
+                  <span class="price-main-price">${{discountPrice(item.discount)}} NZD </span>
+                  <span class="price-main-discount"> -{{item.discount}}%</span>
+                </div>
+                <div class="price-sub-info">
+                  成人 {{item.auditStock}} (16+) + 儿童 {{item.childStock}} (15岁以下)
+                </div>
+              </div>
+            </div>
+            
+            <!-- VIP票 -->
+            <div  v-if="cost > 0">
+              <div class="multi-price-item" v-for="item,index in priceVIP" :key="index">
+                <div class="price-main-info">
+                  <span class="price-main-name">{{item.name}}: </span>
+                  <span class="price-main-price">${{(item.price / 100).toFixed(2)}} NZD </span>
+                </div>
+                <div class="price-sub-info-vip">
+                  查看VIP包含产品/服务
+                </div>
+              </div>
+            </div>
         </div>
       </div>
 
@@ -51,6 +90,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 
 export default {
   name: 'ActivityType',
@@ -65,7 +105,10 @@ export default {
     activityLocation: String,
     planNumber: Number, //可报名人数
     applyNumber: Number, //已报名人数
-    minAge: Number///年龄限制
+    minAge: Number,///年龄限制
+    priceEarlyBird: Array, //早鸟票
+    priceFamily: Array,    //家庭票
+    priceVIP: Array,       //VIP票
   },
   data() {
       return {
@@ -99,7 +142,20 @@ export default {
     }
   },
   methods: {
+    discountPrice(discount) {
+      return (Math.ceil(this.cost * (100 - discount) / 100) / 100).toFixed(2);
+    },
+
+    displayTime(time) {
+      if (time == 0) {
+        return "";
+      }
+      let begin = moment(time*1000);
+
+      let _startAt = begin.format("YYYY年MM月DD日 HH:mm");      
       
+      return _startAt;
+    }
   }
 }
 </script>
@@ -109,7 +165,7 @@ export default {
   display: flex;
   background: white;
   margin-top: 10px;
-  align-items: center;
+  align-items: flex-start;
   /* padding: 5px 0; */
 }
 
@@ -126,6 +182,8 @@ export default {
   flex-direction: column;
   margin-left: 6px;
   color: #616575;
+  font-weight: 400;
+  font-size: 14px;
 }
 
 .title {
@@ -140,5 +198,40 @@ export default {
 }
 .leave-number{
   color: #F08A40;
+}
+.multi-price-item{
+  margin-bottom: 6px;
+}
+.price-main-info {
+  padding: 4px 0;
+}
+.price-main-name{
+  font-size: 13px;
+  font-weight: 600;
+  color: #6A7292;
+}
+.price-main-price{
+  font-weight: 400;
+  font-size: 14px;
+  color: #6A7292;
+}
+.price-main-discount{
+  color: #228400;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 8px;
+  background: rgba(91, 213, 49, 0.2);
+  border-radius: 8px;
+}
+.price-sub-info{
+  color: #228400;
+  font-size: 11px;
+  font-weight: 500;
+}
+.price-sub-info-vip{
+  font-weight: 400;
+  font-size: 13px;
+  color: #0764DF;
+  text-decoration-line: underline;
 }
 </style>
