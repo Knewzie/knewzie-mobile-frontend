@@ -5,8 +5,11 @@
     </div>
     <div class="time-info">
         <div>
-          <span class="title" v-html="displayTime"></span>
-          <abbr class="title" v-html="duration"></abbr>
+          <!-- <span class="title" v-html="displayTime"></span> -->
+          <abbr class="title-start" v-html="startDisplayTime"></abbr>
+        </div>
+        <div>
+          - <abbr class="title-end" v-html="endDisplayTime"></abbr>
         </div>
         <!-- <abbr>{{this.currentActivityDuration}} (新西兰时间)</abbr> -->
         
@@ -23,12 +26,13 @@ export default {
   },
   props: {
     id: Number,
-    activityTime: Number,
+    activityStartTime: Number,
+    activityEndTime: Number,
     activityDuration: Number
   },
   data() {
       return {
-          currentActivityTime: this.activityTime,
+          currentActivityTime: this.activityStartTime,
           currentActivityDuration: this.activityDuration
       }
   },
@@ -37,10 +41,10 @@ export default {
   },
   computed: {
     displayTime() {
-      if (this.activityTime == 0) {
+      if (this.activityStartTime == 0) {
         return "加载中...";
       }
-      let t = this.activityTime*1000;
+      let t = this.activityStartTime*1000;
       let day = moment(t).day();
       let date = moment(t).date();
       let month = moment(t).month() + 1;
@@ -48,19 +52,29 @@ export default {
       let year =  moment(t).year();
       return week + "，" + month + '月' + date + '日，' + year;     
     },
-    duration() {
-      if (this.activityTime == 0) {
+    startDisplayTime() {
+      if (this.activityStartTime == 0) {
         return "";
       }
-      let begin = moment(this.activityTime*1000);
+      let begin = moment(this.activityStartTime*1000);
       // let end = moment(this.activityDuration*1000);
-      let _startAt = begin.format("YYYY-MM-DD HH:mm:ss");      
+      let _startAt = begin.format("YYYY年MM月DD日 HH:mm");      
       // let _endAt = end.format("YYYY-MM-DD HH:mm:ss");
-      let _startTime = _startAt.substring(10,16);
+      // let _startTime = _startAt.substring(10,16);
       // console.log(_startTime,'_startTime');    
       // console.log(_startAt,'_startAt');    
       // console.log(_endAt,'_endAt');
-      return _startTime;
+      return _startAt;
+    },
+    endDisplayTime() {
+      if (this.activityEndTime == 0) {
+        return "";
+      }
+      let begin = moment(this.activityEndTime*1000);
+
+      let _startAt = begin.format("YYYY年MM月DD日 HH:mm");      
+      
+      return _startAt;
     }
   },
   methods: {
@@ -114,8 +128,8 @@ export default {
   color: black;
 }
 
-.title {
-  font-size: 14px;
+.title-start {
+  /* font-size: 14px; */
   font-weight: 400;
   color: #616575;
 }
@@ -125,5 +139,9 @@ export default {
   font-weight:normal;
   opacity: 0.5;
 }
-
+.title-end{
+  font-size: 18px;
+  font-weight: 400;
+  color: #616575;
+}
 </style>
