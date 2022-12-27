@@ -109,7 +109,7 @@ export default {
   display: flex;
   background: white;
   margin-top: 10px;
-  align-items: center;
+  align-items: flex-start;
   padding: 5px 0;
 }
 .time {
@@ -126,6 +126,8 @@ export default {
   flex-direction: column;
   margin-left: 6px;
   color: black;
+  font-weight: 400;
+  font-size: 14px;
 }
 
 .title-start {
@@ -140,7 +142,7 @@ export default {
   opacity: 0.5;
 }
 .title-end{
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 400;
   color: #616575;
 }

@@ -84,6 +84,9 @@
               :planNumber="article.planNumber"
               :applyNumber="article.applyNumber"
               :minAge="article.minAge"
+              :priceFamily="article.priceFamily"
+              :priceEarlyBird="article.priceEarlyBird"
+              :priceVIP="article.priceVIP"
             />
           </div>
 
