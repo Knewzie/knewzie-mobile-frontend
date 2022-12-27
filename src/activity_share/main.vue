@@ -69,7 +69,8 @@
           <div class="section-title">基础资料</div>
           <div class="line-box">
             <ActivityTime
-              :activityTime="article.startAt"
+              :activityStartTime="article.startAt"
+              :activityEndTime="article.endAt"
               :activityDuration="article.endAt"
             />
           </div>
@@ -77,8 +78,12 @@
             <ActivityType
               :isOnline="article.addressType === 1 ? true : false"
               :isFree="article.cost && article.cost !== 0 ? false : true"
+              :cost="article.cost"
               :isSignup="article.isApply"
               :activityLocation="article.addressDetail"
+              :planNumber="article.planNumber"
+              :applyNumber="article.applyNumber"
+              :minAge="article.minAge"
             />
           </div>
 
