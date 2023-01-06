@@ -353,25 +353,28 @@ export default {
           openTagList: ["wx-open-launch-app"], // 可选，需要使用的开放标签列表，例如['wx-open-launch-app']
         });
 
-        //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
-        wx.updateTimelineShareData({
-          title: this.article.title,
-          desc: filterContent, // 分享描述
-          link: window.location.href,
-          // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
-          imgUrl: imgUrlThis,
-          success: function () {},
-        });
+        wx.ready(() => {
+          //自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+          wx.updateTimelineShareData({
+            title: this.article.title,
+            desc: filterContent, // 分享描述
+            link: window.location.href,
+            // imgUrl: "https://h5.knewzie.com/img/icon.jpeg",
+            imgUrl: imgUrlThis,
+            success: function () {},
+          });
 
-        //自定义“分享给朋友”及“分享到QQ”按钮的分享内容
-        wx.updateAppMessageShareData({
-          title: this.article.title, // 分享标题
-          desc: filterContent, // 分享描述
-          link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: imgUrlThis, // 分享图标
-          success: () => {
-          }
+          //自定义“分享给朋友”及“分享到QQ”按钮的分享内容
+          wx.updateAppMessageShareData({
+            title: this.article.title, // 分享标题
+            desc: filterContent, // 分享描述
+            link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: imgUrlThis, // 分享图标
+            success: () => {
+            }
+          });
         });
+        
       });
 
     window.addEventListener("scroll", this.handleScroll);
