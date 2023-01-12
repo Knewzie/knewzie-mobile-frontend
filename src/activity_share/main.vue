@@ -392,7 +392,7 @@ export default {
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
         alert("请在浏览器里打开");
       } else {
-        window.location.assign(`zhixin:///activity/${id}`);
+        window.location.assign(`waving:///activity/${id}`);
       }
     },
     launchApp() {},

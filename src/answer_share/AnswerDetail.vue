@@ -252,7 +252,7 @@ export default {
       if(/MicroMessenger/i.test(window.navigator.userAgent)){
         alert("请在浏览器里打开")
       } else {
-        window.location.assign(`zhixin:///reply/${replyId}/topic/${topicId}`);
+        window.location.assign(`waving:///reply/${replyId}/topic/${topicId}`);
       }
     },
     launchApp() {
