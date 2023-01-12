@@ -373,8 +373,8 @@ export default {
       }
     },
     launchApp() {},
-    launchError() {
-      // alert(err.detail.errMsg);
+    launchError(err) {
+      alert(err.detail.errMsg);
       this.oia();
     },
     like() {
