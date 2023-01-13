@@ -3,7 +3,7 @@
     <div class="topBar">
       <div class="topLogo"><img class="logo" src="/img/logo.png" /></div>
       <div class="topBtn">
-        <a v-on:click="oia"><span class="topBtnText">打开App</span></a>
+        <a v-on:click="download"><span class="topBtnText">打开App</span></a>
       </div>
     </div>
     <div class="article">
@@ -373,8 +373,8 @@ export default {
       }
     },
     launchApp() {},
-    launchError(err) {
-      alert(JSON.stringify(err.detail));
+    launchError() {
+      // alert(JSON.stringify(err.detail));
       this.oia();
     },
     like() {
