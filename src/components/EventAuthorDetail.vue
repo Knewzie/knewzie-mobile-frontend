@@ -15,6 +15,7 @@
 <script>
 
 import Avatar from './Avatar'
+import axios from "axios";
 
 export default {
   name: 'EventAuthorDetail',
@@ -26,17 +27,23 @@ export default {
     id: Number,
     name: String,
     avatar: String,
-    followersCount: [String,Number],
+    // followersCount: [String,Number],
   },
   data() {
       return {
           currentRelationship: this.relationship,
           loading: false,
+          followersCount: 0//粉丝数
       }
   },
   watch: {
       relationship(newV) {
           this.currentRelationship = newV;
+      },
+      id(newValue){
+        if (newValue != -1) {
+          this.loadData();
+        }
       }
   },
   computed: {
@@ -70,9 +77,22 @@ export default {
       return returnClass;
     }
   },
+  mounted() {
+    // this.loadData();
+  },
   methods: {
       async follow () {
           this.$emit('onClickCall');
+      },
+      loadData(){
+        axios.defaults.baseURL = "https://api.knewzie.com";
+        axios
+        .post(`/user/followers`, { "queryUserId": this.id })
+        .then((response) => {
+          if (response.data.code == 200) {
+            this.followersCount = response.data.data.total;
+          }
+        });
       }
   }
 }
