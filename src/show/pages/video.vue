@@ -183,7 +183,7 @@ export default {
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
         alert("请在浏览器里打开");
       } else {
-        window.location.assign(`waving:///journal/image/${id}`);
+        window.location.assign(`waving:///journal/video/${id}`);
       }
     },
     launchApp() {},
