@@ -68,7 +68,7 @@
           <img class="type-img" :src="'/img/bx-minus-circle.png'" />
         </div>
         <div class="type-info">    
-            <abbr>{{leaveNumber}}周岁或者以上才能报名</abbr>
+            <abbr>{{minAge}}周岁或者以上才能报名</abbr>
         </div>
       </div>
       
