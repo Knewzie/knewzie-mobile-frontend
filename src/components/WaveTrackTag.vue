@@ -1,6 +1,11 @@
 <template>
 
-    <span class="tag-box" v-bind:style="styleObj">{{title}}</span>
+    <div class="tag-box" v-bind:style="styleObj">
+        <div v-if="icon != ''" class="type">
+          <img class="type-img" :src="icon" />
+        </div>
+      {{title}}
+    </div>
 
 </template>
 <script>
@@ -8,7 +13,7 @@
 
 
 export default {
-  name: 'WaveTag',
+  name: 'WaveTrackTag',
    components: {
     // eslint-disable-next-line
 
@@ -55,20 +60,22 @@ export default {
 <style scoped>
 
 .tag-box {
-    /* background-color: #5d9ff833; */
-    /* border-color: #d9ecff; */
-    height: 32px;
     padding: 5px 10px;
-    line-height: 30px;
-    /* font-size: 11px; */
     font-weight: 500;
-    /* color: #0764DF; */
-    /* border-width: 1px; */
-    /* border-style: solid; */
     border-radius: 8px;
     box-sizing: border-box;
     white-space: nowrap;
+    display: flex;
+    background: white;
+    margin-top: 10px;
+    align-items: flex-start;
 }
 
-
+.type {
+  display: flex;
+}
+.type-img {
+  width: 18px;
+  margin-right: 0px;
+}
 </style>

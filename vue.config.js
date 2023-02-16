@@ -46,6 +46,11 @@ module.exports = {
       template: "public/index.html",
       title: "The Waving"
     },
+    track: {
+      entry: "src/track_share/main.js",
+      template: "public/index.html",
+      title: "The Waving"
+    },
   },
   // chainWebpack: config => config.optimization.minimize(false),
   configureWebpack: {

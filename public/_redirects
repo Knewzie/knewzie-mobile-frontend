@@ -2,3 +2,4 @@
 /reply/*  /reply  200
 /show/*  /show  200
 /activity/*  /activity  200
+/track/*  /track  200
