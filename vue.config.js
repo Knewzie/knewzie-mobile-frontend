@@ -46,6 +46,11 @@ module.exports = {
       template: "public/index.html",
       title: "The Waving"
     },
+    profile: {
+      entry: "src/profile/main.js",
+      template: "public/index.html",
+      title: "The Waving"
+    },
   },
   // chainWebpack: config => config.optimization.minimize(false),
   configureWebpack: {
