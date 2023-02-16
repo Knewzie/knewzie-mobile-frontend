@@ -48,6 +48,9 @@ module.exports = {
     },
     track: {
       entry: "src/track_share/main.js",
+    },
+    profile: {
+      entry: "src/profile/main.js",
       template: "public/index.html",
       title: "The Waving"
     },
