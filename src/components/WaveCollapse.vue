@@ -1,7 +1,12 @@
 <template>
   <div>
     <div v-html="showContent" ></div>
-    <a href="#" @click.prevent="toggleExpanded" v-if="showReadMoreButton(textNumber)">{{ expanded ? '收起' : '更多' }}</a>
+    <div class="collapse-tool" v-if="showReadMore">
+      <a href="#" style="color: #6599ff;" @click.prevent="toggleExpanded" >{{ expanded ? '收起' : '更多' }}</a>
+      <img v-if="!expanded" src="/img/bx-chevron-down.png"  style="width: 13px;"/>
+      <img v-if="expanded" src="/img/bx-chevron-up.png" style="width: 13px;"/>
+    </div>
+    
   </div>
 </template>
 
@@ -14,18 +19,21 @@ export default {
   data() {
     return {
       expanded: false,
-      
+      showReadMore: false,
       showContent: ""
     };
   },
-  created() {
-    this.showContent = this.truncateHTML(this.text,this.textNumber);
+  mounted() {
+    
   },
   filters: {
     
   },
-  computed: {
-  
+  watch: {
+    text(newV){
+      this.showContent = this.truncateHTML(newV,this.textNumber);
+      this.showReadMore = this.showReadMoreButton(this.textNumber);
+    }
   },
   methods: {
     toggleExpanded() {
@@ -64,3 +72,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.collapse-tool{
+  display: flex;
+  align-items: center;
+}
+</style>

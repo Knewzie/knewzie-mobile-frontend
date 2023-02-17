@@ -57,19 +57,52 @@
             class="multi-image-wrapper"
             :mediaList="article.imageList"
           ></WaveMultiImage>
-          <!-- <Collapse>
-            <CollapseItem title="展开详细"> -->
-          <WaveCollapse :text="article.content" :textNumber="120" >
-            <template v-slot:default="{ clickToggle, expanded }">
-              <button @click="clickToggle" class="btn">
-                {{ expanded ? "收起" : "展开" }}
-              </button>
-            </template>
-          </WaveCollapse>  
-          <!-- <div class="content event-detail" v-html="article.content"></div> -->
-            <!-- </CollapseItem>
-          </Collapse> -->
+
+          <WaveCollapse :text="article.content" :textNumber="120" ></WaveCollapse>  
+
+          <div class="section-title">到达指引</div>  
+          <WaveCollapse :text="article.route" :textNumber="120" ></WaveCollapse>  
+
+          <div class="section-title">注意事项</div>
+          <WaveCollapse :text="article.memo" :textNumber="120" ></WaveCollapse> 
+
+          <div class="issue-tag-box">
+            <div class="issue-tag-item" v-for="(item,index) in article.issueList" :key="index">
+              {{item.name.replaceAll("#","")}}
+            </div>
+          </div>
+
+          <!-- 天气 -->
+          <div class="section-title">天气</div>
+          <Tabs v-model="weaherTabName" :stretch="true" :before-leave="weaherTabBeforeClick">
+            <TabPane label="下面24个小时" name="first">
+              <WaveWeather :weathers24h="weather.weathers24h"></WaveWeather>
+            </TabPane>
+            <TabPane label="5日天气预报" name="second" ></TabPane>
+          </Tabs>
+
+          <!-- 步道提示信息 -->
+          <div v-if="alertList.length > 0" class="alert-box">
+            <div style="display: flex;align-items: center;"> 
+              <img src="/img/bxs-error.svg" style="width: 15px;height: 15px"/>
+              <span style="color: #E63761;font-size: 13px;font-weight: 600">Seasonal restrictions</span>
+            </div>
+            <div v-for="(item,index) in alertList" :key="index">
+              <span style="color: #051A37" v-html="item.description"></span>
+            </div>
+          </div>
           
+          <!-- 与TA相关 -->
+          <div style="margin-top: 20px;"></div>
+          <Tabs v-model="otherTabName" :stretch="true" :before-leave="otherTabBeforeClick">
+            <TabPane label="与TA相关" name="first">
+              <OtherTrackShowWaterfall
+                :list="otherTopics"
+              />
+              <!-- <WaveWeather :weathers24h="weather.weathers24h"></WaveWeather> -->
+            </TabPane>
+            <TabPane label="类似步道" name="second" ></TabPane>
+          </Tabs>
         </article>
       </div>
     </div>
@@ -121,140 +154,69 @@ import ToDialog from "../components/ToDialog.vue";
 // import { Collapse, CollapseItem } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import HtmlFilter from 'html-filter';
+import {Tabs,TabPane} from "element-ui";
+import WaveWeather from "../components/WaveWeather.vue";
+import OtherTrackShowWaterfall from "../components/OtherTrackShowWaterfall.vue";
 
 export default {
   name: "App",
   components: {
     // eslint-disable-next-line
     TrackTitle,
-    // ActivityAuthor,
-    // ActivityCategory,
-    // ActivityParticipant,
+    OtherTrackShowWaterfall,
     TrackTags,
     WaveMultiImage,
     ToDialog,
-    WaveCollapse
+    WaveCollapse,
+    Tabs,
+    TabPane,
+    WaveWeather
     // Collapse,
     // CollapseItem,
     // Answer, AgreePerson,
     // Avatar
   },
   data: () => ({
-      article: {
-        "id": 15424854,
-        "type": "tracks",
-        "name": "Auckland Domain",
-        "status": "OPEN",
-        "region": "Auckland",
-        "assetId": "WALLtracks20230211083827162",
-        "latitude": "-36.85876783914864",
-        "longitude": "174.77549655362964",
-        "place": "20 Park Road, Grafton",
-        "logo": "https://img.knewzie.com/image/899/2f029de5-8308-445d-a7f6-3058df77ef27.jpeg",
-        "length": "500 m ",
-        "timeCost": "0_1",
-        "difficulty": "advanced",
-        "weight": 20,
-        "dog": 1,
-        "imageList": [
-            "https://img.knewzie.com/image/899/4662784c-0ca9-4939-a39a-f59e2779129c.jpeg",
-            "https://img.knewzie.com/image/899/07b4c8fc-347a-404d-b693-a817f14409a9.jpg",
-            "https://img.knewzie.com/image/899/128301d8-95c7-4317-94ae-bbd2bf8f2814.jpeg",
-            "https://img.knewzie.com/image/899/6622666c-9b02-4de3-bc58-43c7fb89c5fe.jpeg",
-            "https://img.knewzie.com/image/899/1d97b653-be16-45c4-a015-b3a691c3d072.jpeg"
-        ],
-        "content": "<p class=\"p1\"><span class=\"s1\">Auckland Domain</span>是我们Auckland最古老的公园，也是最大的公园之一。它是在一座死火山, 当时火山活动产生并形成一个天然的圆形剧场。这里可以放风筝、喂鸭子、遛娃遛狗、走过原生森林或沿着户外雕塑的小路走，奥克兰博物馆也在里面，还有很大的玻璃房植物园。累了还有cafe。</p>",
-        "route": "<p class=\"p1\">从Park Road, Grafton Road and Titoki St 多个入口可进入，或者地图搜索：<span class=\"s1\">Auckland Domain/ Auckland Museum.</span></p>",
-        "memo": "<ul class=\"ul1\">\n<li class=\"li1\">Smokefree</li>\n<li class=\"li2\">使用提供的垃圾桶来处理你的垃圾。如果没有垃圾箱，离开时请带走所有垃圾和回收物。</li>\n<li class=\"li2\">行人通道 - 24小时</li>\n<li class=\"li2\">机动车停车场 - 本区有10个机动车停车场。三个在冬季花园外，两个在The Crescent的尽头，一个在Kiosk路的尽头，四个在博物馆前面。</li>\n</ul>",
-        "categories": [
-            {
-                "id": 107,
-                "name": "AKL周边最Top步道",
-                "nameEn": null,
-                "icon": "",
-                "sort": 1,
-                "isFollow": null
-            },
-            {
-                "id": 108,
-                "name": "遛狗步道",
-                "nameEn": null,
-                "icon": "",
-                "sort": 5,
-                "isFollow": null
-            },
-            {
-                "id": 109,
-                "name": "遛娃步道",
-                "nameEn": null,
-                "icon": "",
-                "sort": 2,
-                "isFollow": null
-            }
-        ],
-        "issueList": [
-            {
-                "id": 853,
-                "name": "auckland_museum",
-                "icon": "https://img.knewzie.com/image/899/ba75c72c-923a-4349-87df-b888e839ed34.png",
-                "desc": "暂时还没有简介",
-                "categories": null,
-                "creator": null,
-                "createdAt": 1676104737,
-                "replyCount": null,
-                "pvCount": null,
-                "userCount": null
-            },
-            {
-                "id": 852,
-                "name": "auckland_domain",
-                "icon": "https://img.knewzie.com/image/899/ba75c72c-923a-4349-87df-b888e839ed34.png",
-                "desc": "暂时还没有简介",
-                "categories": null,
-                "creator": null,
-                "createdAt": 1676104727,
-                "replyCount": null,
-                "pvCount": null,
-                "userCount": null
-            }
-        ],
-        "isLike": false,
-        "isCheckin": false
-      },
-    // article: {
-    //   id: -1,
-    //   topicId: -1,
-    //   title: "加载中...",
-    //   content: "加载中...",
-    //   startAt: 0,
-    //   endAt: 0,
-    //   applyStartAt: 0,
-    //   applyEndAt: 0,
-    //   planNumber: 0,
-    //   applyNumber: 0,
-    //   cost: 0,
-    //   addressType: 0,
-    //   addressDetail: "加载中...",
-    //   extend: null,
-    //   creator: {
-    //     uid: -1,
-    //     name: "加载中...",
-    //     nickname: "加载中...",
-    //     title: "",
-    //     avatar: "",
-    //     intro: "",
-    //     role: 1,
-    //     relationship: 0,
-    //     followersCount: 0,
-    //   },
-    //   imageList: [],
-    //   isApply: false,
-    //   applyList: [],
-    // },
+    article: {
+      "id": -1,
+      "type": "",
+      "name": "",
+      "status": "",
+      "region": "",
+      "assetId": "",
+      "latitude": "",
+      "longitude": "",
+      "place": "",
+      "logo": "",
+      "length": "",
+      "timeCost": "",
+      "difficulty": "",
+      "weight": 0,
+      "dog": 0,
+      "imageList": [
+      ],
+      "content": "",
+      "route": "",
+      "memo": "",
+      "categories": [
+      ],
+      "issueList": [
+      ],
+      "isLike": false,
+      "isCheckin": false
+    },
+    weather: {
+      temp : "",
+      icon : "",
+      weatherImageAssets : "",
+      weathers24h:[]
+    },
+    alertList:[],
+    otherTopics: [],
+    weaherTabName: 'first',
+    otherTabName: "first",
     dialogVisible: false,
-    // type: 1,
-    // likers: [],
-    // activeNames: ['1']
+    
   }),
   computed: {
     launchAppUrl() {
@@ -264,31 +226,7 @@ export default {
     likeIcon() {
       return "/img/btn_love_highlighted.png";
     },
-    
-    avatarArr() {
-      if (this.article && !this.article.applyList) {
-        return [];
-      }
-      //获取到applyList
-      const { applyList } = this.article;
-      //准备二维数组
-      const arr = [];
-      let minArr = [];
-      //遍历applyList
-      applyList.forEach((avatar) => {
-        //如果小数组满了，创建一个新的小数组（所以上面创建minArr不用const而是用let）
-        if (minArr.length === 6) {
-          minArr = [];
-        }
-        //如果minArr是空的,将小数组保存到大数组中
-        if (minArr.length === 0) {
-          arr.push(minArr);
-        }
-        //将当前分类数据保存到小数组中
-        minArr.push(avatar);
-      });
-      return arr;
-    },
+  
     timeTitle() {
       if (this.article.timeCost == "0_1") {
           return "一小时以下";
@@ -333,9 +271,12 @@ export default {
     const nonceStr = "knewzie";
 
     axios
-      .post(`/v2/activity/detail`, { id: id })
-      .then(() => {
-        // this.article = response.data.data;
+      .post(`/doc/detail`, {type: "tracks", assetId: id })
+      .then((response) => {
+        this.article = response.data.data;
+        this.loadWeatherData();
+        this.loadAlertData();
+        this.loadOtherTracksData();
       })
       .then(() => {
         let params = {
@@ -512,6 +453,164 @@ export default {
       //   window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
       // }, 2000);
     },
+    weaherTabBeforeClick(tabName) {
+      if (tabName == "second") {
+        this.dialogVisible = true;
+        return false;
+      }
+      return true;
+    },
+    otherTabBeforeClick(tabName) {
+      if (tabName == "second") {
+        this.dialogVisible = true;
+        return false;
+      }
+      return true;
+    },
+    /// 加载天气数据
+    async loadWeatherData() {
+      const QWEARHER_KEY = "72f83bc9b1954073a17afd78a711dd01";
+      const location = this.article.longitude + "," + this.article.latitude
+      let response = await axios.get(`https://devapi.qweather.com/v7/weather/now?key=${QWEARHER_KEY}&location=${location}&lang=zh-hans`);
+
+      var data = response.data;
+      var now = data["now"];
+      
+      this.weather.temp = now["temp"] + "°";
+      this.weather.icon = now["icon"] ;
+      
+      
+      this.weather.weatherImageAssets = this.getIconByCode(this.weather.icon);
+
+      this.weather.weathers24h.push({
+        temp:this.weather.temp,
+        tempMax:'',
+        tempMin: '',
+        icon: this.weather.weatherImageAssets
+      });
+      
+      var response24h = await axios.get(`https://devapi.qweather.com/v7/weather/24h?key=${QWEARHER_KEY}&location=${location}&lang=zh-hans`);
+      var hourly = response24h.data['hourly'];
+      for(var n = 0; n < hourly.length; n++){
+        var iconH = this.getIconByCode(hourly[n]["icon"]);
+        var tempH = hourly[n]['temp'] + "°";
+        this.weather.weathers24h.push({
+          temp: tempH,
+          tempMax:'',
+          tempMin: '',
+          icon: iconH
+        });
+      }
+      
+    },
+
+    /// 加载提示信息
+    async loadAlertData()  {
+      var dataJson = {
+        "page": 1,
+        "type": "tracks",
+        "assetId": this.article.assetId
+      };
+
+      try {
+        
+        var response = await axios.post(`/doc/alert`, dataJson);
+        this.alertList = response.data.data.list;
+        
+      // eslint-disable-next-line no-empty
+      } catch (e) {
+        
+      } 
+    },
+
+    /// 加载Other步道
+    async loadOtherTracksData()  {
+      let names = this.article.issueList.map(item => (item.name));
+      var dataJson = {
+        "page": 1,
+        "type": 4,
+        "names": names
+      };
+
+      try {
+        
+        var response = await axios.post(`/issue/topic`, dataJson);
+        this.otherTopics = response.data.data.list;
+        this.otherTopics.push(this.otherTopics[0]);
+      // eslint-disable-next-line no-empty
+      } catch (e) {
+        
+      } 
+    },
+
+    toAmPmTime(value){
+      var arr = value.split(":");
+      try{
+        var hour = parseInt(arr[0]);
+        var res = "";
+        if (hour > 12) {
+          res = (hour - 12).toString() + ":" + arr[1] + " PM";
+        } else {
+          res = hour.toString() + ":" + arr[1] + " AM";
+        }
+        return res;
+      }catch (e){
+        return "00:00 AM";
+      }
+    },
+    getIconByCode(icon) {
+      if (icon.startsWith("4")) return "/img/ic_snowy.png";
+      if (icon.startsWith("5")) return "/img/ic_windy.png";
+
+      var res = "";
+      switch (icon) {
+        case '100': //晴
+        case '150': //晴-夜
+          res = "/img/ic_sunny.png";
+          break;
+        case '101': //多云
+        case '104': //阴
+        case '151': //多云-夜
+          res = "/img/ic_cloudy.png";
+          break;
+        case '102': //	少云
+        case '103': //晴间多云
+        case '152': //少云-夜
+        case '153': //晴间多云-夜
+          res = "/img/ic_partly_cloudy.png";
+          break;
+        case '300': //阵雨
+        case '301': //强阵雨
+        case '305': //小雨
+        case '306': //中雨
+        case '307': //大雨
+        case '308': //极端降雨
+        case '309': //细雨
+        case '310': //暴雨
+        case '311': //大暴雨
+        case '312': //特大暴雨
+        case '313': //冻雨
+        case '314': //小到中雨
+        case '315': //中到大雨
+        case '316': //大到暴雨
+        case '317': //暴雨到大暴雨
+        case '318': //大暴雨到特大暴雨
+        case '350': //阵雨
+        case '351': //强阵雨
+        case '399': //雨
+          res = "/img/ic_rainny.png";
+          break;
+        case '302': //雷阵雨
+        case '303': //强雷阵雨
+        case '304': //雷阵雨伴有冰雹
+          res = "/img/ic_thunder.png";
+          break;
+        default:
+          res = "/img/ic_cloudy.png";
+          break;
+      }
+      return res;
+    }
   },
 };
 </script>
@@ -839,5 +938,25 @@ article {
   margin-right: 5px;
   margin-top: auto;
   margin-bottom: auto;
+}
+.issue-tag-box{
+  display: flex;
+  margin-top: 10px;
+}
+.issue-tag-item {
+  color: #ADBBCE;
+  border: 1px solid #ADBBCE;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 5px;
+}
+
+.alert-box{
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: rgba(229, 55, 97, 0.1);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
 }
 </style>
