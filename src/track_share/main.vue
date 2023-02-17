@@ -536,7 +536,6 @@ export default {
         
         var response = await axios.post(`/issue/topic`, dataJson);
         this.otherTopics = response.data.data.list;
-        this.otherTopics.push(this.otherTopics[0]);
       // eslint-disable-next-line no-empty
       } catch (e) {
         
