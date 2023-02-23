@@ -103,7 +103,7 @@
           </Collapse> -->
 
           <wx-open-launch-app
-            class=""
+            class="click-sign-up"
             v-on:launch="launchApp"
             v-on:error="launchError"
             appid="wx4e61c8e6b7007cc8"
@@ -112,7 +112,17 @@
             <script type="text/wxtag-template">
               <style>
                 .click-sign-up {
-                    
+                  display: flex;
+                  padding: 6px 8px;
+                  color: white;
+                  background: #0764DF;
+                  border: 2px solid #0764DF;
+                  border-radius: 8px;
+                  width: 99%;
+                  justify-content: center;
+                  margin-left: auto;
+                  margin-right: auto;
+                  margin-top: 20px;
                 }
                 
               </style>
