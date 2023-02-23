@@ -118,7 +118,8 @@
                   background: #0764DF;
                   border: 2px solid #0764DF;
                   border-radius: 8px;
-                  width: 85%;
+                  width: 200px;
+                  font-size: 14px;
                   justify-content: center;
                   margin-left: auto;
                   margin-right: auto;
