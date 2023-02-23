@@ -118,7 +118,7 @@
                   background: #0764DF;
                   border: 2px solid #0764DF;
                   border-radius: 8px;
-                  width: 200px;
+                  
                   font-size: 14px;
                   justify-content: center;
                   margin-left: auto;
@@ -858,10 +858,10 @@ article {
   background: #0764DF;
   border: 2px solid #0764DF;
   border-radius: 8px;
-  width: 99%;
+  
+  font-size: 14px;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 20px;
 }
 </style>
