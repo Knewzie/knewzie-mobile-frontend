@@ -101,6 +101,24 @@
           <div class="content event-detail" v-html="article.content"></div>
           <!-- </CollapseItem>
           </Collapse> -->
+
+          <wx-open-launch-app
+            class=""
+            v-on:launch="launchApp"
+            v-on:error="launchError"
+            appid="wx4e61c8e6b7007cc8"
+            :extinfo="launchAppUrl"
+          > 
+            <script type="text/wxtag-template">
+              <style>
+                .click-sign-up {
+                    
+                }
+                
+              </style>
+              <button class="click-sign-up"><span>点击报名</span></button>
+            </script>
+          </wx-open-launch-app>
           <div class="section-title">活动组织者</div>
           <EventAuthorDetail
             :id="article && article.creator ? article.creator.uid : -1"
@@ -821,5 +839,18 @@ article {
 .dialog-button-group {
   display: flex;
   justify-content: space-around;
+}
+.click-sign-up{
+  display: flex;
+  padding: 6px 8px;
+  color: white;
+  background: #0764DF;
+  border: 2px solid #0764DF;
+  border-radius: 8px;
+  width: 99%;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
 }
 </style>
