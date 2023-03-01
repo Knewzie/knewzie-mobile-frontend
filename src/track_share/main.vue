@@ -34,7 +34,7 @@
               <img class="line-item-box-img" src="/img/bx-time-five.svg" />
              {{timeTitle}}
             </div>
-            
+
             <div class="line-item-box" >
               <img class="line-item-box-img" src="/img/bx-line-chart.svg" />
              {{difficultyTitle}}
@@ -50,21 +50,21 @@
              {{article.place}}
             </div>
           </div>
-          <div class="section-title">步道详情</div>  
-          
+          <div class="section-title">步道详情</div>
+
           <WaveMultiImage
             @onClickCall="dialogVisible = true"
             class="multi-image-wrapper"
             :mediaList="article.imageList"
           ></WaveMultiImage>
 
-          <WaveCollapse :text="article.content" :textNumber="120" ></WaveCollapse>  
+          <WaveCollapse :text="article.content" :textNumber="120" ></WaveCollapse>
 
-          <div class="section-title">到达指引</div>  
-          <WaveCollapse :text="article.route" :textNumber="120" ></WaveCollapse>  
+          <div class="section-title">到达指引</div>
+          <WaveCollapse :text="article.route" :textNumber="120" ></WaveCollapse>
 
           <div class="section-title">注意事项</div>
-          <WaveCollapse :text="article.memo" :textNumber="120" ></WaveCollapse> 
+          <WaveCollapse :text="article.memo" :textNumber="120" ></WaveCollapse>
 
           <div class="issue-tag-box">
             <div class="issue-tag-item" v-for="(item,index) in article.issueList" :key="index">
@@ -83,7 +83,7 @@
 
           <!-- 步道提示信息 -->
           <div v-if="alertList.length > 0" class="alert-box">
-            <div style="display: flex;align-items: center;"> 
+            <div style="display: flex;align-items: center;">
               <img src="/img/bxs-error.svg" style="width: 15px;height: 15px"/>
               <span style="color: #E63761;font-size: 13px;font-weight: 600">Seasonal restrictions</span>
             </div>
@@ -91,7 +91,7 @@
               <span style="color: #051A37" v-html="item.description"></span>
             </div>
           </div>
-          
+
           <!-- 与TA相关 -->
           <div style="margin-top: 20px;"></div>
           <Tabs v-model="otherTabName" :stretch="true" :before-leave="otherTabBeforeClick">
@@ -158,6 +158,23 @@ import {Tabs,TabPane} from "element-ui";
 import WaveWeather from "../components/WaveWeather.vue";
 import OtherTrackShowWaterfall from "../components/OtherTrackShowWaterfall.vue";
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC_D4-E4YQeBqLGiZmQEeWfijNfMiyz6YE",
+  authDomain: "modular-cell-305803.firebaseapp.com",
+  projectId: "modular-cell-305803",
+  storageBucket: "modular-cell-305803.appspot.com",
+  messagingSenderId: "891796367460",
+  appId: "1:891796367460:web:d17e1b73accf15c2fa5771",
+  measurementId: "G-J1K3YGJM6N"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+getAnalytics(app);
+
 export default {
   name: "App",
   components: {
@@ -216,7 +233,7 @@ export default {
     weaherTabName: 'first',
     otherTabName: "first",
     dialogVisible: false,
-    
+
   }),
   computed: {
     launchAppUrl() {
@@ -226,7 +243,7 @@ export default {
     likeIcon() {
       return "/img/btn_love_highlighted.png";
     },
-  
+
     timeTitle() {
       if (this.article.timeCost == "0_1") {
           return "一小时以下";
@@ -297,7 +314,7 @@ export default {
         let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
         if (this.article.logo) {
           imgUrlThis = this.article.logo;
-        }        
+        }
 
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
@@ -337,7 +354,7 @@ export default {
             }
           });
         });
-        
+
       });
 
     window.addEventListener("scroll", this.handleScroll);
@@ -391,7 +408,7 @@ export default {
             );
         });
     },
-    
+
     invite() {
       const { Page } = window;
       if (!Page) {
@@ -406,7 +423,7 @@ export default {
       }
       Page.postMessage(JSON.stringify({ event: "doAnswer" }));
     },
-   
+
     handleScroll() {
       //定义handleScroll事件函数
       let section = document.getElementById("activityCategory-section");
@@ -475,11 +492,11 @@ export default {
 
       var data = response.data;
       var now = data["now"];
-      
+
       this.weather.temp = now["temp"] + "°";
       this.weather.icon = now["icon"] ;
-      
-      
+
+
       this.weather.weatherImageAssets = this.getIconByCode(this.weather.icon);
 
       this.weather.weathers24h.push({
@@ -488,7 +505,7 @@ export default {
         tempMin: '',
         icon: this.weather.weatherImageAssets
       });
-      
+
       var response24h = await axios.get(`https://devapi.qweather.com/v7/weather/24h?key=${QWEARHER_KEY}&location=${location}&lang=zh-hans`);
       var hourly = response24h.data['hourly'];
       for(var n = 0; n < hourly.length; n++){
@@ -501,7 +518,7 @@ export default {
           icon: iconH
         });
       }
-      
+
     },
 
     /// 加载提示信息
@@ -513,14 +530,14 @@ export default {
       };
 
       try {
-        
+
         var response = await axios.post(`/doc/alert`, dataJson);
         this.alertList = response.data.data.list;
-        
+
       // eslint-disable-next-line no-empty
       } catch (e) {
-        
-      } 
+
+      }
     },
 
     /// 加载Other步道
@@ -533,13 +550,13 @@ export default {
       };
 
       try {
-        
+
         var response = await axios.post(`/issue/topic`, dataJson);
         this.otherTopics = response.data.data.list;
       // eslint-disable-next-line no-empty
       } catch (e) {
-        
-      } 
+
+      }
     },
 
     toAmPmTime(value){
@@ -768,13 +785,13 @@ h3 {
 }
 
 /* .share{
-  object-fit: cover; 
+  object-fit: cover;
   width: 30px;
   height: 30px;
 } */
 
 /* .sign_up_now{
-  object-fit: cover; 
+  object-fit: cover;
   width: 100%;
   height: 30px;
 } */
