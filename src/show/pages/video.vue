@@ -82,6 +82,23 @@ import moment from "moment";
 import Article from "../../components/ShowVideo.vue";
 import HtmlFilter from 'html-filter';
 // import Avatar from "../../components/Avatar.vue";
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC_D4-E4YQeBqLGiZmQEeWfijNfMiyz6YE",
+  authDomain: "modular-cell-305803.firebaseapp.com",
+  projectId: "modular-cell-305803",
+  storageBucket: "modular-cell-305803.appspot.com",
+  messagingSenderId: "891796367460",
+  appId: "1:891796367460:web:d17e1b73accf15c2fa5771",
+  measurementId: "G-J1K3YGJM6N"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 export default {
   name: "ShowImage",
   components: { Article },
@@ -301,6 +318,10 @@ export default {
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
     const { id } = this.$router.currentRoute.params;
+    logEvent(analytics, 'screen_view', {
+      firebase_screen: `/journal/video/${id}`,
+      firebase_screen_class: 'JournalDetailWebPage'
+    });
 
     axios
       .post(`/topic/details`, { id })

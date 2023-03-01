@@ -195,7 +195,7 @@ import ToDialog from "../components/ToDialog.vue";
 import "element-ui/lib/theme-chalk/index.css";
 import HtmlFilter from 'html-filter';
 import { initializeApp } from "firebase/app";
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { getAnalytics, logEvent, setCurrentScreen } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC_D4-E4YQeBqLGiZmQEeWfijNfMiyz6YE",
@@ -323,9 +323,13 @@ export default {
   },
   created() {
 
-
     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
+    logEvent(analytics, 'screen_view', {
+      firebase_screen: `/activity/${id}`,
+      firebase_screen_class: 'ActivityDetailWebPage'
+    });
+
     // const { Page } = window;
     const { wx } = window;
     const timestamp = moment().unix();

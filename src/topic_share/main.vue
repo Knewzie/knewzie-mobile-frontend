@@ -276,6 +276,11 @@ export default {
     const nonceStr = "knewzie";
     const { id } = this.$router.currentRoute.params;
 
+    logEvent(analytics, 'screen_view', {
+      firebase_screen: `/topic/${id}`,
+      firebase_screen_class: 'TopicDetailWebPage'
+    });
+
     axios
       .post(`/topic/details`, { id })
       .then((response) => {

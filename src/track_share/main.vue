@@ -173,7 +173,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-getAnalytics(app);
+const analytics = getAnalytics(app);
 
 export default {
   name: "App",
@@ -286,6 +286,11 @@ export default {
     const timestamp = moment().unix();
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
+
+    logEvent(analytics, 'screen_view', {
+      firebase_screen: `/track/${id}`,
+      firebase_screen_class: 'TrackDetailWebPage'
+    });
 
     axios
       .post(`/doc/detail`, {type: "tracks", assetId: id })
