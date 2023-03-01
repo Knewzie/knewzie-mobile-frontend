@@ -176,7 +176,22 @@ import AgreePerson from "../components/AgreePerson.vue";
 import moment from "moment";
 import axios from "axios";
 import HtmlFilter from 'html-filter';
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyC_D4-E4YQeBqLGiZmQEeWfijNfMiyz6YE",
+  authDomain: "modular-cell-305803.firebaseapp.com",
+  projectId: "modular-cell-305803",
+  storageBucket: "modular-cell-305803.appspot.com",
+  messagingSenderId: "891796367460",
+  appId: "1:891796367460:web:d17e1b73accf15c2fa5771",
+  measurementId: "G-J1K3YGJM6N"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 export default {
   name: "App",
   components: {
@@ -333,7 +348,7 @@ export default {
             success: () => {
             }
           });
-          
+
         });
       });
   },
@@ -372,7 +387,11 @@ export default {
         window.location.assign(`waving:///topic/${id}`);
       }
     },
-    launchApp() {},
+    launchApp() {
+      logEvent(analytics, 'launch_app', {
+        "from": `topic/${this.article.id}`,
+      });
+    },
     launchError() {
       // alert(JSON.stringify(err.detail));
       this.oia();
