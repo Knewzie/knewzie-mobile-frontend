@@ -171,7 +171,6 @@
 import Author from "../../components/ShowImageAuthor.vue";
 import Answer from "../../components/Answer.vue";
 import Waterfall from "../../components/Waterfall.vue";
-// import {Swiper, SwiperSlide} from 'vue-awesome-swiper'
 import "swiper/css/bundle";
 import axios from "axios";
 import moment from "moment";
