@@ -108,7 +108,7 @@
             v-on:error="launchError"
             appid="wx4e61c8e6b7007cc8"
             :extinfo="launchAppUrl"
-          > 
+          >
             <script type="text/wxtag-template">
               <style>
                 .click-sign-up {
@@ -118,14 +118,14 @@
                   background: #0764DF;
                   border: 2px solid #0764DF;
                   border-radius: 8px;
-                  
+
                   font-size: 14px;
                   justify-content: center;
                   margin-left: auto;
                   margin-right: auto;
-                  
+
                 }
-                
+
               </style>
               <button class="click-sign-up"><span>点击报名</span></button>
             </script>
@@ -194,7 +194,22 @@ import ToDialog from "../components/ToDialog.vue";
 // import { Collapse, CollapseItem } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import HtmlFilter from 'html-filter';
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyC_D4-E4YQeBqLGiZmQEeWfijNfMiyz6YE",
+  authDomain: "modular-cell-305803.firebaseapp.com",
+  projectId: "modular-cell-305803",
+  storageBucket: "modular-cell-305803.appspot.com",
+  messagingSenderId: "891796367460",
+  appId: "1:891796367460:web:d17e1b73accf15c2fa5771",
+  measurementId: "G-J1K3YGJM6N"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 export default {
   name: "App",
   components: {
@@ -307,6 +322,8 @@ export default {
     },
   },
   created() {
+
+
     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
     // const { Page } = window;
@@ -363,7 +380,7 @@ export default {
         let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
         if (this.article.imageList && this.article.imageList.length > 0) {
           imgUrlThis = this.article.imageList[0];
-        }        
+        }
         // alert(sign);
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印
@@ -403,7 +420,7 @@ export default {
             }
           });
         });
-        
+
       });
 
     window.addEventListener("scroll", this.handleScroll);
@@ -424,7 +441,11 @@ export default {
         window.location.assign(`waving:///activity/${id}`);
       }
     },
-    launchApp() {},
+    launchApp() {
+      logEvent(analytics, 'launch_app', {
+        "from": `activity/${this.article.id}`,
+      });
+    },
     launchError() {
       // alert(err.detail.errMsg);
       this.oia();
@@ -701,13 +722,13 @@ h3 {
 }
 
 /* .share{
-  object-fit: cover; 
+  object-fit: cover;
   width: 30px;
   height: 30px;
 } */
 
 /* .sign_up_now{
-  object-fit: cover; 
+  object-fit: cover;
   width: 100%;
   height: 30px;
 } */
@@ -858,7 +879,7 @@ article {
   background: #0764DF;
   border: 2px solid #0764DF;
   border-radius: 8px;
-  
+
   font-size: 14px;
   justify-content: center;
   margin-left: auto;
