@@ -86,7 +86,7 @@
       </article>
     </div>
 
-    <section class="actions">
+    <!-- <div class="actions">
       <a
         class="action-item"
         v-bind:class="{ active: type === 0 }"
@@ -103,9 +103,9 @@
         v-bind:class="{ active: type === 1 }"
         >{{ article.replies }} 评论</a
       >
-    </section>
+    </div> -->
 
-    <div v-if="type === 0">
+    <!-- <div v-if="type === 0">
       <AgreePerson
         v-for="user in likers"
         :key="user.id"
@@ -133,7 +133,7 @@
           :nickname="reply.replier.nickname"
         />
       </div>
-    </div>
+    </div> -->
     <div id="mask">
       <wx-open-launch-app
         class="view-in-app"
@@ -201,6 +201,7 @@ export default {
     // SwiperSlide,
     Waterfall,
     Author,
+    /* eslint-disable */
     Answer,
     Carousel,
     CarouselItem,
@@ -429,7 +430,7 @@ body {
   margin: 0;
   -webkit-touch-callout: none;
   padding-bottom: env(safe-area-inset-bottom);
-  background: #f6f6f6;
+  background: white !important;
 }
 
 .view-in-app {

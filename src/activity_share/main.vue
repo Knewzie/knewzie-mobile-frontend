@@ -195,7 +195,7 @@ import ToDialog from "../components/ToDialog.vue";
 import "element-ui/lib/theme-chalk/index.css";
 import HtmlFilter from 'html-filter';
 import { initializeApp } from "firebase/app";
-import { getAnalytics, logEvent, setCurrentScreen } from "firebase/analytics";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC_D4-E4YQeBqLGiZmQEeWfijNfMiyz6YE",

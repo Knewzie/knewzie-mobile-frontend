@@ -4,7 +4,7 @@
     v-on:click="showAuthor"
     :style="'width:' + width + ';' + 'height:' + height"
   >
-    <img :src="avatar" />
+    <img :style="'width:' + width + ';' + 'height:' + height" :src="avatar" />
     <!-- 用户等级 -->
     <!-- <div :class="certificatedClass"></div> -->
   </a>
