@@ -287,11 +287,6 @@ export default {
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
 
-    logEvent(analytics, 'screen_view', {
-      firebase_screen: `/track/${id}`,
-      firebase_screen_class: 'TrackDetailWebPage'
-    });
-
     axios
       .post(`/doc/detail`, {type: "tracks", assetId: id })
       .then((response) => {
@@ -317,6 +312,11 @@ export default {
         var filterContent = htmlFilter.filter(this.article.content);
 
         document.title = this.article.title;
+
+        logEvent(analytics, 'screen_view', {
+          firebase_screen: `/track/${id}`,
+          firebase_screen_class: 'TrackDetailWebPage'
+        });
 
         let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
         if (this.article.logo) {

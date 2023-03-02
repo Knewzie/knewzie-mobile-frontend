@@ -325,11 +325,6 @@ export default {
 
     axios.defaults.baseURL = "https://api.knewzie.com";
     const { id } = this.$router.currentRoute.params;
-    logEvent(analytics, 'screen_view', {
-      firebase_screen: `/activity/${id}`,
-      firebase_screen_class: 'ActivityDetailWebPage'
-    });
-
     // const { Page } = window;
     const { wx } = window;
     const timestamp = moment().unix();
@@ -361,7 +356,6 @@ export default {
         if (response.data.data.creator.followersCount == null) {
           this.article.creator.followersCount = 0;
         }
-        document.title = this.article.title;
         // this.article.applyList = list;
         // this.article.applyNumber = list.length;
         // console.log(this.article,'article-2');
@@ -381,6 +375,12 @@ export default {
 
         const htmlFilter = new HtmlFilter();
         var filterContent = htmlFilter.filter(this.article.content);
+
+        document.title = this.article.title;
+        logEvent(analytics, 'screen_view', {
+          firebase_screen: `/activity/${id}`,
+          firebase_screen_class: 'ActivityDetailWebPage'
+        });
 
         let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
         if (this.article.imageList && this.article.imageList.length > 0) {

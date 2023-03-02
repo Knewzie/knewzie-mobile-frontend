@@ -276,11 +276,6 @@ export default {
     const nonceStr = "knewzie";
     const { id } = this.$router.currentRoute.params;
 
-    logEvent(analytics, 'screen_view', {
-      firebase_screen: `/topic/${id}`,
-      firebase_screen_class: 'TopicDetailWebPage'
-    });
-
     axios
       .post(`/topic/details`, { id })
       .then((response) => {
@@ -306,6 +301,12 @@ export default {
         const htmlFilter = new HtmlFilter();
         var filterContent = htmlFilter.filter(this.article.content);
         document.title = this.article.title;
+
+        logEvent(analytics, 'screen_view', {
+          firebase_screen: `/topic/${id}`,
+          firebase_screen_class: 'TopicDetailWebPage'
+        });
+
         // alert(sign);
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印

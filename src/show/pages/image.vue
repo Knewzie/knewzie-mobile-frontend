@@ -339,10 +339,6 @@ export default {
     const appId = "wxd6fe3b0d4e0030ac";
     const nonceStr = "knewzie";
     const { id } = this.$router.currentRoute.params;
-    logEvent(analytics, 'screen_view', {
-      firebase_screen: `/journal/image/${id}`,
-      firebase_screen_class: 'JournalDetailWebPage'
-    });
 
     axios
       .post(`/topic/details`, { id })
@@ -363,6 +359,10 @@ export default {
         const htmlFilter = new HtmlFilter();
 
         document.title = this.article.title;
+        logEvent(analytics, 'screen_view', {
+          firebase_screen: `/journal/image/${id}`,
+          firebase_screen_class: 'JournalDetailWebPage'
+        });
 
         var filterContent = htmlFilter.filter(this.article.content);
         wx.config({
