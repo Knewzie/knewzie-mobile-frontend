@@ -394,7 +394,7 @@ export default {
     },
     launchApp() {
       logEvent(analytics, 'launch_app', {
-        "from": `topic/${this.article.id}`,
+        "source": `topic/${this.article.id}`,
       });
     },
     launchError() {

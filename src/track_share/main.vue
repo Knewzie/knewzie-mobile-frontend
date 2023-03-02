@@ -380,7 +380,12 @@ export default {
         window.location.assign(`waving:///activity/${id}`);
       }
     },
-    launchApp() {},
+    launchApp() {
+      const { id } = this.$router.currentRoute.params;
+      logEvent(analytics, 'launch_app', {
+        "source": `track/${id}`,
+      });
+    },
     launchError() {
       // alert(err.detail.errMsg);
       this.oia();
