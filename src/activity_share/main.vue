@@ -361,6 +361,7 @@ export default {
         if (response.data.data.creator.followersCount == null) {
           this.article.creator.followersCount = 0;
         }
+        document.title = this.article.title;
         // this.article.applyList = list;
         // this.article.applyNumber = list.length;
         // console.log(this.article,'article-2');

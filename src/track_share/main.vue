@@ -316,6 +316,8 @@ export default {
         const htmlFilter = new HtmlFilter();
         var filterContent = htmlFilter.filter(this.article.content);
 
+        document.title = this.article.title;
+
         let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
         if (this.article.logo) {
           imgUrlThis = this.article.logo;
