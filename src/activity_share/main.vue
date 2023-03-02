@@ -447,7 +447,7 @@ export default {
     },
     launchApp() {
       logEvent(analytics, 'launch_app', {
-        "source": `activity/${this.article.id}`,
+        "content_id": `activity/${this.article.id}`,
       });
     },
     launchError() {

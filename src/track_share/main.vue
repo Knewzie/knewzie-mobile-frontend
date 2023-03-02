@@ -383,7 +383,7 @@ export default {
     launchApp() {
       const { id } = this.$router.currentRoute.params;
       logEvent(analytics, 'launch_app', {
-        "source": `track/${id}`,
+        "content_id": `track/${id}`,
       });
     },
     launchError() {
