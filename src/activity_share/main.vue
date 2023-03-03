@@ -191,7 +191,6 @@ import WaveMultiImage from "../components/WaveMultiImage.vue";
 import moment from "moment";
 import axios from "axios";
 import ToDialog from "../components/ToDialog.vue";
-// import { Collapse, CollapseItem } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import HtmlFilter from 'html-filter';
 import { initializeApp } from "firebase/app";
@@ -438,8 +437,10 @@ export default {
       this.type = 1;
     },
     oia() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `activity/${this.article.id}`,
+      });
       const { id } = this.$router.currentRoute.params;
-      console.log("oia ....." + id);
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
         alert("请在浏览器里打开");
       } else {
@@ -483,22 +484,6 @@ export default {
             );
         });
     },
-    // share() {
-    //   const { Page } = window;
-    //    Page && Page.postMessage(
-    //     JSON.stringify(
-    //       {"event": "doShare", data: this.article}
-    //     )
-    //   )
-    // },
-    // report() {
-    //   const { Page } = window;
-    //   Page && Page.postMessage(
-    //     JSON.stringify({
-    //       "event": "report", data: { id: this.article.id }
-    //     })
-    //   );
-    // },
     invite() {
       const { Page } = window;
       if (!Page) {
@@ -513,16 +498,6 @@ export default {
       }
       Page.postMessage(JSON.stringify({ event: "doAnswer" }));
     },
-    // sign_up_now() {
-    //   alert('sign_up_now goto doSignUpNow')
-    //   const { Page } = window;
-    //   if (!Page) { return; }
-    //   Page.postMessage(
-    //     JSON.stringify(
-    //       {"event": "doSignUpNow", data: { id: this.article.id }}
-    //     )
-    //   );
-    // }
     handleScroll() {
       //定义handleScroll事件函数
       let section = document.getElementById("activityCategory-section");
@@ -549,15 +524,17 @@ export default {
       this.dialogVisible = false;
     },
     download() {
-      var ua = navigator.userAgent;
-      //  var appVer = navigator.appVersion;
-      // console.log('appver='+appVer);
-      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
-      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      logEvent(analytics, 'launch_app', {
+        "content_id": `activity/${this.article.id}`,
+      });
+
+      const ua = navigator.userAgent;
+      let url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
+      const isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       if (isIOS) {
         url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
       }
-      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
+      const isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
       if (isAndroid) {
         var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
         if (isHuawei) {
@@ -565,9 +542,6 @@ export default {
         }
       }
       window.location.href = url;
-      // setTimeout(() => {
-      //   window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
-      // }, 2000);
     },
   },
 };
@@ -629,18 +603,6 @@ article {
   width: 100%;
 }
 
-.actions .action-item {
-  border-bottom: 2px solid transparent;
-}
-
-.actions .action-item.active {
-  border-bottom: 2px solid #8dce44ff;
-}
-
-.content .ql-video {
-  width: 100%;
-}
-
 .content a {
   color: #8dce44ff;
 }
@@ -667,83 +629,8 @@ pre {
 </style>
 
 <style scoped>
-/* .btn-report {
-  width: 24px;
-  height: 24px;
-  display: inline-block;
-  background-image: url("@/images/ic_report.png");
-  background-size: contain;
-} */
-
 h3 {
   margin: 0;
-}
-
-.sort {
-  padding: 12px 28px;
-  color: #b3b3b3;
-  font-size: 12px;
-}
-
-.activityCategory-section {
-  height: 60px;
-  width: 100%;
-  position: absolute;
-  margin-top: 10px;
-  bottom: 1px;
-  z-index: 10;
-}
-
-.activityCategory-section2 {
-  height: 60px;
-  width: 100%;
-  position: fixed;
-  margin-top: 10px;
-  /* bottom: 10px; */
-  z-index: 10;
-}
-
-.sponsor-section {
-  display: flex;
-  flex-direction: column;
-  background: white;
-  margin-top: 10px;
-  padding: 7px 28px;
-  align-items: left;
-}
-
-.participant-section {
-  display: flex;
-  flex-direction: column;
-  background: white;
-  margin-top: 10px;
-  padding: 7px 28px;
-  align-items: left;
-}
-
-.participant {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-/* .share{
-  object-fit: cover;
-  width: 30px;
-  height: 30px;
-} */
-
-/* .sign_up_now{
-  object-fit: cover;
-  width: 100%;
-  height: 30px;
-} */
-
-.answer-actions {
-  display: flex;
-  background: white;
-  margin-top: 10px;
-  padding: 7px 28px;
-  align-items: center;
 }
 
 .answer-actions > * {
@@ -754,27 +641,8 @@ h3 {
   text-align: center;
 }
 
-.actions {
-  display: flex;
-  background: white;
-  margin-top: 10px;
-  padding: 0 28px;
-  align-items: center;
-}
-
-.action-item {
-  padding: 7px 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .action-item > span {
   line-height: normal;
-}
-
-.space {
-  flex: 1;
 }
 
 .actions > * {
@@ -796,10 +664,6 @@ h3 {
   background: white;
 }
 
-.tags {
-  margin: 10px 0;
-}
-
 .tags span {
   background: #d0d0d0;
   padding: 1px 8px;
@@ -813,12 +677,6 @@ h3 {
   margin: 0px;
 }
 
-.time-box {
-  margin: 7px 0;
-  font-size: 12px;
-  color: rgba(0, 0, 0, 60%);
-}
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -826,20 +684,8 @@ h3 {
   color: #2c3e50;
 }
 
-.abbr-box {
-  display: flex;
-}
-
 article {
   padding: 0px 20px 10px 20px;
-}
-
-.answer-item {
-  margin-top: 16px;
-}
-
-.answer-item:first-child {
-  margin: 0;
 }
 
 .section-title {
@@ -853,7 +699,7 @@ article {
   /* padding: 16px 18px; */
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   /* border-bottom: 1px solid #e6e6e7; */
 }
 .multi-image-wrapper {
@@ -867,16 +713,6 @@ article {
   white-space: pre-wrap;
 }
 
-.dialog-class {
-  border-radius: 10px;
-}
-.el-dialog__header {
-  padding: 0px !important;
-}
-.dialog-button-group {
-  display: flex;
-  justify-content: space-around;
-}
 .click-sign-up{
   display: flex;
   padding: 6px 8px;

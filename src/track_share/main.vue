@@ -74,7 +74,7 @@
 
           <!-- 天气 -->
           <div class="section-title">天气</div>
-          <Tabs v-model="weaherTabName" :stretch="true" :before-leave="weaherTabBeforeClick">
+          <Tabs v-model="weaherTabName" :stretch="true" :before-leave="weatherTabBeforeClick">
             <TabPane label="下面24个小时" name="first">
               <WaveWeather :weathers24h="weather.weathers24h"></WaveWeather>
             </TabPane>
@@ -374,6 +374,10 @@ export default {
       this.type = 1;
     },
     oia() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `track/${this.article.id}`,
+      });
+
       const { id } = this.$router.currentRoute.params;
       console.log("oia ....." + id);
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
@@ -462,17 +466,20 @@ export default {
       this.dialogVisible = false;
     },
     download() {
-      var ua = navigator.userAgent;
+      logEvent(analytics, 'launch_app', {
+        "content_id": `track/${this.article.id}`,
+      });
+      const ua = navigator.userAgent;
       //  var appVer = navigator.appVersion;
       // console.log('appver='+appVer);
-      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
-      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      let url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
+      const isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       if (isIOS) {
         url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
       }
-      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
+      const isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
       if (isAndroid) {
-        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
+        let isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
         if (isHuawei) {
           url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
         }
@@ -482,7 +489,7 @@ export default {
       //   window.location.href = url; //没有页面链接，2秒后跳转ios下载链接
       // }, 2000);
     },
-    weaherTabBeforeClick(tabName) {
+    weatherTabBeforeClick(tabName) {
       if (tabName == "second") {
         this.dialogVisible = true;
         return false;

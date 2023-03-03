@@ -299,7 +299,7 @@ export default {
       .then((response) => {
         const { data: sign } = response.data;
         const htmlFilter = new HtmlFilter();
-        var filterContent = htmlFilter.filter(this.article.content);
+        const filterContent = htmlFilter.filter(this.article.content);
         document.title = this.article.title;
 
         logEvent(analytics, 'screen_view', {
@@ -387,6 +387,9 @@ export default {
       this.type = 1;
     },
     oia() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `topic/${this.article.id}`,
+      });
       const { id } = this.$router.currentRoute.params;
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
         alert("请在浏览器里打开");
@@ -470,17 +473,18 @@ export default {
       this.dialogVisible = false;
     },
     download() {
-      var ua = navigator.userAgent;
-      //  var appVer = navigator.appVersion;
-      // console.log('appver='+appVer);
-      var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
-      var isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+      logEvent(analytics, 'launch_app', {
+        "content_id": `topic/${this.article.id}`,
+      });
+      const ua = navigator.userAgent;
+      let url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
+      const isIOS = !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
       if (isIOS) {
         url = `https://apps.apple.com/nz/app/%E7%AD%94%E7%9F%A5%E6%96%B0/id1551768968`;
       }
-      var isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
+      const isAndroid = ua.indexOf("Android") > -1 || ua.indexOf("Linux") > -1;
       if (isAndroid) {
-        var isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
+        const isHuawei = ua.toLowerCase().match(/huawei/i) == "huawei";
         if (isHuawei) {
           url = `https://appgallery.cloud.huawei.com/ag/n/app/C104495637?locale=zh_CN&source=appshare&subsource=C104495637&shareTo=com.android.bluetooth&shareFrom=appmarket`;
         }

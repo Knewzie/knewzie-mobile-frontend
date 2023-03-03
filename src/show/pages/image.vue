@@ -298,6 +298,10 @@ export default {
         });
     },
     oia() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `journal/image/${this.article.id}`,
+      });
+
       const { id } = this.$router.currentRoute.params;
       if (/MicroMessenger/i.test(window.navigator.userAgent)) {
         alert("请在浏览器里打开");
@@ -305,12 +309,19 @@ export default {
         window.location.assign(`waving:///journal/image/${id}`);
       }
     },
-    launchApp() {},
+    launchApp() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `journal/image/${this.article.id}`,
+      });
+    },
     launchError() {
-      // alert(err.detail.errMsg);
       this.oia();
     },
     download() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `journal/image/${this.article.id}`,
+      });
+
       var ua = navigator.userAgent;
       //  var appVer = navigator.appVersion;
       // console.log('appver='+appVer);

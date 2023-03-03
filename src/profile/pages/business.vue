@@ -18,7 +18,7 @@
 							<img  src="../../images/bx-buildings.png" style="width: 10px; height: 10px;" />
 						</div>
 					</div>
-					
+
 					<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 						<div class="avatar-row-follow">
 							<div><img src="../../images/ic_plus.png" style="height: 18px; width: 18px;"/></div>
@@ -27,7 +27,7 @@
 						<div class="avatar-row-follow">
 							<div><img src="../../images/ic_message.png" style="height: 20px; width: 20px;"/></div>
 							<div class="avatar-row-follow-text">私信</div>
-							
+
 						</div>
 					</div>
 				</div>
@@ -48,13 +48,13 @@
 					<div class="row-post-followers-following-cell-title">关注</div>
 				</div>
 			</div>
-			
+
 			<!-- bio -->
 			<div class="property-title">简介</div>
 			<div class="bio-content">{{user.intro}}</div>
-			
+
 			<!-- 商家信息 -->
-			<div class="property-title">商家信息</div>			
+			<div class="property-title">商家信息</div>
 			<div class="detail-row" v-if="user.businessHours != null && user.businessHours.length > 0">
 				<img src="../../images/bx-calendar-heart.png"/>
 				<div class="open-status open-status-open" v-if="this.isOpenNow">Open now</div>
@@ -62,19 +62,19 @@
 				<div class="detail-row-content" style="text-align: end;">{{openTimeToday}}</div>
 				<img src="../../images/bx-chevron-down.png"/>
 			</div>
-			
+
 			<div class="detail-row" v-if="user.telephone != null && user.telephone.length > 0">
 				<img src="../../images/bx-phone.png"/>
 				<div class="detail-row-content">{{user.telephone}}</div>
 				<div class="detail-row-action">Call</div>
 			</div>
-			
+
 			<div class="detail-row" v-if="user.website != null && user.website.length > 0">
 				<img src="../../images/bx-web-monitor-window-alt.png"/>
 				<div class="detail-row-content">{{user.website}}</div>
 				<div class="detail-row-action">Visit</div>
 			</div>
-			
+
 			<div class="detail-row" v-if="user.location != null && user.location.length > 0">
 				<img src="../../images/bx-map.png"/>
 				<div class="detail-row-content">{{user.location}}</div>
@@ -83,7 +83,7 @@
 			<div class="map">
 				<img src="../../images/map.png" style="height: 140;width: 100%;"/>
 			</div>
-			
+
 			<!-- tags -->
 			<div class="property-title">Tags</div>
 			<div class="tags-row">
@@ -173,7 +173,9 @@
 		},
 
 		methods: {
-			launchApp() {},
+			launchApp() {
+
+      },
 			launchError() {
 				// alert(err.detail.errMsg);
 				this.oia();
@@ -185,7 +187,7 @@
 				}
 				this.dialogVisible = false;
 			},
-			
+
 			download() {
 				var ua = navigator.userAgent;
 				var url = `https://play.google.com/store/apps/details?id=com.dazhixinany.know`;
@@ -202,14 +204,14 @@
 				}
 				window.location.href = url;
 			},
-			
+
 			getIsOpenNow() {
 				var now = new Date();
 				var businessTimes = this.user.businessHours;
 				//后台businessHours数组从周一开始
 				var dayIndex = (now.getDay() + 7 - 1) % 7;
 				if(businessTimes.length - 1 < dayIndex)return false;
-				var businessTime = businessTimes[dayIndex];	
+				var businessTime = businessTimes[dayIndex];
 				if(businessTime.toLowerCase() == "closed")return false;
 				var businessTimeSplit = businessTime.trim().split(',');
 				// console.log(businessTimeSplit);
@@ -236,11 +238,11 @@
 					// console.log(endTimeToday);
 					if(now.getTime() > startTimeToday.getTime() && now.getTime() < endTimeToday.getTime())return true;
 				}
-				
+
 				return false;
 			},
 		},
-		
+
 		created() {
 			axios.defaults.baseURL = "https://api.knewzie.com";
 			const { wx } = window;
@@ -281,13 +283,13 @@
 						wx.error(function (res) {
 							alert(JSON.stringify(res));
 							});
-							
+
 						wx.ready(() => {
 							let imgUrlThis = "https://h5.knewzie.com/img/icon.jpeg";
 							if (this.article.imageList && this.article.imageList.length > 0) {
 								imgUrlThis = this.article.imageList[0];
 								}
-						
+
 							//自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
 							wx.updateTimelineShareData({
 								title: this.article.title,
@@ -311,7 +313,7 @@
 </script>
 
 <style>
-	
+
 	.open-status{
 		font-weight: 400;
 		font-size: 14px;
@@ -342,7 +344,7 @@
 		border: 1px solid #FDA929;
 		border-radius: 100px;
 	}
-	
+
 	.tags-row .gray{
 		background-color: #ffffff;
 		color: #6A7292;
@@ -357,13 +359,13 @@
 		gap: 8px;
 	}
 	.detail-row-content{
-		flex: 1;		
+		flex: 1;
 		font-weight: 400;
 		font-size: 14px;
 		line-height: 20px;
 		color: #6A7292;
 	}
-	.detail-row-action{		
+	.detail-row-action{
 		font-weight: 400;
 		font-size: 13px;
 		line-height: 16px;
@@ -389,7 +391,7 @@
 		line-height: 22px;
 		color: #051A37;
 	}
-	
+
 	.row-post-followers-following{
 		display: flex;
 		flex-direction: row;
@@ -412,7 +414,7 @@
 		font-size: 16px;
 		line-height: 22px;
 		color: #051A37;
-	}	
+	}
 	.row-post-followers-following-cell-title{
 		font-weight: 500;
 		font-size: 11px;
@@ -425,7 +427,7 @@
 		background: #EBECEE;
 ;
 	}
-	
+
 	.profile{
 		padding-top: 80px;
 		padding-left: 20px;
@@ -447,7 +449,7 @@
 		justify-content: center;
 		align-items: center;
 		gap: 4px;
-		
+
 		width: 110px;
 		margin-right: 10px;
 		height: 36px;
@@ -463,7 +465,7 @@
 		font-size: 13px;
 		color: #FFFFFF;
 	}
-	
+
 	.topBar {
 		background-color: #6599ff;
 		height: 60px;

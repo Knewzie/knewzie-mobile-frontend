@@ -203,12 +203,20 @@ export default {
         window.location.assign(`waving:///journal/video/${id}`);
       }
     },
-    launchApp() {},
+    launchApp() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `journal/video/${this.article.id}`,
+      });
+    },
     launchError() {
       // alert(err.detail.errMsg);
       this.oia();
     },
     download() {
+      logEvent(analytics, 'launch_app', {
+        "content_id": `journal/video/${this.article.id}`,
+      });
+
       var ua = navigator.userAgent;
       //  var appVer = navigator.appVersion;
       // console.log('appver='+appVer);
