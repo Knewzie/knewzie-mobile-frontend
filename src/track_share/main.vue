@@ -58,13 +58,13 @@
             :mediaList="article.imageList"
           ></WaveMultiImage>
 
-          <WaveCollapse :text="article.content" :textNumber="120" ></WaveCollapse>
+          <WaveCollapse @onClickCall="dialogVisible = true" :text="article.content" :textNumber="120" ></WaveCollapse>
 
           <div class="section-title">到达指引</div>
-          <WaveCollapse :text="article.route" :textNumber="120" ></WaveCollapse>
+          <WaveCollapse @onClickCall="dialogVisible = true" :text="article.route" :textNumber="120" ></WaveCollapse>
 
           <div class="section-title">注意事项</div>
-          <WaveCollapse :text="article.memo" :textNumber="120" ></WaveCollapse>
+          <WaveCollapse @onClickCall="dialogVisible = true" :text="article.memo" :textNumber="120" ></WaveCollapse>
 
           <div class="issue-tag-box">
             <div class="issue-tag-item" v-for="(item,index) in article.issueList" :key="index">

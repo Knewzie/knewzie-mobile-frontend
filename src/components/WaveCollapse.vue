@@ -37,12 +37,13 @@ export default {
   },
   methods: {
     toggleExpanded() {
-      this.expanded = !this.expanded;
-      if (this.expanded) {
-        this.showContent = this.text;
-      }else {
-        this.showContent = this.truncateHTML(this.text,120);
-      }
+      this.$emit("onClickCall");
+      // this.expanded = !this.expanded;
+      // if (this.expanded) {
+      //   this.showContent = this.text;
+      // }else {
+      //   this.showContent = this.truncateHTML(this.text,120);
+      // }
     },
     truncateHTML(value, length) {
       const div = document.createElement("div");
