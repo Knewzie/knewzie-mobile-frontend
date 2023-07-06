@@ -28,6 +28,11 @@ module.exports = {
       template: "public/index.html",
       title: "The Waving"
     },
+    form: {
+      entry: "src/form/main.js",
+      template: "public/form.html",
+      title: "Forms"
+    }
   },
   // chainWebpack: config => config.optimization.minimize(false),
   configureWebpack: {
