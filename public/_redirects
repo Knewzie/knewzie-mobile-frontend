@@ -3,4 +3,4 @@
 /show/*  /show  200
 /activity/*  /activity  200
 /track/*  /track  200
-/form/1 /form 200
+/forms/1 /forms/1.html 200
