@@ -59,7 +59,7 @@
 
         <div>
           <div class="flex items-center justify-between">
-            <label for="age" class="block text-sm font-medium leading-6 text-gray-900">年龄</label>
+            <label for="whereKnown" class="block text-sm font-medium leading-6 text-gray-900">在哪里知道我们粤海高尔夫</label>
             <!-- <div class="text-sm">
               <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
             </div> -->
