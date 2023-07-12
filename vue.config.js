@@ -28,7 +28,7 @@ module.exports = {
       template: "public/index.html",
       title: "The Waving"
     },
-    form: {
+    "forms/1": {
       entry: "src/form/main.js",
       template: "public/form.html",
       title: "Forms"
