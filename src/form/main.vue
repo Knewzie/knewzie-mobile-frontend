@@ -83,15 +83,22 @@ function randomStr () {
 
 const callRpc = (params) => {
     return new Promise((resolve) => {
-        const callbackName = 'jsonp_' + randomStr();
-        window[callbackName] = (json) => {
+        const successCallbackName = 'jsonp_' + randomStr();
+        window[successCallbackName] = (json) => {
             resolve(json)
-            delete window[callbackName];
+            delete window[successCallbackName];
+        };
+
+        const failedCallbackName = 'jsonp_failed_' + randomStr();
+        window[failedCallbackName] = (json) => {
+            reject(json)
+            delete window[failedCallbackName];
         };
 
         window.rpc.postMessage(JSON.stringify({
             ...params,
-            callback: callbackName
+            onSuccess: successCallbackName,
+            onError: failedCallbackName,
         }));
     });
 }
@@ -105,7 +112,7 @@ export default {
             return;
         }
         callRpc({
-            "url": "/",
+            "url": "/user/widget/apply",
             "data": {
                 "name": this.name,
                 "age": this.age,
