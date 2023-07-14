@@ -82,7 +82,7 @@ function randomStr () {
 }
 
 const callRpc = (params) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const successCallbackName = 'jsonp_' + randomStr();
         window[successCallbackName] = (json) => {
             resolve(json)
@@ -91,7 +91,7 @@ const callRpc = (params) => {
 
         const failedCallbackName = 'jsonp_failed_' + randomStr();
         window[failedCallbackName] = (json) => {
-            reject(json)
+            reject()
             delete window[failedCallbackName];
         };
 
