@@ -90,7 +90,7 @@ const callRpc = (params) => {
         };
 
         const failedCallbackName = 'jsonp_failed_' + randomStr();
-        window[failedCallbackName] = (json) => {
+        window[failedCallbackName] = () => {
             reject()
             delete window[failedCallbackName];
         };
