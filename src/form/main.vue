@@ -103,6 +103,10 @@ const callRpc = (params) => {
     });
 }
 
+const callUtil = (command) => {
+  window.utils.postMessage(command);
+}
+
 
 export default {
   name: "Page",
@@ -111,17 +115,22 @@ export default {
         if (!window.rpc) {
             return;
         }
-        callRpc({
-            "url": "/user/widget/apply",
-            "data": {
-                "name": this.name,
-                "age": this.age,
-                "telephone": this.telephone,
-                "member": this.member,
-                "company": this.company,
-                "whereKnown": this.whereKnown,
-            }
-        });
+        try {
+          await callRpc({
+              "url": "/user/widget/apply",
+              "data": {
+                  "name": this.name,
+                  "age": this.age,
+                  "telephone": this.telephone,
+                  "member": this.member,
+                  "company": this.company,
+                  "whereKnown": this.whereKnown,
+              }
+          });
+          callUtil("closeAndReload");
+        } catch (e) {
+          
+        }
 
     }
   }
