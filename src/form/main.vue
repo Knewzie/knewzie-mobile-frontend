@@ -35,7 +35,7 @@
 
         <div>
           <div class="flex items-center justify-between">
-            <label for="member" class="block text-sm font-medium leading-6 text-gray-900">新西兰高尔夫会籍</label>
+            <label for="member" class="block text-sm font-medium leading-6 text-gray-900">新西兰高尔夫球场会籍</label>
             <!-- <div class="text-sm">
               <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
             </div> -->
