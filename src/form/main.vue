@@ -129,7 +129,7 @@ export default {
           });
           callUtil("closeAndReload");
         } catch (e) {
-          
+          console.log(e)
         }
 
     }
